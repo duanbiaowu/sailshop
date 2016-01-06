@@ -1,5 +1,5 @@
 <?php
-namespace backend\controllers;
+namespace backend\controllers\system;
 
 use Yii;
 use yii\filters\AccessControl;
@@ -55,7 +55,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('/site/index');
     }
 
     public function actionLogin()
@@ -66,7 +66,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect(['system/system']);
+            return $this->goBack();
         } else {
             return $this->render('login', [
                 'model' => $model,

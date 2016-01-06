@@ -6,30 +6,47 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Modal;
 
-$this->title = 'Login';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = '管理员登录';
+
 ?>
 <div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="col-sm-4"></div>
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <?= Html::encode($this->title) ?>
+            </div>
+            <div class="panel-body">
+                <?php $form = ActiveForm::begin([
+                    'id' => 'login-form',
+                    'options' => ['class' => 'form-horizontal'],
+                    'fieldConfig' => [
+                        'labelOptions' => ['class' => 'col-sm-1 control-label'],
+                        'template' => '{label} <div class="col-sm-10">{input}{error}{hint}</div>',
+                    ],
+                ]); ?>
 
-    <p>Please fill out the following fields to login:</p>
+                <?= $form->field($model, 'username')->input('text', ['placeholder' => '请输入管理员帐号']) ?>
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+                <?= $form->field($model, 'password')->input('password', ['placeholder' => '请输入管理员密码']) ?>
 
-                <?= $form->field($model, 'username') ?>
-
-                <?= $form->field($model, 'password')->passwordInput() ?>
-
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <?= $form->field($model, 'rememberMe', [
+                    'template' => '<label class="col-sm-1"></label><div class="col-sm-5"><label class="checkbox-inline">{input}{label}</label></div>{error}{hint}',
+                ])->checkbox(['label' => '记住用户名'], false) ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10">
+                <?= Html::submitButton('登录', ['class' => 'btn btn-primary col-sm-12', 'name' => 'login-button']) ?>
+                    </div>
                 </div>
 
-            <?php ActiveForm::end(); ?>
+            </div>
         </div>
     </div>
+
+    <?php ActiveForm::end(); ?>
+
 </div>
