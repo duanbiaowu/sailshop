@@ -162,7 +162,7 @@ return [
                 [
                     'label' => '参数设置',
                     'items' => [
-                        ['label' => '系统信息', 'url' => 'system/system/index'],
+                        ['label' => '系统信息', 'url' => 'system/system'],
                         ['label' => '帐号设置', 'url' => 'system/user/password'],
                         ['label' => '主题设置', 'url' => 'system/theme/index'],
                         ['label' => '站点设置', 'url' => 'system/system/site'],

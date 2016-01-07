@@ -5,17 +5,24 @@
  * @link: https://github.com/duanbiaowu/sailshop
  * @blog: http://www.cnblogs.com/duanbiaowu
  * @copyright: Copyright (c) 2016 SailShop System
- * @date: 2015-11-06
+ * @date: 2015-11-10
  */
 
-namespace backend\controllers\system;
+namespace backend\controllers\member;
 
+use Yii;
 use yii\web\Controller;
 
-class ExpressController extends Controller
+class GradeController extends Controller
 {
     public function actionIndex()
     {
-        return $this->render('/system/pay/express');
+        return $this->render('/member/member/grade');
     }
+
+    public function actionCreate()
+    {
+        return $this->render('/member/member/grade');
+    }
+
 }
