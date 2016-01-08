@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'username')->hint('请填写发送者的邮箱地址'); ?>
 
-            <?= $form->field($model, 'password')->hint('请填写发送者都邮箱密码'); ?>
+            <?= $form->field($model, 'password')->passwordInput()->hint('请填写发送者都邮箱密码'); ?>
 
             <?= $form->field($model, 'fromUser')->hint('请填写发送者名字'); ?>
 

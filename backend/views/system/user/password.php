@@ -16,27 +16,25 @@ use yii\bootstrap\ActiveForm;
 
 ?>
 
-<?php $form = ActiveForm::begin(['id' => 'reset-password-form', 'options' => ['class' => 'form-horizontal']]); ?>
+<?php $form = ActiveForm::begin([
+    'id' => 'reset-password-form',
+    'options' => ['class' => 'form-horizontal'],
+    'fieldConfig' => [
+        'labelOptions' => ['class' => 'col-sm-2 control-label'],
+        'template' => '{label} <div class="col-sm-4">{input}{error}{hint}</div>',
+    ],
+]); ?>
 <div class="panel panel-default">
     <div class="panel-heading">
         请输入原始密码和新密码进行密码修改操作
     </div>
     <div class="panel-body">
         <div class="col-sm-12">
-            <?= $form->field($model, 'password', [
-                'labelOptions' => ['class' => 'col-sm-1 control-label'],
-                'template' => '{label} <div class="col-sm-5">{input}{error}{hint}</div>'
-            ])->passwordInput(['placeholder' => '请输入帐号的原始密码']) ?>
+            <?= $form->field($model, 'password')->passwordInput(['placeholder' => '请输入帐号的原始密码']) ?>
 
-            <?= $form->field($model, 'new_password', [
-                'labelOptions' => ['class' => 'col-sm-1 control-label'],
-                'template' => '{label} <div class="col-sm-5">{input}{error}{hint}</div>'
-            ])->passwordInput(['placeholder' => '请输入帐号的新密码']) ?>
+            <?= $form->field($model, 'new_password')->passwordInput(['placeholder' => '请输入帐号的新密码']) ?>
 
-            <?= $form->field($model, 'repeat_password', [
-                'labelOptions' => ['class' => 'col-sm-1 control-label'],
-                'template' => '{label} <div class="col-sm-5">{input}{error}{hint}</div>'
-            ])->passwordInput(['placeholder' => '请再次输入帐号的新密码']) ?>
+            <?= $form->field($model, 'repeat_password')->passwordInput(['placeholder' => '请再次输入帐号的新密码']) ?>
 
         </div>
     </div>

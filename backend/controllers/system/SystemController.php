@@ -47,7 +47,9 @@ class SystemController extends Controller
             ]);
         }
 
-        $model->attributes = Yii::$app->params['siteBaseInfo'];
+        if (isset(Yii::$app->params['siteBaseInfo'])) {
+            $model->attributes = Yii::$app->params['siteBaseInfo'];
+        }
 
         return $this->render('site', [
             'model' => $model,
@@ -70,7 +72,9 @@ class SystemController extends Controller
             ]);
         } else {
 
-            $model->attributes = Yii::$app->params['otherBaseInfo'];
+            if (isset(Yii::$app->params['otherBaseInfo'])) {
+                $model->attributes = Yii::$app->params['otherBaseInfo'];
+            }
 
             return $this->render('other', [
                 'model' => $model,
@@ -107,12 +111,16 @@ class SystemController extends Controller
                 }
             }
 
-            return $this->refresh();
+            return $this->render('email', [
+                'model' => $model,
+            ]);
         }
 
-        if ($model->attributes = Yii::$app->components['mailer']['transport']) {
-            $model->address = Yii::$app->components['mailer']['transport']['host'];
-            $model->fromUser = Yii::$app->components['mailer']['messageConfig']['from'][$model->username];
+        if (isset(Yii::$app->components['mailer']['transport'])) {
+            if ($model->attributes = Yii::$app->components['mailer']['transport']) {
+                $model->address = Yii::$app->components['mailer']['transport']['host'];
+                $model->fromUser = Yii::$app->components['mailer']['messageConfig']['from'][$model->username];
+            }
         }
 
         return $this->render('email', [

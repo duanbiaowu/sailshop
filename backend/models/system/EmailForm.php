@@ -95,12 +95,12 @@ class EmailForm extends Model
         $components = require(__DIR__ . '/../../../common/config/main-local.php');
 
         $components['components']['mailer']['transport'] = [
-            'class' => $components['components']['mailer']['transport']['class'],
+            'class' => 'Swift_SmtpTransport',
             'host' => $this->address,
             'username' => $this->username,
             'password' => $this->password,
             'port' => $this->port,
-            'encryption' => $components['components']['mailer']['transport']['encryption'],
+            'encryption' => 'tls',
         ];
 
         $components['components']['mailer']['messageConfig']['from'] = [

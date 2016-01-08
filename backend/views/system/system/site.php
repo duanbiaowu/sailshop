@@ -18,60 +18,37 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Html::encode($this->title) ?>
+        请设置站点基本信息
     </div>
     <div class="panel-body">
-    <?php $form = ActiveForm::begin(['id' => 'site-form', 'options' => ['class' => 'form-horizontal']]); ?>
-
-        <?= $form->field($model, 'siteName', [
+    <?php $form = ActiveForm::begin([
+        'id' => 'site-form',
+        'options' => ['class' => 'form-horizontal'],
+        'fieldConfig' => [
             'labelOptions' => ['class' => 'col-sm-2 control-label'],
             'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ]); ?>
+        ],
+    ]); ?>
 
-        <?= $form->field($model, 'siteLogo', [
-            'labelOptions' => ['class' => 'col-sm-2 control-label'],
-            'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ]); ?>
+        <?= $form->field($model, 'siteName'); ?>
 
-        <?= $form->field($model, 'keyword', [
-            'labelOptions' => ['class' => 'col-sm-2 control-label'],
-            'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ]); ?>
+        <?= $form->field($model, 'siteLogo'); ?>
 
-        <?= $form->field($model, 'description', [
-            'labelOptions' => ['class' => 'col-sm-2 control-label'],
-            'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ])->textarea(['rows' => 3]); ?>
+        <?= $form->field($model, 'keyword'); ?>
 
-        <?= $form->field($model, 'siteIcp', [
-            'labelOptions' => ['class' => 'col-sm-2 control-label'],
-            'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ]); ?>
+        <?= $form->field($model, 'description')->textarea(['rows' => 3]); ?>
 
-        <?= $form->field($model, 'siteUrl', [
-            'labelOptions' => ['class' => 'col-sm-2 control-label'],
-            'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ]); ?>
+        <?= $form->field($model, 'siteIcp'); ?>
 
-        <?= $form->field($model, 'email', [
-            'labelOptions' => ['class' => 'col-sm-2 control-label'],
-            'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ]); ?>
+        <?= $form->field($model, 'siteUrl'); ?>
 
-        <?= $form->field($model, 'mobile', [
-            'labelOptions' => ['class' => 'col-sm-2 control-label'],
-            'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ]); ?>
+        <?= $form->field($model, 'email'); ?>
 
-        <?= $form->field($model, 'zip', [
-            'labelOptions' => ['class' => 'col-sm-2 control-label'],
-            'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ]); ?>
+        <?= $form->field($model, 'mobile'); ?>
 
-        <?= $form->field($model, 'address', [
-            'labelOptions' => ['class' => 'col-sm-2 control-label'],
-            'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-        ]); ?>
+        <?= $form->field($model, 'zip'); ?>
+
+        <?= $form->field($model, 'address'); ?>
 
         <?= $form->field($model, 'updated_at')->label('')->hiddenInput(['value' => time()]); ?>
 
