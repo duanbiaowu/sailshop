@@ -179,7 +179,7 @@ return [
                         ['label' => '区域划分', 'url' => 'system/area/index'],
                         ['label' => '地区管理', 'url' => 'system/district/index'],
                         ['label' => '运费模板', 'url' => 'system/freight/index'],
-                        ['label' => '快递公司', 'url' => 'system/express/index'],
+                        ['label' => '快递公司', 'url' => 'system/express-company/index'],
                     ],
                 ],
                 [
