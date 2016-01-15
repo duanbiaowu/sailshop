@@ -157,17 +157,14 @@ return [
 
         'system' => [
             'label' => '系统设置',
-            'url' => ['system/system/index'],
+            'url' => ['system/index'],
             'items' => [
                 [
                     'label' => '参数设置',
                     'items' => [
-                        ['label' => '系统信息', 'url' => 'system/system'],
-                        ['label' => '帐号设置', 'url' => 'system/user/password'],
-                        ['label' => '主题设置', 'url' => 'system/theme/index'],
-                        ['label' => '站点设置', 'url' => 'system/system/site'],
-                        ['label' => '其它设置', 'url' => 'system/system/other'],
-                        ['label' => '邮箱配置', 'url' => 'system/system/email'],
+                        ['label' => '系统信息', 'url' => 'system/index'],
+                        ['label' => '主题设置', 'url' => 'system/theme'],
+                        ['label' => '站点设置', 'url' => 'system/system'],
                         ['label' => '信息模板', 'url' => 'system/info/index'],
                         ['label' => '开放登录', 'url' => 'system/oauth/index'],
                     ],
@@ -179,7 +176,7 @@ return [
                         ['label' => '区域划分', 'url' => 'system/area/index'],
                         ['label' => '地区管理', 'url' => 'system/district/index'],
                         ['label' => '运费模板', 'url' => 'system/freight/index'],
-                        ['label' => '快递公司', 'url' => 'system/express-company/index'],
+                        ['label' => '快递公司', 'url' => 'system/express-company'],
                     ],
                 ],
                 [

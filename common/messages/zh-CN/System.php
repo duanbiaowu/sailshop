@@ -9,6 +9,10 @@
  */
 
 return [
+    'common_delete_confirm' => '确认删除这条数据吗？此操作不可恢复！',
+    'common_available' => '启用',
+    'common_disable' => '禁用',
+
     'form_site_name' => '站点名称',
     'form_site_logo' => '站点Logo',
     'form_site_keyword' => '站点关键字',
@@ -47,4 +51,12 @@ return [
     'other_config_set_failed' => '其它配置信息设置失败，请检查配置文件的相关权限',
 
     'form_sql_execute_success' => 'SQL语句执行成功',
+
+    'form_express_company_name' => '公司名称',
+    'form_express_company_identifier' => '公司标识符',
+    'form_express_company_code' => '公司CODE',
+    'form_express_company_url' => '公司主页',
+    'form_express_company_sort' => '显示排序',
+    'form_express_company_available' => '使用状态',
+
 ];

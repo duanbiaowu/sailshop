@@ -19,13 +19,7 @@ use backend\models\system\OtherForm;
 
 class SystemController extends Controller
 {
-    public function actionIndex()
-    {
-        $mysqlVersion = Yii::$app->db->createCommand('SELECT VERSION();')->queryColumn();
-        return $this->render('index', [
-            'mysqlVersion' => $mysqlVersion,
-        ]);
-    }
+    public $defaultAction = 'site';
 
     /**
      * Set the site based information

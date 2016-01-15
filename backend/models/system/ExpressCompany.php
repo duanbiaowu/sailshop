@@ -34,7 +34,9 @@ class ExpressCompany extends ActiveRecord
         return [
             [['name', 'identifier', 'code', 'url'], 'required'],
             [['sort', 'available'], 'integer'],
-            [['name', 'identifier', 'code', 'url'], 'string', 'max' => 32]
+            [['name', 'identifier', 'code', 'url'], 'string', 'max' => 32],
+            ['sort', 'default', 'value' => 0],
+            ['available', 'boolean', 'strict' => true],
         ];
     }
 
@@ -45,12 +47,20 @@ class ExpressCompany extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'identifier' => 'Identifier',
-            'code' => 'Code',
-            'url' => 'Url',
-            'sort' => 'Sort',
-            'available' => 'Available',
+            'name' => Yii::t('system', 'form_express_company_name'),
+            'identifier' => Yii::t('system', 'form_express_company_identifier'),
+            'code' => Yii::t('system', 'form_express_company_code'),
+            'url' => Yii::t('system', 'form_express_company_url'),
+            'sort' => Yii::t('system', 'form_express_company_sort'),
+            'available' => Yii::t('system', 'form_express_company_available'),
+        ];
+    }
+
+    public function availableLabel()
+    {
+        return [
+            '1' => Yii::t('System', 'common_available'),
+            '0' => Yii::t('System', 'common_disable'),
         ];
     }
 }

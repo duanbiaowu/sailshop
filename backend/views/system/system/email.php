@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
+<?= $this->render('_label') ?>
+
 <?php $form = ActiveForm::begin([
     'id' => 'email-form',
     'options' => ['class' => 'form-horizontal'],
@@ -27,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <?= Html::encode($this->title); ?>
+            请设置站点邮箱信息
         </div>
         <div class="panel-body">
 

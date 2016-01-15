@@ -1,37 +1,71 @@
 <?php
-/**
- * @explain: CangYun3
- * @author: Biaowu Duan
- * @datetime: 2016/1/9-11:13
- */
 
 namespace backend\models\system;
 
 use Yii;
+use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\system\ExpressCompany;
 
+/**
+ * ExpressCompanySearch represents the model behind the search form about `backend\models\system\ExpressCompany`.
+ */
 class ExpressCompanySearch extends ExpressCompany
 {
-	public function search($params)
-	{
-		$query = ExpressCompany::find();
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['id', 'sort', 'available'], 'integer'],
+            [['name', 'identifier', 'code', 'url'], 'safe'],
+        ];
+    }
 
-		$dataProvider = new ActiveDataProvider([
-			'query' => $query,
-		]);
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
 
-		$this->load($params);
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $query = ExpressCompany::find();
 
-		if (!$this->validate()) {
-			return $dataProvider;
-		}
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
-		$query->andFilterWhere([
-			'name' => ['like', 'name', $this->name],
-		]);
+        $this->load($params);
 
-		return $dataProvider;
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
 
-	}
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'sort' => $this->sort,
+            'available' => $this->available,
+        ]);
+
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'identifier', $this->identifier])
+            ->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'url', $this->url]);
+
+        return $dataProvider;
+    }
 }

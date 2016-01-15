@@ -95,7 +95,7 @@ AppAsset::register($this);
                                 <h4 class="panel-title"><?= $adminMenu['label'] ?></h4>
                             </a>
                             <?php foreach ($adminMenu['items'] as $menu): ?>
-                                <a href="<?= Url::toRoute($menu['url']) ?>" class="list-group-item <?php if (Yii::$app->requestedRoute == $menu['url']) echo 'active'; ?>">
+                                <a href="<?= Url::toRoute($menu['url']) ?>" class="list-group-item <?php if (Yii::$app->controller->id == $menu['url']) echo 'active'; ?>">
                                     <?= $menu['label'] ?>
                                 </a>
                             <?php endforeach; ?>

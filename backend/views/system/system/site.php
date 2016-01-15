@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
+<?= $this->render('_label') ?>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         请设置站点基本信息
