@@ -172,10 +172,10 @@ return [
                 [
                     'label' => '支付配送设置',
                     'items' => [
-                        ['label' => '支付方式', 'url' => 'system/pay/way'],
-                        ['label' => '区域划分', 'url' => 'system/area/index'],
-                        ['label' => '地区管理', 'url' => 'system/district/index'],
-                        ['label' => '运费模板', 'url' => 'system/freight/index'],
+                        ['label' => '支付方式', 'url' => 'system/pay'],
+                        ['label' => '区域划分', 'url' => 'system/region'],
+                        ['label' => '地区管理', 'url' => 'system/area'],
+                        ['label' => '运费模板', 'url' => 'system/freight'],
                         ['label' => '快递公司', 'url' => 'system/express-company'],
                     ],
                 ],
