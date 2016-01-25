@@ -59,4 +59,13 @@ return [
     'form_express_company_sort' => '显示排序',
     'form_express_company_available' => '使用状态',
 
+    'form_region_name' => '区域名称',
+    'form_region_provinces' => '区域省份',
+    'region_create_success' => '区域信息创建成功',
+    'region_create_failed' => '区域信息创建失败',
+    'region_update_success' => '区域信息更新成功',
+    'region_update_failed' => '区域信息更新失败',
+    'region_delete_success' => '区域信息删除成功',
+    'region_delete_failed' => '区域信息删除失败',
+
 ];

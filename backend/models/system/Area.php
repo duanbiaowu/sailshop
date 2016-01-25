@@ -47,4 +47,13 @@ class Area extends ActiveRecord
             'sort' => 'Sort',
         ];
     }
+
+    public static function getProvinces()
+    {
+        return self::find()
+            ->where(['parent_id' => 0])
+            ->indexBy('id')
+            ->asArray()
+            ->all();
+    }
 }
