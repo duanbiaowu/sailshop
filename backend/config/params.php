@@ -163,6 +163,7 @@ return [
                     'label' => '参数设置',
                     'items' => [
                         ['label' => '系统信息', 'url' => 'system/index'],
+                        ['label' => '在线升级', 'url' => 'system/version'],
                         ['label' => '主题设置', 'url' => 'system/theme'],
                         ['label' => '站点设置', 'url' => 'system/system'],
                         ['label' => '信息模板', 'url' => 'system/info/index'],
@@ -190,13 +191,12 @@ return [
                 [
                     'label' => '数据管理',
                     'items' => [
-                        ['label' => '版本管理', 'url' => 'system/version'],
                         ['label' => '操作日志', 'url' => 'system/operation'],
                         ['label' => '缓存管理', 'url' => 'system/cache'],
-                        ['label' => '数据库概况', 'url' => 'system/database'],
-                        ['label' => '数据库SQL', 'url' => 'system/database/sql'],
-                        ['label' => '数据库备份', 'url' => 'system/database/backup'],
-                        ['label' => '数据库还原', 'url' => 'system/version/restore'],
+                        ['label' => '数据库管理', 'url' => 'system/database'],
+//                        ['label' => '数据库SQL', 'url' => 'system/database/sql'],
+//                        ['label' => '数据库备份', 'url' => 'system/database/backup'],
+//                        ['label' => '数据库还原', 'url' => 'system/version/restore'],
                     ],
                 ],
             ],

@@ -16,12 +16,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
+<?= $this->render('_label'); ?>
+
 <?php $form = ActiveForm::begin([
     'id' => 'sql-form',
     'options' => ['class' => 'form-horizontal'],
     'fieldConfig' => [
-        'labelOptions' => ['class' => 'col-sm-2 control-label'],
-        'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
+        'labelOptions' => ['class' => 'col-sm-1 control-label'],
+        'template' => '{label} <div class="col-sm-9">{input}{error}{hint}</div>',
     ],
 ]); ?>
 

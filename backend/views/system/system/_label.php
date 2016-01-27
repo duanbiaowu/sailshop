@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 
-//var_dump();Yii::$app->end();
 ?>
 
 <div class="form-group">

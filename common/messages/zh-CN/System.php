@@ -50,6 +50,8 @@ return [
     'other_config_set_success' => '其它配置信息设置成功',
     'other_config_set_failed' => '其它配置信息设置失败，请检查配置文件的相关权限',
 
+    'database_optimize_success' => '数据库优化成功',
+    'database_backup_success' => '数据库备份成功',
     'form_sql_execute_success' => 'SQL语句执行成功',
 
     'form_express_company_name' => '公司名称',
