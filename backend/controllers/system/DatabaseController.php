@@ -27,6 +27,8 @@ class DatabaseController extends Controller
                 'actions' => [
                     'optimize' => ['post'],
                     'backup' => ['post'],
+                    'download' => ['post'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
@@ -95,8 +97,39 @@ class DatabaseController extends Controller
     {
         $model = new Database();
 
+        if ($restoreFile = Yii::$app->request->get('file')) {
+            if (!$model->restore($restoreFile)) {
+                Yii::$app->session->setFlash('error', Yii::t('System', 'database_backup_not_found'));
+            } else {
+                Yii::$app->session->setFlash('success', Yii::t('System', 'database_restore_success'));
+            }
+
+            return $this->redirect('index');
+        }
+
         return $this->render('restore', [
             'backupFiles' => $model->getBackupFiles(),
         ]);
+    }
+
+    public function actionDownload($file)
+    {
+        $model = new Database();
+
+        if (!$model->download($file)) {
+            Yii::$app->session->setFlash('error', Yii::t('System', 'database_backup_not_found'));
+        } else {
+            Yii::$app->session->removeFlash('error');
+        }
+
+        return $this->redirect('restore');
+    }
+
+    public function actionDelete($file)
+    {
+        unlink($file);
+        Yii::$app->session->setFlash('success', Yii::t('System', 'database_backup_delete_success'));
+
+        return $this->redirect('restore');
     }
 }

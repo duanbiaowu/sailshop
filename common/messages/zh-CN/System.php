@@ -52,6 +52,9 @@ return [
 
     'database_optimize_success' => '数据库优化成功',
     'database_backup_success' => '数据库备份成功',
+    'database_backup_delete_success' => '数据库备份文件删除成功',
+    'database_backup_not_found' => '数据库备份文件不存在或已经被删除',
+    'database_restore_success' => '数据库备份文件恢复成功',
     'form_sql_execute_success' => 'SQL语句执行成功',
 
     'form_express_company_name' => '公司名称',

@@ -11,8 +11,9 @@
 namespace backend\models\system;
 
 use Yii;
+use yii\base\Model;
 
-class Database
+class Database extends Model
 {
     public function getStatus()
     {
@@ -60,6 +61,25 @@ class Database
     public function getBackupFiles()
     {
         return glob(Yii::getAlias('@backend/assets/*.bak'));
+    }
+
+    public function restore($file)
+    {
+        if (!is_file($file)) {
+            return false;
+        }
+        $sql = file_get_contents($file);
+        return Yii::$app->db->createCommand($sql)->query();
+    }
+
+    public function download($file)
+    {
+        if (!is_file($file)) {
+            return false;
+        }
+        header('Content-type : application/bak');
+        header('Content-Disposition: attachment; filename="' . date('Y-m-d-H:i:s') . '.bak"');
+        return readfile($file);
     }
 
     public function format($size)

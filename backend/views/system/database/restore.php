@@ -29,9 +29,26 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-sm-4">
             <div class="pull-right">
-                <a href="#" class="btn btn-primary"><i class="fa fa-backward"></i> 还原</a>
-                <a href="#" class="btn btn-success"><i class="fa fa-cloud-download"></i> 下载</a>
-                <a href="#" class="btn btn-danger"><i class="fa fa-remove"></i> 删除</a>
+                <?= Html::a('<i class="fa fa-backward"></i> 还原', ['restore', 'file' => $file], [
+                    'class' => 'btn btn-primary',
+                    'data' => [
+                        'confirm' => '将会清空当前数据库并使用备份数据，确认操作？',
+                        'method' => 'post',
+                    ],
+                ]); ?>
+                <?= Html::a('<i class="fa fa-cloud-download"></i> 下载', ['download', 'file' => $file], [
+                    'class' => 'btn btn-success',
+                    'data' => [
+                        'method' => 'post',
+                    ],
+                ]); ?>
+                <?= Html::a('<i class="fa fa-remove"></i> 删除', ['delete', 'file' => $file], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => Yii::t('System', 'common_delete_confirm'),
+                        'method' => 'post',
+                    ],
+                ]); ?>
             </div>
         </div>
     </div>
