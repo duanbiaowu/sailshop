@@ -10,17 +10,16 @@ return [
                 [
                     'label' => '商品管理',
                     'items' => [
-                        ['label' => '出售商品', 'url' => 'goods/goods/index'],
-                        ['label' => '发布商品', 'url' => 'goods/goods/release'],
+                        ['label' => '商品管理', 'url' => 'goods/goods'],
                     ],
                 ],
                 [
                     'label' => '商品配置',
                     'items' => [
-                        ['label' => '分类管理', 'url' => 'goods/category/index'],
-                        ['label' => '属性管理', 'url' => 'goods/attribute/index'],
-                        ['label' => '规格管理', 'url' => 'goods/specifications/index'],
-                        ['label' => '品牌管理', 'url' => 'goods/brand/index'],
+                        ['label' => '分类管理', 'url' => 'goods/category'],
+                        ['label' => '属性管理', 'url' => 'goods/attribute'],
+                        ['label' => '规格管理', 'url' => 'goods/specifications'],
+                        ['label' => '品牌管理', 'url' => 'goods/brand'],
                     ],
                 ],
             ],

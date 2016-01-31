@@ -10,6 +10,7 @@
 
 return [
     'common_delete_confirm' => '确认删除这条数据吗？此操作不可恢复！',
+    'common_whole' => '全部',
     'common_available' => '启用',
     'common_disable' => '禁用',
 
