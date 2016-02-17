@@ -2,36 +2,48 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use pendalf89\filemanager\Module;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\goods\Brand */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('System', 'Brands'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('Goods', 'brands'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="brand-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('System', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('System', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
+    <div class="row form-group">
+        <div class="col-sm-1">
+        <?= Html::a(Yii::t('Goods', 'update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary col-sm-12']) ?>
+        </div>
+        <div class="col-sm-1">
+        <?= Html::a(Yii::t('Goods', 'delete'), ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger col-sm-12',
             'data' => [
-                'confirm' => Yii::t('System', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('System', 'common_delete_confirm'),
                 'method' => 'post',
             ],
         ]) ?>
-    </p>
+        </div>
+    </div>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
             'name',
-            'url:url',
-            'logo',
+            [
+                'attribute' => 'url',
+                'format' => 'html',
+                'value' => Html::a($model->url, $model->url, ['target' => '_blank']),
+            ],
+            [
+                'attribute' => 'logo',
+                'format' => 'html',
+                'value' => Html::img((new Module(Module::className()))->routes['baseUrl'] . $model->logo, [
+                    'title' => $model->name,
+                ]),
+            ],
             'sort',
             'available',
         ],

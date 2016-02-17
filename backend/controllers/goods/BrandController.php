@@ -6,7 +6,6 @@ use Yii;
 use common\models\goods\Brand;
 use common\models\goods\BrandSearch;
 use yii\web\Controller;
-use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -62,12 +61,6 @@ class BrandController extends Controller
     public function actionCreate()
     {
         $model = new Brand();
-
-        if (Yii::$app->request->isPost) {
-            $model->logo = UploadedFile::getInstance($model, 'logo');
-//            var_dump($model->logo);exit;
-//            var_dump($model->logo->saveAs('F:/sailshop/1.png'));exit;
-        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('index');

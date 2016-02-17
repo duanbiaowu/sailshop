@@ -11,6 +11,7 @@
 return [
     'create' => '创建',
     'update' => '更新',
+    'delete' => '删除',
 
     'brand_name' => '名称',
     'brand_url' => '官网',

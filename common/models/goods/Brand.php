@@ -31,11 +31,11 @@ class Brand extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'url'], 'required'],
+            [['name', 'url', 'logo'], 'required'],
             [['sort', 'available'], 'integer'],
             [['name'], 'string', 'max' => 64],
             [['url'], 'string', 'max' => 255],
-            [['logo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'jpg, png'],
+            [['logo'], 'string', 'max' => 255],
             ['sort', 'default', 'value' => 0],
             ['available', 'boolean', 'strict' => true],
         ];

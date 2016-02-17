@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use pendalf89\filemanager\Module;
+use pendalf89\filemanager\widgets\FileInput;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\goods\Brand */
@@ -29,7 +31,23 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'url')->textInput(['maxlength' => true])->hint(Yii::t('Goods', 'brand_form_url_hint')) ?>
 
-        <?= $form->field($model, 'logo')->fileInput()->hint(Yii::t('Goods', 'brand_form_logo_hint')) ?>
+        <?= $form->field($model, 'logo')->widget(FileInput::className(), [
+            'buttonTag' => 'button',
+            'buttonName' => '<i class="fa fa-image"></i> 选择图片',
+            'buttonOptions' => ['class' => 'btn btn-default'],
+            'options' => ['class' => 'form-control'],
+            'template' => '<div class="input-group col-sm-8">{input}<span class="input-group-btn">{button}</span></div>',
+            'imageContainer' => '#js-images-container',
+        ]) ?>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="brand-logo"></label>
+            <div class="col-sm-10" id="js-images-container">
+                <?php if (!$model->isNewRecord): ?>
+                <img src="<?= (new Module(Module::className()))->routes['baseUrl'] . $model->logo ?>" title="<?= $model->name ?>" />
+                <?php endif; ?>
+            </div>
+        </div>
 
         <?= $form->field($model, 'sort')->textInput()->hint(Yii::t('Goods', 'brand_form_sort_hint')) ?>
 

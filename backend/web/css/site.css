@@ -143,3 +143,9 @@ a.desc:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+#js-images-container img{
+    width: 150px;
+    height: 150px;
+    margin-top: -15px;
+}
