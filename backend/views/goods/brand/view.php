@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use pendalf89\filemanager\Module;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\goods\Brand */
@@ -40,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'logo',
                 'format' => 'html',
-                'value' => Html::img((new Module(Module::className()))->routes['baseUrl'] . $model->logo, [
+                'value' => Html::img($model->logo, [
                     'title' => $model->name,
                 ]),
             ],

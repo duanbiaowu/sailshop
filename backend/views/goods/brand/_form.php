@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use pendalf89\filemanager\Module;
 use pendalf89\filemanager\widgets\FileInput;
 
 /* @var $this yii\web\View */
@@ -44,7 +43,7 @@ use pendalf89\filemanager\widgets\FileInput;
             <label class="col-sm-2 control-label" for="brand-logo"></label>
             <div class="col-sm-10" id="js-images-container">
                 <?php if (!$model->isNewRecord): ?>
-                <img src="<?= (new Module(Module::className()))->routes['baseUrl'] . $model->logo ?>" title="<?= $model->name ?>" />
+                    <?= Html::img($model->logo, ['title' => $model->name]) ?>
                 <?php endif; ?>
             </div>
         </div>

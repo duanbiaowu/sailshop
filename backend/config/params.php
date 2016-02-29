@@ -20,6 +20,7 @@ return [
                         ['label' => '属性管理', 'url' => 'goods/attribute'],
                         ['label' => '规格管理', 'url' => 'goods/specifications'],
                         ['label' => '品牌管理', 'url' => 'goods/brand'],
+                        ['label' => '类型管理', 'url' => 'goods/type'],
                     ],
                 ],
             ],

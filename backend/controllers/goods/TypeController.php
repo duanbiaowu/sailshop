@@ -3,16 +3,16 @@
 namespace backend\controllers\goods;
 
 use Yii;
-use common\models\goods\Attribute;
-use common\models\goods\AttributeSearch;
+use common\models\goods\Type;
+use common\models\goods\TypeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AttributeController implements the CRUD actions for Attribute model.
+ * TypeController implements the CRUD actions for Type model.
  */
-class AttributeController extends Controller
+class TypeController extends Controller
 {
     public function behaviors()
     {
@@ -27,12 +27,12 @@ class AttributeController extends Controller
     }
 
     /**
-     * Lists all Attribute models.
+     * Lists all Type models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new AttributeSearch();
+        $searchModel = new TypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -42,7 +42,7 @@ class AttributeController extends Controller
     }
 
     /**
-     * Displays a single Attribute model.
+     * Displays a single Type model.
      * @param integer $id
      * @return mixed
      */
@@ -54,24 +54,16 @@ class AttributeController extends Controller
     }
 
     /**
-     * Creates a new Attribute model.
+     * Creates a new Type model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Attribute();
-
-        if ($model->load(Yii::$app->request->post())) {
-            $model->scenario = Yii::$app->request->post()['Attribute']['type'] > 1 ? 'multiple' : 'single';
-//            var_dump($model->scenario);
-//            var_dump(Yii::$app->request->post());exit;
-        } else {
-            $model->scenario = 'single';
-        }
+        $model = new Type();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -80,7 +72,7 @@ class AttributeController extends Controller
     }
 
     /**
-     * Updates an existing Attribute model.
+     * Updates an existing Type model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -90,7 +82,7 @@ class AttributeController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -99,7 +91,7 @@ class AttributeController extends Controller
     }
 
     /**
-     * Deletes an existing Attribute model.
+     * Deletes an existing Type model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -112,15 +104,15 @@ class AttributeController extends Controller
     }
 
     /**
-     * Finds the Attribute model based on its primary key value.
+     * Finds the Type model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Attribute the loaded model
+     * @return Type the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Attribute::findOne($id)) !== null) {
+        if (($model = Type::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

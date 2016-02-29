@@ -4,15 +4,15 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\goods\AttributeSearch */
+/* @var $searchModel common\models\goods\TypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('Goods', 'attributes');
+$this->title = Yii::t('Goods', 'types');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="attribute-index">
+<div class="type-index">
     <p>
-        <?= Html::a(Yii::t('Goods', 'create_attribute'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('Goods', 'create_type'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -23,10 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-            'parent_id',
-            'type',
-            'items',
-            'available',
+            [
+                'attribute' => 'attributes',
+            ],
+            [
+                'attribute' => 'specifications',
+            ],
+            [
+                'attribute' => 'brands',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

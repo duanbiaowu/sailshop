@@ -49,15 +49,15 @@ class Category extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('System', 'ID'),
-            'name' => Yii::t('System', 'Name'),
-            'parent_id' => Yii::t('System', 'Parent ID'),
-            'type_id' => Yii::t('System', 'Type ID'),
-            'path' => Yii::t('System', 'Path'),
-            'sort' => Yii::t('System', 'Sort'),
-            'seo_title' => Yii::t('System', 'Seo Title'),
-            'set_keyword' => Yii::t('System', 'Set Keyword'),
-            'seo_description' => Yii::t('System', 'Seo Description'),
+            'id' => Yii::t('Goods', 'ID'),
+            'name' => Yii::t('Goods', 'name'),
+            'parent_id' => Yii::t('Goods', 'parent_id'),
+            'type_id' => Yii::t('Goods', 'type_id'),
+            'path' => Yii::t('Goods', 'path'),
+            'sort' => Yii::t('Goods', 'sort'),
+            'seo_title' => Yii::t('Goods', 'seo_title'),
+            'set_keyword' => Yii::t('Goods', 'set_keyword'),
+            'seo_description' => Yii::t('Goods', 'seo_description'),
         ];
     }
 }

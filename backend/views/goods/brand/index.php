@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use pendalf89\filemanager\Module;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\goods\BrandSearch */
@@ -43,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'logo',
                 'format' => 'html',
                 'value' => function($data) {
-                    return Html::img((new Module(Module::className()))->routes['baseUrl'] . $data->logo, [
+                    return Html::img($data->logo, [
                         'width' => 60,
                         'height' => 60,
                         'title' => $data->name,
