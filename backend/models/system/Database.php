@@ -33,8 +33,8 @@ class Database extends Model
         $backupFile = Yii::getAlias('@backend/assets/' . date('YmdHis_') . uniqid() . '.bak');
 
         foreach ($this->getStatus() as $table) {
-            $content = Yii::$app->db->createCommand('SHOW CREATE TABLE ' . $table['Name'])->queryOne();
-            $result = Yii::$app->db->createCommand('SELECT * FROM ' . $table['Name'])->queryAll();
+            $content = Yii::$app->db->createCommand('SHOW CREATE TABLE `' . $table['Name'] . '`')->queryOne();
+            $result = Yii::$app->db->createCommand('SELECT * FROM `' . $table['Name'] . '`')->queryAll();
 
             $content =  $content['Create Table'] . ";\r\n\r\n";
             $content .= 'LOCK TABLES `' . $table['Name'] . "` WRITE;\r\n";

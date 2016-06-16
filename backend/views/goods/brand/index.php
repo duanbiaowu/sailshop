@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'logo',
-                'format' => 'html',
+                'format' => 'raw',
                 'value' => function($data) {
                     return Html::img($data->logo, [
                         'width' => 60,
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'available',
-                'format' => 'html',
+                'format' => 'raw',
                 'value' => function($data) {
                     return Html::tag('span', \common\models\Available::getLabel($data->available), [
                         'class' => \common\models\Available::getStyle($data->available),
