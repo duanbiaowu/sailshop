@@ -27,7 +27,7 @@ return array(
         ),
     'attachment' =>
         array(
-            'baseUrl' => 'http://www.sailshop.com/',
+            'baseUrl' => 'http://www.sailshop.net/',
             'basePath' => '@frontend/web/',
             'uploadPath' => 'uploads/',
         ),

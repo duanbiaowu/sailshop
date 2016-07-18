@@ -30,10 +30,12 @@ class Specifications extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'items'], 'required'],
-            [['parent_id', 'type', 'available'], 'integer'],
+            [['name'], 'required'],
+            [['parent_id', 'type'], 'integer'],
+            ['type', 'boolean', 'strict' => true],
             [['name'], 'string', 'max' => 64],
-            [['items'], 'string', 'max' => 1024]
+            [['items'], 'string', 'max' => 1024],
+            ['parent_id', 'in', 'range' => array_keys($this->specGroup()), 'allowArray' => true]
         ];
     }
 
@@ -43,12 +45,57 @@ class Specifications extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('System', 'ID'),
-            'name' => Yii::t('System', 'Name'),
-            'parent_id' => Yii::t('System', 'Parent ID'),
-            'type' => Yii::t('System', 'Type'),
-            'items' => Yii::t('System', 'Items'),
-            'available' => Yii::t('System', 'Available'),
+            'name' => Yii::t('Goods', 'Specifications Name'),
+            'parent_id' => Yii::t('Goods', 'Specifications Parent ID'),
+            'type' => Yii::t('Goods', 'Specifications Type'),
+            'items' => Yii::t('Goods', 'Specifications Items'),
+            'available' => Yii::t('Goods', 'Specifications Available'),
         ];
     }
+
+    public static function specTypes()
+    {
+        return [
+            0 => Yii::t('Goods', 'Specifications Text'),
+            1 => Yii::t('Goods', 'Specifications Image'),
+        ];
+    }
+
+    public static function specGroup()
+    {
+        $groups = self::find()
+            ->select(['id', 'name'])
+            ->where(['parent_id' => 0])
+            ->asArray()
+            ->all();
+
+        $result = [
+            0 => Yii::t('Goods', 'Specifications Highest Group'),
+        ];
+        foreach ($groups as $group) {
+            $result[$group['id']] = $group['name'];
+        }
+        return $result;
+    }
+
+
+    public function beforeValidate()
+    {
+        $specs = Yii::$app->request->post('Specifications');
+        if ($this->parent_id) {
+            $this->items = serialize([
+                'values' => $specs['values'],
+                'images' => $specs['images'],
+            ]);
+        } else {
+            $this->items = '';
+        }
+        return parent::beforeValidate();
+    }
+
+    public function afterFind()
+    {
+        $this->items = unserialize($this->items);
+    }
+
 }

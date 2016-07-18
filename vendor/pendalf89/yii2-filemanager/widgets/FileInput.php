@@ -140,7 +140,7 @@ class FileInput extends InputWidget
         if ($this->hasModel()) {
             $replace['{input}'] = Html::activeTextInput($this->model, $this->attribute, $this->options);
         } else {
-            $replace['{input}'] = Html::hiddenInput($this->name, $this->value, $this->options);
+            $replace['{input}'] = Html::textInput($this->name, $this->value, $this->options);
         }
 
         $replace['{button}'] = Html::tag($this->buttonTag, $this->buttonName, $this->buttonOptions);

@@ -9,9 +9,9 @@
  */
 
 return [
-    'create' => '创建',
-    'update' => '更新',
-    'delete' => '删除',
+    'Create' => '创建',
+    'Update' => '更新',
+    'Delete' => '删除',
 
     'brand_name' => '名称',
     'brand_url' => '官网',
@@ -43,8 +43,8 @@ return [
     'set_keyword' => 'SEO关键字',
     'seo_description' => 'SEO描述信息',
 
-    'categories' => '商品分类管理',
-    'create_category' => '创建商品分类',
+    'Categories' => '商品分类管理',
+    'Create Category' => '创建商品分类',
 
     'attribute_name' => '名称',
     'attribute_parent_id' => '属性分组',
@@ -61,5 +61,14 @@ return [
     'attribute_form_checkbox' => '多选按钮',
     'attribute_form_drop_list' => '下拉列表',
 
+    'Specifications' => '商品规格管理',
+    'Create Specifications' => '创建规格',
+    'Specifications Name' => '名称',
+    'Specifications Parent ID' => '规格组',
+    'Specifications Type' => '类型',
+    'Specifications Items' => '规格值',
+    'Specifications Text' => '文字',
+    'Specifications Image' => '图片',
+    'Specifications Highest Group' => '顶级分组',
 
 ];

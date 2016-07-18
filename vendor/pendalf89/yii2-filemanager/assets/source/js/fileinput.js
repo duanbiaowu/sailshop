@@ -68,7 +68,7 @@ $(document).ready(function() {
         });
     }
 
-    $('[role="filemanager-launch"]').on("click", function(e) {
+    $('.form-horizontal').delegate('[role="filemanager-launch"]', 'click', function(e) {
         e.preventDefault();
 
         var modal = $('[data-btn-id="' + $(this).attr("id") + '"]'),

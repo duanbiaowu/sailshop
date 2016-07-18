@@ -25,10 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             [
-                'attribute' => 'id',
-                'headerOptions' => ['class' => 'text-center'],
-            ],
-            [
                 'attribute' => 'name',
                 'headerOptions' => ['class' => 'text-center'],
             ],
@@ -52,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'sort',
-                'headerOptions' => ['class' => 'text-center'],
+                'headerOptions' => ['class' => 'text-center', 'width' => '10%'],
             ],
             [
                 'attribute' => 'available',

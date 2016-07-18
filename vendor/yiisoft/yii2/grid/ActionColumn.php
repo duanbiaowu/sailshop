@@ -115,7 +115,7 @@ class ActionColumn extends Column
                     'aria-label' => Yii::t('yii', 'View'),
                     'data-pjax' => '0',
                 ], $this->buttonOptions);
-                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, $options);
+                return Html::a('<button class="btn btn-success btn-sm">' . Yii::t('yii', 'View') . '</button>', $url, $options);
             };
         }
         if (!isset($this->buttons['update'])) {
@@ -125,7 +125,7 @@ class ActionColumn extends Column
                     'aria-label' => Yii::t('yii', 'Update'),
                     'data-pjax' => '0',
                 ], $this->buttonOptions);
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                return Html::a('<button class="btn btn-primary btn-sm">' . Yii::t('yii', 'Update') . '</button>', $url, $options);
             };
         }
         if (!isset($this->buttons['delete'])) {
@@ -137,7 +137,7 @@ class ActionColumn extends Column
                     'data-method' => 'post',
                     'data-pjax' => '0',
                 ], $this->buttonOptions);
-                return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, $options);
+                return Html::a('<button class="btn btn-danger btn-sm">' . Yii::t('yii', 'Delete') . '</button>', $url, $options);
             };
         }
     }

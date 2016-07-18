@@ -7,19 +7,17 @@ use yii\widgets\DetailView;
 /* @var $model common\models\goods\Specifications */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('System', 'Specifications'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('Goods', 'Specifications'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="specifications-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
+    
     <p>
-        <?= Html::a(Yii::t('System', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('System', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('Goods', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('Goods', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('System', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('System', 'common_delete_confirm'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,11 +28,34 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'parent_id',
-            'type',
-            'items',
-            'available',
+            [
+                'attribute' => 'parent_id',
+                'value' => $model->specGroup()[$model->parent_id],
+            ],
+            [
+                'attribute' => 'type',
+                'value' => $model->specTypes()[$model->type],
+            ],
         ],
     ]) ?>
+
+    <?php if ($model->items): ?>
+    <table class="table table-striped table-bordered detail-view text-center">
+        <thead>
+        <tr>
+            <th class="text-center">规格值</th>
+            <th class="text-center">规格图片</th>
+        </tr>
+        </thead>
+        <tbody>
+            <?php foreach($model->items['values'] as $index => $item): ?>
+            <tr>
+                <td><?= $item ?></td>
+                <td><?= Html::img($model->items['images'][$index]) ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
 
 </div>

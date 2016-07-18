@@ -63,7 +63,7 @@ class SpecificationsController extends Controller
         $model = new Specifications();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -82,7 +82,7 @@ class SpecificationsController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -118,4 +118,10 @@ class SpecificationsController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionItemForm()
+    {
+        return $this->renderAjax('_item_form');
+    }
+
 }

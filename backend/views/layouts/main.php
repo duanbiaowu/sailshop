@@ -26,7 +26,7 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title><?= Html::encode($this->title) ?> - <?= Yii::$app->params['siteBaseInfo']['siteName'] ?></title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -64,7 +64,7 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => '管理员登录', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = '<li><a href="/user/notice"><span class="glyphicon glyphicon-bell"></span> 消息 <span class="badge progress-bar-success">' . date('d', time()) . '</span></a></li>';
+        $menuItems[] = '<li><a href="javascript:;"><span class="badge progress-bar-success">' . date('Y-m-d', time()) . '</span></a></li>';
         $menuItems[] = [
             'label' => '管理员：' . Yii::$app->user->identity->username,
             'items' => [

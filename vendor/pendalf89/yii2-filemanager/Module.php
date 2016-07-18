@@ -25,7 +25,7 @@ class Module extends \yii\base\Module
      */
     public $routes = [
         // base absolute path to web directory
-        'baseUrl' => 'http://www.sailshop.com/',
+        'baseUrl' => 'http://www.sailshop.net/',
         // base web directory url
         'basePath' => '@frontend/web/',
         // path for uploaded files in web directory

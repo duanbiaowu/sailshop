@@ -60,7 +60,7 @@ use pendalf89\filemanager\widgets\FileInput;
 </div>
 
 <div class="form-group col-sm-12">
-    <?= Html::submitButton($model->isNewRecord ? Yii::t('Goods', 'create') : Yii::t('Goods', 'update'), ['class' => $model->isNewRecord ? 'btn btn-success col-sm-1' : 'btn btn-primary col-sm-1']) ?>
+    <?= Html::submitButton($model->isNewRecord ? Yii::t('Goods', 'Create') : Yii::t('Goods', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success col-sm-1' : 'btn btn-primary col-sm-1']) ?>
 </div>
 
 <?php ActiveForm::end(); ?>
