@@ -18,7 +18,6 @@
         "yiisoft/yii2": ">=2.0.6",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
-        "pendalf89/yii2-filemanager": "*",
         "yiisoft/yii2-imagine": "^2.0"
     },
     "require-dev": {
