@@ -7,19 +7,17 @@ use yii\widgets\DetailView;
 /* @var $model common\models\goods\Attribute */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('System', 'Attributes'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('Goods', 'attributes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="attribute-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a(Yii::t('System', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('System', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('Goods', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('Goods', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('System', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('System', 'common_delete_confirm'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,11 +28,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'parent_id',
-            'type',
-            'items',
-            'available',
+            [
+                'attribute' => 'parent_id',
+                'value' => $model->groups()[$model->parent_id]
+            ],
+            [
+                'attribute' => 'type',
+                'value' => $model->formTags()[$model->type]
+            ],
         ],
     ]) ?>
+
+    <?php if ($model->items): ?>
+        <table class="table table-striped table-bordered detail-view text-center">
+            <tbody>
+            <?php foreach($model->items as $index => $item): ?>
+            <tr>
+                <?php if ($index == 0): ?>
+                <td rowspan="<?= count($model->items) ?>">属性值</td>
+                <?php endif; ?>
+                <td><?= $item ?></td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
 
 </div>

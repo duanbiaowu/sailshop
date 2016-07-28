@@ -36,6 +36,7 @@ class AttributeController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'model' => new Attribute(),
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -61,22 +62,20 @@ class AttributeController extends Controller
     public function actionCreate()
     {
         $model = new Attribute();
+        $model->items = json_encode((array)$model->items);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->scenario = Yii::$app->request->post()['Attribute']['type'] > 1 ? 'multiple' : 'single';
-//            var_dump($model->scenario);
-//            var_dump(Yii::$app->request->post());exit;
-        } else {
-            $model->scenario = 'single';
+            if ($model->type > 1) {
+                $model->scenario = 'multiple';
+            }
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -88,14 +87,20 @@ class AttributeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->items = json_encode($model->items);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->type > 1) {
+                $model->scenario = 'multiple';
+            }
+            if ($model->save()) {
+                return $this->redirect('index');
+            }
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**

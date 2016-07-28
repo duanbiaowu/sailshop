@@ -28,8 +28,8 @@ class Attribute extends ActiveRecord
     public function scenarios()
     {
         return [
-            'single' => ['name', 'parent_id', 'type', 'items', 'available'],
-            'multiple' => ['name', 'parent_id', 'type', 'items', 'available'],
+            'multiple' => ['name', 'parent_id', 'type', 'items'],
+            'default' => ['name', 'parent_id', 'type']
         ];
     }
 
@@ -40,14 +40,13 @@ class Attribute extends ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['parent_id', 'type', 'available'], 'integer'],
             ['parent_id', 'in', 'range' => array_keys($this->groups()), 'allowArray' => true],
             ['type', 'in', 'range' => array_keys($this->formTags()), 'allowArray' => true],
             [['name'], 'string', 'max' => 64],
             [['items'], 'string', 'max' => 1024],
             [['items'], 'required', 'on' => 'multiple'],
-            ['available', 'boolean', 'strict' => true],
-            ['available', 'default', 'value' => 1],
+//            ['available', 'boolean', 'strict' => true],
+//            ['available', 'default', 'value' => 1],
         ];
     }
 
@@ -78,11 +77,38 @@ class Attribute extends ActiveRecord
 
     public function groups()
     {
-        return array_merge([Yii::t('Goods', 'attribute_form_prompt')], Attribute::find()
-//            ->select('name')
+        $groups = Attribute::find()
             ->where(['parent_id' => 0])
+            ->indexBy('id')
             ->asArray()
-            ->all()
-        );
+            ->all();
+
+        foreach ($groups as $value) {
+            $groups[$value['id']] = $value['name'];
+        }
+
+        return [Yii::t('Goods', 'attribute_form_prompt')] + $groups;
     }
+
+    public function afterValidate()
+    {
+        $attribute = Yii::$app->request->post('Attribute');
+        if ($this->parent_id && isset($attribute['items'])) {
+            $items = [];
+            foreach ($attribute['items'] as $item) {
+                $items[] = ['value' => $item];
+            }
+            $this->items = serialize($items);
+        } else {
+            $this->items = '';
+        }
+
+        return parent::beforeValidate();
+    }
+
+    public function afterFind()
+    {
+        $this->items = unserialize($this->items);
+    }
+
 }
