@@ -34,10 +34,14 @@ class CategoryController extends Controller
     {
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = new Category();
+
+//        var_dump($model->arrayToTree($model->category()));exit();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'categories' => json_encode($model->arrayToTree($model->category())),
         ]);
     }
 
@@ -67,6 +71,7 @@ class CategoryController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'categories' => json_encode($model->category())
             ]);
         }
     }
@@ -86,6 +91,7 @@ class CategoryController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'categories' => json_encode($model->category())
             ]);
         }
     }

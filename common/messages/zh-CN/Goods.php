@@ -45,6 +45,11 @@ return [
 
     'Categories' => '商品分类管理',
     'Create Category' => '创建商品分类',
+    'Category Form Title' => '请设置商品分类信息',
+
+    'Category Form Prompt' => '顶级分组',
+    'Category Form SEO' => '默认为分类名称',
+
 
     'attribute_name' => '名称',
     'attribute_parent_id' => '属性分组',

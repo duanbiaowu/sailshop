@@ -87,7 +87,7 @@ class AttributeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->items = json_encode($model->items);
+        $model->items = json_encode((array)$model->items);
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->type > 1) {

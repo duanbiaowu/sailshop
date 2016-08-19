@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php if ($index == 0): ?>
                 <td rowspan="<?= count($model->items) ?>">属性值</td>
                 <?php endif; ?>
-                <td><?= $item ?></td>
+                <td><?= $item['value'] ?></td>
             </tr>
             <?php endforeach; ?>
             </tbody>

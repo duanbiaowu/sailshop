@@ -12,14 +12,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a(Yii::t('Goods', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('Goods', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('Goods', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('System', 'common_delete_confirm'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,9 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'parent_id',
-            'type_id',
-            'path',
+            [
+                'attribute' => 'parent_id',
+                'value' => \common\models\goods\Category::parentFormat($model->path)
+            ],
             'sort',
             'seo_title',
             'set_keyword',
