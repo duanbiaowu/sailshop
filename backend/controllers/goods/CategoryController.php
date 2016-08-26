@@ -19,9 +19,9 @@ class CategoryController extends Controller
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
+//                'actions' => [
+//                    'delete' => ['post'],
+//                ],
             ],
         ];
     }
@@ -35,8 +35,6 @@ class CategoryController extends Controller
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $model = new Category();
-
-//        var_dump($model->arrayToTree($model->category()));exit();
 
         return $this->render('index', [
             'searchModel' => $searchModel,

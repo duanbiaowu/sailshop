@@ -41,8 +41,6 @@ $form = ActiveForm::begin([
             </div>
         </div>
 
-        <?= $form->field($model, 'sort')->textInput() ?>
-
         <?= $form->field($model, 'seo_title')->textInput(['maxlength' => true, 'placeholder' => Yii::t('Goods', 'Category Form SEO')]) ?>
 
         <?= $form->field($model, 'set_keyword')->textarea(['maxlength' => true, 'placeholder' => Yii::t('Goods', 'Category Form SEO')]) ?>

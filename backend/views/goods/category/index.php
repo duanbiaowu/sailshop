@@ -18,13 +18,16 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <div class="list-group" v-cloak id="js-goods-category">
-        <a v-for="option in options" href="javascript:;" class="list-group-item">
+        <a v-for="option in options" v-if="option.show" href="javascript:;" class="list-group-item">
             <span v-for="n in option.depth">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span v-if="option.length" class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            {{option.name}} {{option.length}}
-            <span class="badge progress-bar-danger">删除</span>
-            <span class="badge progress-bar-info">编辑</span>
-            <span class="badge progress-bar-success">查看</span>
+            <span v-if="option.length" v-on:click="fold($index, option.length)" class="glyphicon glyphicon-{{option.css}}" aria-hidden="true"></span>
+            {{option.name}}
+
+            <div class="pull-right col-sm-2">
+                <span class="glyphicon glyphicon-eye-open col-sm-4" v-on:click="operation('/goods/category/view?id=' + option.id)" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-edit col-sm-4" v-on:click="operation('/goods/category/update?id=' + option.id)" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-remove col-sm-2" v-on:click="operation('/goods/category/delete?id=' + option.id)" aria-hidden="true"></span>
+            </div>
         </a>
     </div>
 
@@ -49,13 +52,32 @@ $this->params['breadcrumbs'][] = $this->title;
                         id: categories[i].id,
                         name: categories[i].name,
                         depth: depth,
-                        length: 0
+                        length: 0,
+                        show: true,
+                        css: 'minus'
                     });
 
                     this.stack.push(this.options.length - 1);
                     this.options[this.stack.pop()].length = this.init(categories[i].children, depth + 1);
                 }
                 return this.options.length - length;
+            },
+
+            fold: function(index, length) {
+                var show = !this.options[++index].show;
+                this.options[index - 1].css = show ? 'minus' : 'plus';
+                for (var i = 0; i < length; i++, index++) {
+                    this.options[index].show = show;
+                }
+            },
+
+            operation: function(action) {
+                if (action.indexOf('delete') >= 0) {
+                    if (!confirm('" . Yii::t('System', 'common_delete_confirm') . "')) {
+                        return false;
+                    }
+                }
+                window.location.href = action;
             }
         }
     });
