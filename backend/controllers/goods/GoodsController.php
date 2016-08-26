@@ -3,8 +3,8 @@
 namespace backend\controllers\goods;
 
 use Yii;
-use common\models\Goods;
-use common\models\GoodsSearch;
+use common\models\goods\Goods;
+use common\models\goods\GoodsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

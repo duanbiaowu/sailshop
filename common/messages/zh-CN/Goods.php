@@ -76,4 +76,21 @@ return [
     'Specifications Image' => '图片',
     'Specifications Highest Group' => '顶级分组',
 
+    'Goods' => '商品管理',
+    'Create Goods' => '创建商品',
+    'Goods Name' => '名称',
+    'Goods Category ID' => '分类',
+    'Goods Brand ID' => '品牌',
+    'Goods Unit' => '商品单位',
+    'Goods Thumbnail' => '缩略图',
+    'Goods Show Pictures' => '商品幻灯片',
+    'Goods Seo Title' => '详情页标题',
+    'Goods Seo Keyword' => '详情页关键字',
+    'Goods Seo Description' => '详情页描述信息',
+
+    'Goods Form Basic' => '基本信息',
+    'Goods Form Brand' => '品牌属性',
+    'Goods Form Sku' => '规格信息',
+    'Goods Form Seo' => '描述信息',
+
 ];

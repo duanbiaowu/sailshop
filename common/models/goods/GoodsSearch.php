@@ -1,14 +1,14 @@
 <?php
 
-namespace common\models;
+namespace common\models\goods;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Goods;
+use common\models\goods\Goods;
 
 /**
- * GoodsSearch represents the model behind the search form about `common\models\Goods`.
+ * GoodsSearch represents the model behind the search form about `common\models\goods\Goods`.
  */
 class GoodsSearch extends Goods
 {
@@ -18,8 +18,8 @@ class GoodsSearch extends Goods
     public function rules()
     {
         return [
-            [['id', 'category_id', 'type_id', 'brand_id', 'account_count', 'status'], 'integer'],
-            [['name', 'unit', 'thumbnail', 'attributes', 'show_pictures', 'seo_title', 'seo_keyword', 'seo_description', 'detail_link', 'modified_time', 'create_time', 'goods_sku'], 'safe'],
+            [['id', 'category_id', 'brand_id', 'account_count', 'status'], 'integer'],
+            [['name', 'unit', 'thumbnail', 'attributes', 'show_pictures', 'seo_title', 'seo_keyword', 'seo_description', 'modified_time', 'create_time', 'goods_sku'], 'safe'],
         ];
     }
 
@@ -58,7 +58,6 @@ class GoodsSearch extends Goods
         $query->andFilterWhere([
             'id' => $this->id,
             'category_id' => $this->category_id,
-            'type_id' => $this->type_id,
             'brand_id' => $this->brand_id,
             'account_count' => $this->account_count,
             'status' => $this->status,
@@ -74,7 +73,6 @@ class GoodsSearch extends Goods
             ->andFilterWhere(['like', 'seo_title', $this->seo_title])
             ->andFilterWhere(['like', 'seo_keyword', $this->seo_keyword])
             ->andFilterWhere(['like', 'seo_description', $this->seo_description])
-            ->andFilterWhere(['like', 'detail_link', $this->detail_link])
             ->andFilterWhere(['like', 'goods_sku', $this->goods_sku]);
 
         return $dataProvider;

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\GoodsSearch */
+/* @var $model common\models\goods\GoodsSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -52,8 +52,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'goods_sku') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('System', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('System', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('Goods', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('Goods', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

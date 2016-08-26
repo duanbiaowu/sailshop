@@ -1,9 +1,8 @@
 <?php
 
-namespace common\models;
+namespace common\models\goods;
 
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%goods}}".
@@ -11,7 +10,6 @@ use yii\db\ActiveRecord;
  * @property integer $id
  * @property string $name
  * @property integer $category_id
- * @property integer $type_id
  * @property integer $brand_id
  * @property string $unit
  * @property string $thumbnail
@@ -27,7 +25,7 @@ use yii\db\ActiveRecord;
  * @property string $create_time
  * @property string $goods_sku
  */
-class Goods extends ActiveRecord
+class Goods extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -44,7 +42,7 @@ class Goods extends ActiveRecord
     {
         return [
             [['name', 'unit', 'thumbnail', 'show_pictures', 'goods_sku'], 'required'],
-            [['category_id', 'type_id', 'brand_id', 'account_count', 'status'], 'integer'],
+            [['category_id', 'brand_id', 'account_count', 'status'], 'integer'],
             [['modified_time', 'create_time'], 'safe'],
             [['name', 'thumbnail', 'seo_title'], 'string', 'max' => 128],
             [['unit'], 'string', 'max' => 16],
@@ -60,24 +58,16 @@ class Goods extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('System', 'ID'),
-            'name' => Yii::t('System', 'Name'),
-            'category_id' => Yii::t('System', 'Category ID'),
-            'type_id' => Yii::t('System', 'Type ID'),
-            'brand_id' => Yii::t('System', 'Brand ID'),
-            'unit' => Yii::t('System', 'Unit'),
-            'thumbnail' => Yii::t('System', 'Thumbnail'),
-            'attributes' => Yii::t('System', 'Attributes'),
-            'show_pictures' => Yii::t('System', 'Show Pictures'),
-            'seo_title' => Yii::t('System', 'Seo Title'),
-            'seo_keyword' => Yii::t('System', 'Seo Keyword'),
-            'seo_description' => Yii::t('System', 'Seo Description'),
-            'account_count' => Yii::t('System', 'Account Count'),
-            'status' => Yii::t('System', 'Status'),
-            'detail_link' => Yii::t('System', 'Detail Link'),
-            'modified_time' => Yii::t('System', 'Modified Time'),
-            'create_time' => Yii::t('System', 'Create Time'),
-            'goods_sku' => Yii::t('System', 'Goods Sku'),
+            'name' => Yii::t('Goods', 'Goods Name'),
+            'category_id' => Yii::t('Goods', 'Goods Category ID'),
+            'unit' => Yii::t('Goods', 'Goods Unit'),
+            'thumbnail' => Yii::t('Goods', 'Goods Thumbnail'),
+            'attributes' => Yii::t('Goods', 'Attributes'),
+            'show_pictures' => Yii::t('Goods', 'Goods Show Pictures'),
+            'seo_title' => Yii::t('Goods', 'Goods Seo Title'),
+            'seo_keyword' => Yii::t('Goods', 'Goods Seo Keyword'),
+            'seo_description' => Yii::t('Goods', 'Goods Seo Description'),
+            'status' => Yii::t('Goods', 'Goods Status'),
         ];
     }
 }
