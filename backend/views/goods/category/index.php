@@ -68,6 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 this.options[index - 1].css = show ? 'minus' : 'plus';
                 for (var i = 0; i < length; i++, index++) {
                     this.options[index].show = show;
+                    this.options[index].css = 'minus';
                 }
             },
 

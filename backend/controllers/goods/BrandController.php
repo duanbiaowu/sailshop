@@ -2,6 +2,7 @@
 
 namespace backend\controllers\goods;
 
+use common\models\Available;
 use Yii;
 use common\models\goods\Brand;
 use common\models\goods\BrandSearch;
@@ -48,8 +49,11 @@ class BrandController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $model->available = Available::getLabel($model->available);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 

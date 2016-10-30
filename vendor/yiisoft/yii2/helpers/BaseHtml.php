@@ -410,7 +410,7 @@ class BaseHtml
      */
     public static function img($src, $options = [])
     {
-        if (false === strpos($src, 'http')) {
+        if (is_string($src) && false === strpos($src, 'http')) {
             $src = Yii::$app->params['attachment']['baseUrl'] . $src;
         }
         $options['src'] = Url::to($src);

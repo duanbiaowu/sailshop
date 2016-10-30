@@ -2,12 +2,16 @@
 
 namespace backend\controllers\goods;
 
+use common\models\Available;
+use common\models\goods\Attribute;
+use common\models\goods\Brand;
 use Yii;
 use common\models\goods\Goods;
 use common\models\goods\GoodsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\goods\Category;
 
 /**
  * GoodsController implements the CRUD actions for Goods model.
@@ -48,8 +52,12 @@ class GoodsController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $model->status = Available::getLabel($model->status);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'category' => Category::findOne($model->category_id)
         ]);
     }
 
@@ -65,8 +73,15 @@ class GoodsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            $category = new Category();
+            $categories = [];
+            $category->arrayToList( $category->arrayToTree( $category->category() ), $categories);
+
             return $this->render('create', [
                 'model' => $model,
+                'categories' => $categories,
+                'brands' => Brand::find()->asArray()->all(),
+                'attributeGroup' => Attribute::find()->where(['parent_id' => 0])->asArray()->all(),
             ]);
         }
     }
@@ -84,8 +99,15 @@ class GoodsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            $category = new Category();
+            $categories = [];
+            $category->arrayToList( $category->arrayToTree( $category->category() ), $categories);
+
             return $this->render('update', [
                 'model' => $model,
+                'categories' => $categories,
+                'brands' => Brand::find()->asArray()->all(),
+                'attributeGroup' => (new Attribute())->groups(false),
             ]);
         }
     }
@@ -101,6 +123,11 @@ class GoodsController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionSlideForm()
+    {
+        return $this->renderAjax('slide_form');
     }
 
     /**

@@ -132,6 +132,17 @@ class Category extends ActiveRecord
         return isset($items[0]['children']) ? $items[0]['children'] : [];
     }
 
+    public function arrayToList($items, &$target, $depth = 0)
+    {
+        foreach ($items as $item) {
+            $target[$item['id']] = str_repeat(' - ', $depth) . $item['name'];
+            if (!empty($item['children'])) {
+                $this->arrayToList($item['children'], $target, $depth + 1);
+            }
+        }
+    }
+
+
     public function afterDelete()
     {
         Category::deleteAll(['LIKE', 'path', '|' . $this->id]);

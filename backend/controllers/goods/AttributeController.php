@@ -8,6 +8,7 @@ use common\models\goods\AttributeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * AttributeController implements the CRUD actions for Attribute model.
@@ -115,6 +116,16 @@ class AttributeController extends Controller
 
         return $this->redirect(['index']);
     }
+
+    public function actionValue($id)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return Attribute::find()
+            ->where(['parent_id' => $id])
+            ->asArray()
+            ->all();
+    }
+
 
     /**
      * Finds the Attribute model based on its primary key value.
