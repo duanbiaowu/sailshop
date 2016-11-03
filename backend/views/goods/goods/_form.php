@@ -129,7 +129,7 @@ use pendalf89\filemanager\widgets\FileInput;
                     <div class="col-sm-2">
                         <?= Html::img($brand['logo'], ['width' => '100%', 'height' => '100%']) ?>
                         <div class="help-block text-center">
-                            <?= Html::radio('brand', $model->brand_id == $brand['id'], [
+                            <?= Html::radio('Goods[brand_id]', $model->brand_id == $brand['id'], [
                                 'value' => $brand['id'],
                                 'label' => '&nbsp;&nbsp;' . $brand['name']
                             ]) ?>
@@ -141,7 +141,7 @@ use pendalf89\filemanager\widgets\FileInput;
                 <div class="form-group">
                     <label class="col-sm-2 control-label"><?= Yii::t('Goods', 'Goods Attribute Group'); ?></label>
                     <div class="col-sm-6">
-                        <?= Html::dropDownList('attribute', null, $attributeGroup, [
+                        <?= Html::dropDownList('attribute_group', $model->attributes['index'], $attributeGroup, [
                             'class' => 'form-control',
                             'prompt' => Yii::t('Goods', 'attribute_form_title'),
                             'v-model' => 'attribute',
@@ -149,10 +149,10 @@ use pendalf89\filemanager\widgets\FileInput;
                         ]) ?>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label"><?= Yii::t('Goods', 'Goods Attribute Value'); ?></label>
+                <div class="form-group" v-for="form in attributeForms">
+                    <label class="col-sm-2 control-label">{{form.name}}</label>
                     <div class="col-sm-6">
-
+                        {{{form.html}}}
                     </div>
                 </div>
             </div>
@@ -181,6 +181,9 @@ use pendalf89\filemanager\widgets\FileInput;
 
 
 <?php $this->registerJs(
+    '   Goods.attributeValue = ' . $model->attributes['items'] . ';
+        Goods.renderAttribute();' .
+
     <<<EOF
     $('#js-slide-append').on('click', function() {
         $.post('slide-form', {}, function(response) {
