@@ -18,8 +18,8 @@ class SpecificationsSearch extends Specifications
     public function rules()
     {
         return [
-            [['id', 'parent_id', 'type', 'available'], 'integer'],
-            [['name', 'items'], 'safe'],
+            [['id', 'parent_id'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SpecificationsSearch extends Specifications
      */
     public function search($params)
     {
-        $query = Specifications::find();
+        $query = Specifications::find()->where(['parent_id' => 0]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -58,12 +58,9 @@ class SpecificationsSearch extends Specifications
         $query->andFilterWhere([
             'id' => $this->id,
             'parent_id' => $this->parent_id,
-            'type' => $this->type,
-            'available' => $this->available,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'items', $this->items]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

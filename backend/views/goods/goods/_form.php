@@ -1,6 +1,8 @@
 <?php
 
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use pendalf89\filemanager\widgets\FileInput;
 
@@ -158,7 +160,24 @@ use pendalf89\filemanager\widgets\FileInput;
             </div>
 
             <div role="tabpanel" class="tab-pane" id="messages">
-                <?= Yii::t('Goods', 'Goods Form Sku') ?>
+                <?php
+                Modal::begin([
+                    'options' => [
+                        'id' => 'js-spec-form',
+                        'backdrop' => 'static',
+                        'keyboard' => 'false',
+                    ],
+                    'size' => 'modal-lg',
+                    'toggleButton' => [
+                        'tag' => 'button',
+                        'label' => Yii::t('Goods', 'Goods Form Sku Select'),
+                        'class' => 'btn btn-success',
+                        'v-on:click' => "skuForm('" . Url::toRoute(['sku', 'id' => $model->id]) . "')",
+                    ],
+                ]);
+
+                Modal::end();
+                ?>
             </div>
 
             <div role="tabpanel" class="tab-pane" id="settings">
@@ -194,5 +213,9 @@ use pendalf89\filemanager\widgets\FileInput;
     $('#js-slide-container').delegate('.js-slide-delete', 'click', function() {
         $(this).parent().parent().remove();
     });
+
+//    $('#js-spec-form').on('hide.bs.modal', function(e) {
+//        Goods.hidden(e);
+//    });
 EOF
 ); ?>

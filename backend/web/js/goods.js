@@ -63,6 +63,16 @@ var Goods = new Vue({
                         '</label>';
             }
             return html;
+        },
+
+        skuForm: function(action) {
+            $.get(action, function(response) {
+                $('#js-spec-form').html(response).modal();
+            });
+        },
+
+        skuSelector: function() {
+
         }
     }
 });

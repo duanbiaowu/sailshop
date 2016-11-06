@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\goods\Specifications */
+/* @var $items */
 
 $this->title = Yii::t('Goods', 'Update') . ' : ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('Goods', 'Specifications'), 'url' => ['index']];
@@ -14,6 +15,7 @@ $this->params['breadcrumbs'][] = Yii::t('Goods', 'Update');
 
     <?= $this->render('_form', [
         'model' => $model,
+        'items' => $items,
     ]) ?>
 
 </div>

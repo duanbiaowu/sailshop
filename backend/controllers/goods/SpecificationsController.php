@@ -50,6 +50,7 @@ class SpecificationsController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'items' => Specifications::findAll(['parent_id' => $id]),
         ]);
     }
 
@@ -67,6 +68,7 @@ class SpecificationsController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'items' => '',
             ]);
         }
     }
@@ -80,12 +82,12 @@ class SpecificationsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'items' => Specifications::findAll(['parent_id' => $model->id]),
             ]);
         }
     }

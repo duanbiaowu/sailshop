@@ -98,6 +98,7 @@ return [
     'Goods Form Basic' => '基本信息',
     'Goods Form Brand' => '品牌属性',
     'Goods Form Sku' => '规格信息',
+    'Goods Form Sku Select' => '选择商品规格组合',
     'Goods Form Seo' => '描述信息',
 
 ];

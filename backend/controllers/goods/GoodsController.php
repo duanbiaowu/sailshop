@@ -5,6 +5,7 @@ namespace backend\controllers\goods;
 use common\models\Available;
 use common\models\goods\Attribute;
 use common\models\goods\Brand;
+use common\models\goods\Specifications;
 use Yii;
 use common\models\goods\Goods;
 use common\models\goods\GoodsSearch;
@@ -128,6 +129,13 @@ class GoodsController extends Controller
     public function actionSlideForm()
     {
         return $this->renderAjax('slide_form');
+    }
+
+    public function actionSku()
+    {
+        return $this->renderAjax('sku_form', [
+            'specs' => Specifications::specFormat(),
+        ]);
     }
 
     /**

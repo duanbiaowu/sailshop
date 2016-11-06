@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\goods\Specifications */
+/* @var $items */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('Goods', 'Specifications'), 'url' => ['index']];
@@ -23,39 +24,25 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            [
-                'attribute' => 'parent_id',
-                'value' => $model->specGroup()[$model->parent_id],
-            ],
-            [
-                'attribute' => 'type',
-                'value' => $model->specTypes()[$model->type],
-            ],
-        ],
-    ]) ?>
-
-    <?php if ($model->items): ?>
     <table class="table table-striped table-bordered detail-view text-center">
         <thead>
         <tr>
-            <th class="text-center">规格值</th>
-            <th class="text-center">规格图片</th>
+            <th class="text-center" width="25%">名称</th>
+            <th class="text-center" width="30%">规格值</th>
+            <th class="text-center" width="45%">规格值</th>
         </tr>
         </thead>
         <tbody>
-            <?php foreach($model->items['values'] as $index => $item): ?>
-            <tr>
-                <td><?= $item ?></td>
-                <td><?= Html::img($model->items['images'][$index]) ?></td>
-            </tr>
+            <?php foreach($items as $index => $item): ?>
+                <tr>
+                    <?php if ($index == 0): ?>
+                    <td rowspan="<?= count($items); ?>"><?= $model->name ?></td>
+                    <?php endif; ?>
+                    <td><?= $item->name ?></td>
+                    <td><?= Html::img($item->images, ['width' => 100, 'height' => 100]) ?></td>
+                </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-    <?php endif; ?>
 
 </div>

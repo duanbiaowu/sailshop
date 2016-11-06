@@ -7,6 +7,7 @@ use pendalf89\filemanager\widgets\FileInput;
 /* @var $this yii\web\View */
 /* @var $model common\models\goods\Specifications */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $items */
 ?>
 
 <?php $form = ActiveForm::begin([
@@ -29,18 +30,7 @@ use pendalf89\filemanager\widgets\FileInput;
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'parent_id')->dropDownList(
-            $model::specGroup()
-        ) ?>
-
-        <?= $form->field($model, 'type')->radioList(
-            $model::specTypes(),
-            ['item' => function($index, $label, $name, $checked, $value) {
-                return Html::radio($name, $checked, ['value' => $value, 'label' => $label, 'labelOptions' => ['class' => 'radio-inline']]);
-            }]
-        ) ?>
-
-        <div id="js-spec-values-container" style="display: <?= $model->items ? 'block' : 'none' ?>;">
+        <div id="js-spec-values-container">
             <div class="form-group">
                 <label class="col-sm-2 control-label">规格值</label>
                 <div class="col-sm-8">
@@ -48,37 +38,36 @@ use pendalf89\filemanager\widgets\FileInput;
                 </div>
             </div>
 
-            <?php if ($model->items): ?>
-                <?php //var_dump($model->items);exit(); ?>
-                <?php foreach ($model->items['values'] as $index => $item): ?>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label"></label>
-                    <div class="col-sm-3">
-                        <input type="text" name="Specifications[values][]" class="form-control" value="<?= $item ?>" placeholder="请输入规格值" />
-                    </div>
+            <?php if ($items): ?>
+                <?php foreach ($items as $index => $item): ?>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-3">
+                            <input type="text" name="items[]" class="form-control" value="<?= $item->name ?>" placeholder="请输入规格值" />
+                        </div>
 
-                    <div class="col-sm-5">
-                        <?php echo FileInput::widget([
-                            'name' => 'Specifications[images][]',
-                            'value' => $model->items['images'][$index],
-                            'buttonTag' => 'button',
-                            'buttonName' => '选择',
-                            'buttonOptions' => ['type' => 'button', 'class' => 'btn btn-default'],
-                            'options' => ['class' => 'form-control', 'placeholder' => '请选择规格对应图片'],
-                            'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
-                            'thumb' => 'original',
-                            'imageContainer' => '.img',
-                            'pasteData' => FileInput::DATA_ID,
-                        ]) ?>
-                    </div>
+                        <div class="col-sm-5">
+                            <?php echo FileInput::widget([
+                                'name' => 'images[]',
+                                'value' => $item->images,
+                                'buttonTag' => 'button',
+                                'buttonName' => '选择',
+                                'buttonOptions' => ['type' => 'button', 'class' => 'btn btn-default'],
+                                'options' => ['class' => 'form-control', 'placeholder' => '请选择规格对应图片'],
+                                'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
+                                'thumb' => 'original',
+                                'imageContainer' => '.img',
+                                'pasteData' => FileInput::DATA_ID,
+                            ]) ?>
+                        </div>
 
-                    <div class="col-sm-2">
-                        <button type="button" class="btn btn-danger col-sm-10 js-spec-delete">删除</button>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-danger col-sm-10 js-spec-delete">删除</button>
+                        </div>
                     </div>
-                </div>
                 <?php endforeach; ?>
             <?php else: ?>
-            <?= $this->render('_item_form'); ?>
+                <?= $this->render('_item_form'); ?>
             <?php endif; ?>
         </div>
     </div>
