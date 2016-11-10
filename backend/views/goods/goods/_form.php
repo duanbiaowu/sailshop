@@ -2,7 +2,6 @@
 
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use pendalf89\filemanager\widgets\FileInput;
 
@@ -12,6 +11,8 @@ use pendalf89\filemanager\widgets\FileInput;
 /* @var $brands */
 /* @var $attributeGroup */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $specs */
+/* @var $sku */
 ?>
 
 <?php $form = ActiveForm::begin([
@@ -162,6 +163,7 @@ use pendalf89\filemanager\widgets\FileInput;
             <div role="tabpanel" class="tab-pane" id="messages">
                 <?php
                 Modal::begin([
+                    'header' => '<h4 class="modal-title">' . Yii::t('Goods', 'Goods Form Sku Select') . '</h4>',
                     'options' => [
                         'id' => 'js-spec-form',
                         'backdrop' => 'static',
@@ -172,12 +174,60 @@ use pendalf89\filemanager\widgets\FileInput;
                         'tag' => 'button',
                         'label' => Yii::t('Goods', 'Goods Form Sku Select'),
                         'class' => 'btn btn-success',
-                        'v-on:click' => "skuForm('" . Url::toRoute(['sku', 'id' => $model->id]) . "')",
                     ],
+                    'footer' => '<button type="button" class="btn btn-default" v-on:click="renderSkuTable" data-dismiss="modal">生成规格表格</button><button class="btn btn-default" data-dismiss="modal">关闭</button>'
+                ]);
+
+                echo $this->render('sku_form', [
+                    'model' => $model,
+                    'specs' => $specs,
+                    'sku' => $model->isNewRecord ? [] : $sku,
                 ]);
 
                 Modal::end();
                 ?>
+
+                <button style="display: none;" type="button" class="btn btn-success col-sm-2 pull-right" v-on:click="skuBatchSetting">批量设置价格库存</button>
+
+                <div class="form-group"></div>
+
+                <table class="table" v-bind:style="{display: skuBatchInfo.status}">
+                    <tbody>
+                        <tr>
+                            <th width="40%">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                请填写价格库存,属性值和表格相对应。
+                            </th>
+                            <th width="15%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.cost_price"></th>
+                            <th width="15%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.market_price"></th>
+                            <th width="15%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.sale_price"></th>
+                            <th width="15%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.stock"></th>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="40%">名称</th>
+                            <th class="text-center" width="15%">成本价格</th>
+                            <th class="text-center" width="15%">市场价格</th>
+                            <th class="text-center" width="15%">销售价格</th>
+                            <th class="text-center" width="15%">库存</th>
+                        </tr>
+                    </thead>
+                    <tbody id="js-sku-combination">
+                        <tr v-for="item in skuCombination">
+                            <td>{{item.name}}</td>
+                            <td><input type="text" name="cost_price[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].cost_price}}"></td>
+                            <td><input type="text" name="market_price[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].market_price}}"></td>
+                            <td><input type="text" name="sale_price[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].sale_price}}"></td>
+                            <td><input type="text" name="stock[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].stock}}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
 
             <div role="tabpanel" class="tab-pane" id="settings">
@@ -198,10 +248,11 @@ use pendalf89\filemanager\widgets\FileInput;
 
 <?php ActiveForm::end(); ?>
 
-
 <?php $this->registerJs(
-    '   Goods.attributeValue = ' . $model->attributes['items'] . ';
-        Goods.renderAttribute();' .
+    '   Goods.attributeValue = ' . ($model->attributes['items'] === null ? "{}" : $model->attributes['items']) . ';
+        Goods.skuCombinationValue=  ' . ($model->isNewRecord ?  "[]"  : json_encode($sku['items'])) . ';
+        Goods.renderAttribute();
+        Goods.renderSkuTable(); ' .
 
     <<<EOF
     $('#js-slide-append').on('click', function() {
@@ -214,8 +265,8 @@ use pendalf89\filemanager\widgets\FileInput;
         $(this).parent().parent().remove();
     });
 
-//    $('#js-spec-form').on('hide.bs.modal', function(e) {
-//        Goods.hidden(e);
-//    });
+    $('#js-goods-detail').delegate('.js-check-all', 'click', function() {
+        $(this).parent().parent().next().find('input:checkbox').prop('checked', $(this).prop('checked')); 
+    });
 EOF
 ); ?>

@@ -4,7 +4,21 @@ var Goods = new Vue({
         attribute: '',
         attributeMethods: ['Text', 'Textarea', 'Checkbox', 'Select'],
         attributeForms: [],
-        attributeValue: []
+        attributeValue: [],
+
+        skuItems: [],
+        skuCombination: [],
+        skuCombinationValue: [],
+
+        skuBatchInfo: {
+            status: 'none',
+            items: {
+                cost_price: '0.00',
+                market_price: '0.00',
+                sale_price: '0.00',
+                stock: '0'
+            }
+        }
     },
     methods: {
         renderAttribute: function() {
@@ -71,8 +85,102 @@ var Goods = new Vue({
             });
         },
 
-        skuSelector: function() {
+        renderSkuTable: function() {
+            this.skuItems = this.skuSelector();
+            this.skuCombination = [];
+            if (this.skuItems.length) {
+                this.descartes(0, {name: '', index: ''});
+            }
+        },
 
+        skuSelector: function() {
+            var result = [];
+            $('.js-spec-item').each(function(index) {
+                var checkedItems = $(this).find(':checkbox:checked');
+                if (checkedItems.length > 0) {
+                    result[result.length] = [];
+                    checkedItems.each(function() {
+                        result[result.length - 1].push({
+                            name: $(this).data('title'),
+                            value: $(this).val()
+                        });
+                    });
+                }
+            });
+            return result;
+        },
+
+        descartes: function(index, result) {
+            if (index >= this.skuItems.length) {
+                result.name = result.name.substr(0, result.name.length - 2);
+                result.index = result.index.substr(0, result.index.length - 1);
+
+                if (this.skuCombinationValue[result.index] == undefined) {
+                    this.skuCombinationValue[result.index] = this.skuDefaultValue();
+                } else {
+                    this.skuCombinationValue[result.index] = this.skuCombinationValue[result.index];
+                }
+
+                return this.skuCombination.push(result);
+            }
+
+            var item = this.skuItems[index];
+            for (var i = 0; i < item.length; i++) {
+                var theResult = {
+                    name: result.name + item[i].name + ' | ',
+                    index: result.index + item[i].value + '_'
+                };
+
+                this.descartes(index + 1, theResult);
+            }
+        },
+
+        skuDefaultValue: function() {
+            return {
+                cost_price: '0.00',
+                market_price: '0.00',
+                sale_price: '0.00',
+                stock: '0'
+            };
+        },
+
+        format: function(event) {
+            var params = event.target.name.split('[');
+            var index = params[1].substr(0, params[1].length - 1);
+
+            if (isNaN(event.target.value)) {
+                event.target.value = params[0] == 'stock' ? '0' : '0.00';
+            } else if (params[0] == 'stock') {
+                event.target.value = parseInt(event.target.value);
+            } else {
+                event.target.value = parseFloat(event.target.value).toFixed(2);
+            }
+
+            this.skuCombinationValue[index][params[0]] = event.target.value;
+        },
+
+        skuBatchSetting: function() {
+            if (this.skuBatchInfo.status == 'none') {
+                return this.skuBatchInfo.status = 'block';
+            }
+
+            for (var i in this.skuBatchInfo.items) {
+                this.skuBatchInfo.items[i] = this.skuValueFormat(i, this.skuBatchInfo.items[i]);
+            }
+
+            for (var index in this.skuCombination) {
+                for (i in this.skuBatchInfo.items) {
+                    this.skuCombinationValue[this.skuCombination[index].index][i] = this.skuBatchInfo.items[i];
+                }
+            }
+        },
+
+        skuValueFormat: function(type, value) {
+            if (isNaN(value)) {
+                return type == 'stock' ? '0' : '0.00';
+            } else {
+                return type == 'stock' ? parseInt(value) : parseFloat(value).toFixed(2);
+            }
         }
     }
 });

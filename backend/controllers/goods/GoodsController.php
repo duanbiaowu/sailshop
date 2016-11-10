@@ -5,6 +5,7 @@ namespace backend\controllers\goods;
 use common\models\Available;
 use common\models\goods\Attribute;
 use common\models\goods\Brand;
+use common\models\goods\GoodsSku;
 use common\models\goods\Specifications;
 use Yii;
 use common\models\goods\Goods;
@@ -82,7 +83,8 @@ class GoodsController extends Controller
                 'model' => $model,
                 'categories' => $categories,
                 'brands' => Brand::find()->asArray()->all(),
-                'attributeGroup' => Attribute::find()->where(['parent_id' => 0])->asArray()->all(),
+                'attributeGroup' => (new Attribute())->groups(false),
+                'specs' => Specifications::specFormat(),
             ]);
         }
     }
@@ -96,19 +98,34 @@ class GoodsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $sku = new GoodsSku();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $sku->skuUpdate($model);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             $category = new Category();
             $categories = [];
             $category->arrayToList( $category->arrayToTree( $category->category() ), $categories);
 
+            $skuItems = $sku->format($model);
+            $specs = Specifications::specFormat();
+
+            foreach ($specs as &$spec) {
+                foreach ($spec['children'] as $child) {
+                    if (in_array($child['id'], $skuItems['index'])) {
+                        ++$spec['total'];
+                    }
+                }
+            }
+
             return $this->render('update', [
                 'model' => $model,
                 'categories' => $categories,
                 'brands' => Brand::find()->asArray()->all(),
                 'attributeGroup' => (new Attribute())->groups(false),
+                'specs' => $specs,
+                'sku' => $skuItems,
             ]);
         }
     }
@@ -129,13 +146,6 @@ class GoodsController extends Controller
     public function actionSlideForm()
     {
         return $this->renderAjax('slide_form');
-    }
-
-    public function actionSku()
-    {
-        return $this->renderAjax('sku_form', [
-            'specs' => Specifications::specFormat(),
-        ]);
     }
 
     /**

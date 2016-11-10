@@ -7,6 +7,8 @@ use yii\helpers\Html;
 /* @var $categories */
 /* @var $brands */
 /* @var $attributeGroup */
+/* @var $specs */
+/* @var $sku */
 
 $this->title = Yii::t('Goods', 'Update Goods') . ' ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('Goods', 'Goods'), 'url' => ['index']];
@@ -20,6 +22,8 @@ $this->params['breadcrumbs'][] = Yii::t('Goods', 'Update');
         'categories' => $categories,
         'brands' => $brands,
         'attributeGroup' => $attributeGroup,
+        'specs' => $specs,
+        'sku' => $sku,
     ]) ?>
 
 </div>

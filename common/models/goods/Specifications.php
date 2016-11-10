@@ -56,6 +56,8 @@ class Specifications extends \yii\db\ActiveRecord
             if ($spec['parent_id']) {
                 $specs[$spec['parent_id']]['children'][] = $spec;
                 unset($specs[$index]);
+            } else {
+                $specs[$index]['total'] = 0;
             }
         }
         return $specs;
