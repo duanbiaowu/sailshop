@@ -198,10 +198,11 @@ use pendalf89\filemanager\widgets\FileInput;
                                 <span class="glyphicon glyphicon-info-sign"></span>
                                 请填写价格库存,属性值和表格相对应。
                             </th>
-                            <th width="15%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.cost_price"></th>
-                            <th width="15%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.market_price"></th>
-                            <th width="15%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.sale_price"></th>
-                            <th width="15%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.stock"></th>
+                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.cost_price"></th>
+                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.market_price"></th>
+                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.sale_price"></th>
+                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.stock"></th>
+                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.weight"></th>
                         </tr>
                     </tbody>
 
@@ -211,10 +212,11 @@ use pendalf89\filemanager\widgets\FileInput;
                     <thead>
                         <tr>
                             <th class="text-center" width="40%">名称</th>
-                            <th class="text-center" width="15%">成本价格</th>
-                            <th class="text-center" width="15%">市场价格</th>
-                            <th class="text-center" width="15%">销售价格</th>
-                            <th class="text-center" width="15%">库存</th>
+                            <th class="text-center" width="12%">成本价格</th>
+                            <th class="text-center" width="12%">市场价格</th>
+                            <th class="text-center" width="12%">销售价格</th>
+                            <th class="text-center" width="12%">库存</th>
+                            <th class="text-center" width="12%">重量</th>
                         </tr>
                     </thead>
                     <tbody id="js-sku-combination">
@@ -224,6 +226,7 @@ use pendalf89\filemanager\widgets\FileInput;
                             <td><input type="text" name="market_price[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].market_price}}"></td>
                             <td><input type="text" name="sale_price[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].sale_price}}"></td>
                             <td><input type="text" name="stock[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].stock}}"></td>
+                            <td><input type="text" name="weight[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].weight}}"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -247,6 +250,10 @@ use pendalf89\filemanager\widgets\FileInput;
 </div>
 
 <?php ActiveForm::end(); ?>
+
+<?php $this->registerJsFile('@web/js/goods.js', [
+    'depends' => backend\assets\AppAsset::className()
+]) ?>
 
 <?php $this->registerJs(
     '   Goods.attributeValue = ' . ($model->attributes['items'] === null ? "{}" : $model->attributes['items']) . ';

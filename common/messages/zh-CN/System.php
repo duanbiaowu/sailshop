@@ -9,6 +9,10 @@
  */
 
 return [
+    'Create' => '创建',
+    'Update' => '更新',
+    'Delete' => '删除',
+
     'common_delete_confirm' => '确认删除这条数据吗？此操作不可恢复！',
     'common_whole' => '全部',
     'common_available' => '启用',
@@ -74,4 +78,15 @@ return [
     'region_delete_success' => '区域信息删除成功',
     'region_delete_failed' => '区域信息删除失败',
 
+    'Freight Templates' => '运费模板',
+    'Freight Name' => '名称',
+    'Freight Area' => '地区',
+    'Freight Weight' => '首重',
+    'Freight Cost' => '首费',
+    'Freight Append Weight' => '续重',
+    'Freight Append Cost' => '续费',
+    'Create Freight Template' => '创建运费模板',
+    'Freight Template Default' => '默认',
+    'Area Freight Template' => '指定地区运费计算方式',
+    'Area Select' => '请选择地区',
 ];

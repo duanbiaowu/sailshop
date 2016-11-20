@@ -140,7 +140,8 @@ var Goods = new Vue({
                 cost_price: '0.00',
                 market_price: '0.00',
                 sale_price: '0.00',
-                stock: '0'
+                stock: '0',
+                weight: '0'
             };
         },
 
@@ -148,9 +149,10 @@ var Goods = new Vue({
             var params = event.target.name.split('[');
             var index = params[1].substr(0, params[1].length - 1);
 
+            var special = ['stock', 'weight'];
             if (isNaN(event.target.value)) {
-                event.target.value = params[0] == 'stock' ? '0' : '0.00';
-            } else if (params[0] == 'stock') {
+                event.target.value = special.indexOf(params[0]) >= 0 ? '0' : '0.00';
+            } else if (special.indexOf(params[0]) >= 0) {
                 event.target.value = parseInt(event.target.value);
             } else {
                 event.target.value = parseFloat(event.target.value).toFixed(2);

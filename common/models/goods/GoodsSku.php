@@ -69,6 +69,7 @@ class GoodsSku extends \yii\db\ActiveRecord
         $marketPrice = Yii::$app->request->post('market_price');
         $salePrice = Yii::$app->request->post('sale_price');
         $stock = Yii::$app->request->post('stock');
+        $weight = Yii::$app->request->post('weight');
 
         foreach ($costPrice as $index => $value) {
             $sku = [
@@ -78,6 +79,7 @@ class GoodsSku extends \yii\db\ActiveRecord
                 'market_price' => $marketPrice[$index],
                 'sale_price' => $salePrice[$index],
                 'stock' => $stock[$index],
+                'weight' => $weight[$index],
             ];
 
             if (isset($currentSku[$index])) {
