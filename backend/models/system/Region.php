@@ -58,19 +58,28 @@ class Region extends ActiveRecord
         parent::afterFind();
     }
 
-    public static function format()
+    public static function format($checked = [])
     {
         $regions = self::find()->asArray()->all();
         foreach ($regions as &$region) {
             $region['areas'] = Area::find()
                 ->where(['id' => unserialize($region['provinces'])])
+                ->indexBy('id')
                 ->asArray()
                 ->all();
             foreach ($region['areas'] as &$area) {
                 $area['cities'] = Area::find()
                     ->where(['parent_id' => $area['id']])
+                    ->indexBy('id')
                     ->asArray()
                     ->all();
+
+                $area['checked'] = false;
+                $area['disabled'] = '';
+                foreach ($area['cities'] as &$city) {
+                    $city['checked'] = false;
+                    $city['disabled'] = '';
+                }
             }
         }
         return $regions;

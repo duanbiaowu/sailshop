@@ -86,6 +86,7 @@ return [
     'Freight Append Weight' => '续重',
     'Freight Append Cost' => '续费',
     'Create Freight Template' => '创建运费模板',
+    'Update Freight Template' => '更新运费模板',
     'Freight Template Default' => '默认',
     'Area Freight Template' => '指定地区运费计算方式',
     'Area Select' => '请选择地区',

@@ -33,12 +33,8 @@ class FreightTemplateController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FreightTemplateSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'freightTemplates' => (new FreightTemplate())->format(),
         ]);
     }
 
@@ -51,6 +47,7 @@ class FreightTemplateController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'districts' => FreightTemplate::findAll(['parent_id' => $id]),
         ]);
     }
 
@@ -68,6 +65,8 @@ class FreightTemplateController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'regions' => Region::format(),
+                'districts' => $model->districts(),
             ]);
         }
     }
@@ -87,6 +86,8 @@ class FreightTemplateController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'regions' => Region::format(),
+                'districts' => $model->districts(),
             ]);
         }
     }
@@ -102,6 +103,13 @@ class FreightTemplateController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDefault($id)
+    {
+        $model = $this->findModel($id);
+        $model->setDefault();
+        return $this->redirect('index');
     }
 
     /**
