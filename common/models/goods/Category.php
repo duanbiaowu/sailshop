@@ -4,6 +4,7 @@ namespace common\models\goods;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%goods_category}}".
@@ -70,6 +71,12 @@ class Category extends ActiveRecord
             ->indexBy('id')
             ->asArray()
             ->all();
+
+        foreach ($categories as &$category) {
+            $category['view'] = Url::toRoute(['/goods/category/view', 'id' => $category['id']]);
+            $category['update'] = Url::toRoute(['/goods/category/update', 'id' => $category['id']]);
+            $category['delete'] = Url::toRoute(['/goods/category/delete', 'id' => $category['id']]);
+        }
 
         $categories[0] = [
             'id' => 0,

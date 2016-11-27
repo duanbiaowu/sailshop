@@ -24,9 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
             {{option.name}}
 
             <div class="pull-right col-sm-2">
-                <span class="glyphicon glyphicon-eye-open col-sm-4" v-on:click="operation('/goods/category/view?id=' + option.id)" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-edit col-sm-4" v-on:click="operation('/goods/category/update?id=' + option.id)" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-remove col-sm-2" v-on:click="operation('/goods/category/delete?id=' + option.id)" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-eye-open col-sm-4" v-on:click="operation(option.view)" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-edit col-sm-4" v-on:click="operation(option.update)" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-remove col-sm-2" v-on:click="operation(option.delete)" aria-hidden="true"></span>
             </div>
         </a>
     </div>
@@ -51,6 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     this.options.push({
                         id: categories[i].id,
                         name: categories[i].name,
+                        view: categories[i].view,
+                        update: categories[i].update,
+                        delete: categories[i].delete,
                         depth: depth,
                         length: 0,
                         show: true,
