@@ -20,7 +20,6 @@ return [
                         ['label' => '属性管理', 'url' => 'goods/attribute'],
                         ['label' => '规格管理', 'url' => 'goods/specifications'],
                         ['label' => '品牌管理', 'url' => 'goods/brand'],
-//                        ['label' => '类型管理', 'url' => 'goods/type'],
                     ],
                 ],
             ],
@@ -183,6 +182,7 @@ return [
                 [
                     'label' => '权限管理',
                     'items' => [
+                        ['label' => '系统用户', 'url' => 'system/user'],
                         ['label' => '角色列表', 'url' => 'system/role/index'],
                         ['label' => '菜单列表', 'url' => 'system/menu/index'],
                         ['label' => '权限列表', 'url' => 'system/permission/index'],

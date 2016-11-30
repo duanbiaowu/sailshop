@@ -90,4 +90,20 @@ return [
     'Freight Template Default' => '默认',
     'Area Freight Template' => '指定地区运费计算方式',
     'Area Select' => '请选择地区',
+
+    'Username' => '用户名',
+    'Password Hash' => '密码',
+    'Email' => '邮箱',
+    'Status' => '状态',
+    'Created At' => '创建时间',
+    'Updated At' => '更新时间',
+
+    'Set User Info' => '请设置操作用户信息',
+    'Users' => '系统用户',
+    'Create User' => '创建用户',
+
+    'STATUS ACTIVE' => '正常',
+    'STATUS DELETE' => '注销',
+//    'Users' => '系统用户',
+
 ];

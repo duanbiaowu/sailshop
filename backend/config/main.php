@@ -18,7 +18,7 @@ return [
     ],
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\models\system\User',
             'enableAutoLogin' => true,
         ],
         'log' => [
@@ -32,6 +32,16 @@ return [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'defaultRoles' => ['guest'],
+        ],
+        'formatter' => [
+            'dateFormat' => 'yyyy-MM-dd',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'EUR',
         ],
     ],
     'params' => $params,

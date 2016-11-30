@@ -1,8 +1,8 @@
-<?php 
+<?php
  return array (
-  'components' => 
+  'components' =>
   array (
-    'db' => 
+    'db' =>
     array (
       'class' => 'yii\db\Connection',
       'dsn' => 'mysql:host=127.0.0.1;dbname=sailshop',
@@ -10,17 +10,17 @@
       'password' => 'root',
       'charset' => 'utf8',
     ),
-    'urlManager' => 
+    'urlManager' =>
     array (
       'enablePrettyUrl' => true,
       'showScriptName' => false,
     ),
-    'mailer' => 
+    'mailer' =>
     array (
       'class' => 'yii\swiftmailer\Mailer',
       'viewPath' => '@common/mail',
       'useFileTransport' => true,
-      'transport' => 
+      'transport' =>
       array (
         'class' => 'Swift_SmtpTransport',
         'host' => 'smtp.163.com',
@@ -29,9 +29,9 @@
         'port' => '25',
         'encryption' => 'tls',
       ),
-      'messageConfig' => 
+      'messageConfig' =>
       array (
-        'from' => 
+        'from' =>
         array (
           'duanbiaowu@163.com' => 'duanbiaowu',
         ),
