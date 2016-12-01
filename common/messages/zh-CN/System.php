@@ -104,6 +104,10 @@ return [
 
     'STATUS ACTIVE' => '正常',
     'STATUS DELETE' => '注销',
-//    'Users' => '系统用户',
+
+    'Auth Rules' => '角色列表',
+    'Create Auth Rule' => '创建角色',
+    'Auth Rule Name' => '角色名称',
+    'Auth Rule Data' => '描述信息',
 
 ];

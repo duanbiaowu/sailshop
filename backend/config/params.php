@@ -162,10 +162,8 @@ return [
                     'label' => '参数设置',
                     'items' => [
                         ['label' => '系统信息', 'url' => 'system/index'],
-//                        ['label' => '在线升级', 'url' => 'system/version'],
                         ['label' => '主题设置', 'url' => 'system/theme'],
                         ['label' => '站点设置', 'url' => 'system/system'],
-//                        ['label' => '信息模板', 'url' => 'system/info/index'],
                         ['label' => '开放登录', 'url' => 'system/oauth/index'],
                     ],
                 ],
@@ -183,7 +181,7 @@ return [
                     'label' => '权限管理',
                     'items' => [
                         ['label' => '系统用户', 'url' => 'system/user'],
-                        ['label' => '角色列表', 'url' => 'system/role/index'],
+                        ['label' => '角色列表', 'url' => 'system/auth-rule'],
                         ['label' => '菜单列表', 'url' => 'system/menu/index'],
                         ['label' => '权限列表', 'url' => 'system/permission/index'],
                     ],
