@@ -180,9 +180,9 @@ return [
                 [
                     'label' => '权限管理',
                     'items' => [
-                        ['label' => '系统用户', 'url' => 'system/user'],
+                        ['label' => '用户列表', 'url' => 'system/user'],
                         ['label' => '角色列表', 'url' => 'system/auth-rule'],
-                        ['label' => '菜单列表', 'url' => 'system/menu/index'],
+                        ['label' => '菜单列表', 'url' => 'system/auth-menu'],
                         ['label' => '权限列表', 'url' => 'system/permission/index'],
                     ],
                 ],

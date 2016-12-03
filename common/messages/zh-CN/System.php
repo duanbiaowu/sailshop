@@ -10,6 +10,7 @@
 
 return [
     'Create' => '创建',
+    'View' => '查看',
     'Update' => '更新',
     'Delete' => '删除',
 
@@ -109,5 +110,16 @@ return [
     'Create Auth Rule' => '创建角色',
     'Auth Rule Name' => '角色名称',
     'Auth Rule Data' => '描述信息',
+
+    'Menu Name' => '菜单名称',
+    'Menu Parent ID' => '上级菜单',
+    'Menu Route' => '菜单链接',
+    'Menu Sort' => '菜单排序',
+    'Set Menu Info' => '请设置菜单信息',
+    'Top Menu Name' => '顶级菜单',
+
+    'Auth Menus' => '菜单列表',
+    'Create Auth Menu' => '创建系统菜单',
+
 
 ];
