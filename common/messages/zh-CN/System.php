@@ -13,6 +13,7 @@ return [
     'View' => '查看',
     'Update' => '更新',
     'Delete' => '删除',
+    'Check All' => '全选',
 
     'common_delete_confirm' => '确认删除这条数据吗？此操作不可恢复！',
     'common_whole' => '全部',
@@ -106,10 +107,12 @@ return [
     'STATUS ACTIVE' => '正常',
     'STATUS DELETE' => '注销',
 
-    'Auth Rules' => '角色列表',
-    'Create Auth Rule' => '创建角色',
-    'Auth Rule Name' => '角色名称',
-    'Auth Rule Data' => '描述信息',
+    'Auth Roles' => '角色列表',
+    'Create Auth Role' => '创建角色',
+    'Auth Role Name' => '角色名称',
+    'Auth Role Permission' => '菜单权限',
+    'Set Role Info' => '请设置操作角色信息',
+    'Set Role Menu' => '请设置操作角色菜单权限',
 
     'Menu Name' => '菜单名称',
     'Menu Parent ID' => '上级菜单',

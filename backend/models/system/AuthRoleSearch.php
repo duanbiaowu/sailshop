@@ -5,12 +5,12 @@ namespace backend\models\system;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\system\User;
+use backend\models\system\AuthRole;
 
 /**
- * UserSearch represents the model behind the search form about `backend\models\system\User`.
+ * AuthRoleSearch represents the model behind the search form about `backend\models\system\AuthRole`.
  */
-class UserSearch extends User
+class AuthRoleSearch extends AuthRole
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email'], 'safe'],
+            [['id', 'parent_id', 'operation'], 'integer'],
+            [['name', 'route'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find()->where('id > :id', [':id' => 1]);
+        $query = AuthRole::find()->where(['parent_id' => 0]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,16 +57,12 @@ class UserSearch extends User
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'parent_id' => $this->parent_id,
+            'operation' => $this->operation,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
-            ->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'route', $this->route]);
 
         return $dataProvider;
     }

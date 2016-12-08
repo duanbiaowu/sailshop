@@ -18,6 +18,7 @@ use yii\web\IdentityInterface;
  * @property string $password_reset_token
  * @property string $email
  * @property integer $status
+ * @property integer $role_id
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -86,6 +87,7 @@ class User extends ActiveRecord implements IdentityInterface
             'password_hash' => Yii::t('System', 'Password Hash'),
             'password_reset_token' => Yii::t('System', 'Password Reset Token'),
             'email' => Yii::t('System', 'Email'),
+            'role_id' => Yii::t('System', 'Auth Rule Name'),
             'status' => Yii::t('System', 'Status'),
             'created_at' => Yii::t('System', 'Created At'),
             'updated_at' => Yii::t('System', 'Updated At'),
