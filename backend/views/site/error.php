@@ -13,12 +13,11 @@ $this->title = '页面找不到啦！';
 <div class="form-group">
 
     <div class="jumbotron text-left">
-        <h1 class="text-info">404</h1>
+        <h1 class="text-info"><?= $exception->getCode() | 404 ?></h1>
 
-        <h4>你访问的页面找不到了！</h4>
+        <h4><?= Yii::t('System', $message) ?></h4>
 
-        网络正常，您所访问的页面资源不存在(404)，
-        <a href="<?= Url::toRoute('system/system/index') ?>">返回系统首页</a>
+        <a href="<?= Url::toRoute('/system/index') ?>"><?= Yii::t('System', 'Back Home') ?></a>
 
     </div>
 

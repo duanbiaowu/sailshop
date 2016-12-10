@@ -11,15 +11,11 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
-if ($index = strpos(Yii::$app->controller->id, '/')) {
-    define('YII_CONTROLLER_DIR', substr(Yii::$app->controller->id, 0, $index));
-} else {
-    define('YII_CONTROLLER_DIR', 'system');
-}
-
 AppAsset::register($this);
 ?>
+
 <?php $this->beginPage() ?>
+
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
@@ -30,10 +26,11 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <body>
+
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <?php
+<?php
     NavBar::begin([
         'brandLabel' => 'SailShop',
         'brandUrl' => Yii::$app->homeUrl,
@@ -48,12 +45,14 @@ AppAsset::register($this);
 
     if (!Yii::$app->user->isGuest) {
         $navItems = [];
-        foreach (Yii::$app->params['adminMenus'] as $navIndex => $adminMenu) {
-            $navItems[] = [
-                'label' => $adminMenu['label'],
-                'url' => $adminMenu['url'],
-                'options' => YII_CONTROLLER_DIR == $navIndex ? ['class' => 'active'] : [],
-            ];
+        foreach (Yii::$app->params['menus']['nav'] as $nav) {
+            if ($nav['operation']) {
+                $navItems[] = [
+                    'label' => $nav['name'],
+                    'url' => $nav['route'],
+                    'options' => Yii::$app->params['menus']['currentModule'] == $nav['route'] ? ['class' => 'active'] : [],
+                ];
+            }
         }
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-left'],
@@ -76,30 +75,34 @@ AppAsset::register($this);
             ]
         ];
     }
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $menuItems,
     ]);
+
     NavBar::end();
-    ?>
+?>
 
     <div class="container-fluid">
         <div class="row">
             <?php if (!Yii::$app->user->isGuest) { ?>
                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
-                    <?php
-                    foreach (Yii::$app->params['adminMenus'][YII_CONTROLLER_DIR]['items'] as $adminMenu):
-                        ?>
+                    <?php foreach (Yii::$app->params['menus']['nav'][Yii::$app->params['menus']['index']]['menus'] as $menu):?>
+                        <?php if ($menu['operation']): ?>
                         <div class="list-group">
                             <a href="#" class="list-group-item disabled">
-                                <h4 class="panel-title"><?= $adminMenu['label'] ?></h4>
+                                <h4 class="panel-title"><?= $menu['name'] ?></h4>
                             </a>
-                            <?php foreach ($adminMenu['items'] as $menu): ?>
-                                <a href="<?= Url::toRoute($menu['url']) ?>" class="list-group-item <?php if (Yii::$app->controller->id == $menu['url']) echo 'active'; ?>">
-                                    <?= $menu['label'] ?>
+                            <?php foreach ($menu['child'] as $child): ?>
+                                <?php if ($child['operation']): ?>
+                                <a href="<?= Url::toRoute($child['route']) ?>" class="list-group-item <?php if ('/' . Yii::$app->controller->id == $child['route']) echo 'active'; ?>">
+                                    <?= $child['name'] ?>
                                 </a>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             <?php } ?>
@@ -118,7 +121,6 @@ AppAsset::register($this);
 <footer class="footer">
     <div class="container-fluid">
         <p class="pull-left">&copy; 起航商城系统 2016 - 2099</p>
-
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>

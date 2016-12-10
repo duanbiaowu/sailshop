@@ -15,6 +15,10 @@ return [
     'Delete' => '删除',
     'Check All' => '全选',
 
+    'The requested page does not exist.' => '你访问的页面找不到了！',
+    'The requested Permission denied.' => '你没有权限进行此操作！',
+    'Back Home' => '返回系统首页',
+
     'common_delete_confirm' => '确认删除这条数据吗？此操作不可恢复！',
     'common_whole' => '全部',
     'common_available' => '启用',

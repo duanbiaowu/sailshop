@@ -161,6 +161,16 @@ class AuthRole extends \yii\db\ActiveRecord
         ];
     }
 
+    public function permission()
+    {
+        return [
+            'view' => 1,
+            'create' => 2,
+            'update' => 4,
+            'delete' => 8,
+        ];
+    }
+
     public function afterDelete()
     {
         foreach ($this->getRoleMenus() as $menu) {

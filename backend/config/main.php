@@ -10,7 +10,7 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'auth'],
     'modules' => [
         'filemanager' => [
             'class' => 'pendalf89\filemanager\Module',
@@ -32,6 +32,9 @@ return [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+        'auth' => [
+            'class' => 'backend\controllers\AuthManager',
         ],
         'formatter' => [
             'dateFormat' => 'yyyy-MM-dd',
