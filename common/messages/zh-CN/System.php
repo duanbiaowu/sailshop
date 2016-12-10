@@ -97,10 +97,12 @@ return [
     'Password Hash' => '密码',
     'Email' => '邮箱',
     'Status' => '状态',
+    'User Role' => '角色',
     'Created At' => '创建时间',
     'Updated At' => '更新时间',
 
     'Set User Info' => '请设置操作用户信息',
+    'Set User Role' => '请设置用户角色信息',
     'Users' => '系统用户',
     'Create User' => '创建用户',
 

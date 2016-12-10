@@ -33,10 +33,6 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-            'defaultRoles' => ['guest'],
-        ],
         'formatter' => [
             'dateFormat' => 'yyyy-MM-dd',
             'decimalSeparator' => ',',

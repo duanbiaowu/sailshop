@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\system\User */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $roles */
 ?>
 
 
@@ -37,6 +38,10 @@ use yii\widgets\ActiveForm;
     <?php endif; ?>
 
     <?= $form->field($model, 'password_hash')->passwordInput(['value' => '', 'maxlength' => true]) ?>
+
+    <?= $form->field($model, 'role_id')->dropDownList($roles, [
+        'prompt' => Yii::t('System', 'Set User Role'),
+    ]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 

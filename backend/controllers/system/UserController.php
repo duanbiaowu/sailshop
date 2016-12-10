@@ -2,6 +2,7 @@
 
 namespace backend\controllers\system;
 
+use backend\models\system\AuthRole;
 use Yii;
 use backend\models\system\User;
 use backend\models\system\UserSearch;
@@ -67,6 +68,7 @@ class UserController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'roles' => AuthRole::getAuthRoles(),
             ]);
         }
     }
@@ -87,6 +89,7 @@ class UserController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'roles' => AuthRole::getAuthRoles(),
             ]);
         }
     }

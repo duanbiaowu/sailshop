@@ -51,8 +51,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function scenarios()
     {
         return [
-            'default' => ['username', 'password_hash', 'email', 'password_reset_token', 'updated_at'],
-            'update' => ['username', 'email', 'password_reset_token', 'updated_at'],
+            'default' => ['username', 'password_hash', 'email', 'role_id', 'password_reset_token', 'updated_at'],
+            'update' => ['username', 'email', 'role_id', 'password_reset_token', 'updated_at'],
         ];
     }
 
@@ -69,6 +69,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['password_hash', 'string', 'min' => 6, 'on' => ['default', 'update']],
             [['email'], 'email', 'on' => ['default', 'update']],
             [['email'], 'unique', 'on' => ['default', 'update']],
+            [['role_id'], 'default', 'value' => 0, 'on' => ['default', 'update']],
             [['username'], 'unique', 'on' => ['default', 'update']],
             [['password_reset_token'], 'unique', 'on' => ['default', 'update']],
             ['updated_at', 'default', 'value' => Yii::$app->formatter->asTimestamp('now'), 'on' => ['default', 'update']],
@@ -87,7 +88,7 @@ class User extends ActiveRecord implements IdentityInterface
             'password_hash' => Yii::t('System', 'Password Hash'),
             'password_reset_token' => Yii::t('System', 'Password Reset Token'),
             'email' => Yii::t('System', 'Email'),
-            'role_id' => Yii::t('System', 'Auth Rule Name'),
+            'role_id' => Yii::t('System', 'User Role'),
             'status' => Yii::t('System', 'Status'),
             'created_at' => Yii::t('System', 'Created At'),
             'updated_at' => Yii::t('System', 'Updated At'),

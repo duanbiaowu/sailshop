@@ -6,6 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\system\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $roles */
 
 $this->title = Yii::t('System', 'Users');
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,12 +23,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
         'columns' => [
             [
-                'attribute' => 'id',
-                'headerOptions' => ['class' => 'text-center', 'width' => '5%'],
-            ],
-            [
                 'attribute' => 'username',
                 'headerOptions' => ['class' => 'text-center', 'width' => '20%'],
+            ],
+            [
+                'attribute' => 'role_id',
+                'format' => 'raw',
+                'value' => function($model) {
+                    $roles = \backend\models\system\AuthRole::getAuthRoles();
+                    if (isset($roles[$model->role_id])) {
+                        return $roles[$model->role_id];
+                    }
+                },
+                'filter' => Html::activeDropDownList($searchModel, 'role_id', \backend\models\system\AuthRole::getAuthRoles(), [
+                    'class' => 'form-control',
+                    'prompt' => Yii::t('System', 'common_whole'),
+                ]),
+                'headerOptions' => ['class' => 'text-center', 'width' => '11%'],
             ],
             [
                 'attribute' => 'email',
@@ -52,14 +64,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
                     return Yii::$app->formatter->format($model->created_at, 'date');
                 },
-                'headerOptions' => ['class' => 'text-center', 'width' => '15%'],
+                'filter' => '',
+                'headerOptions' => ['class' => 'text-center', 'width' => '12%'],
             ],
             [
                 'attribute' => 'updated_at',
                 'value' => function($model) {
                     return Yii::$app->formatter->format($model->updated_at, 'date');
                 },
-                'headerOptions' => ['class' => 'text-center', 'width' => '15%'],
+                'filter' => '',
+                'headerOptions' => ['class' => 'text-center', 'width' => '12%'],
             ],
 
             ['class' => 'yii\grid\ActionColumn'],

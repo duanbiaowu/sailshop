@@ -142,6 +142,15 @@ class AuthRole extends \yii\db\ActiveRecord
         return $menus;
     }
 
+    public static function getAuthRoles()
+    {
+        $result = [];
+        foreach (AuthRole::findAll(['parent_id' => 0]) as $role) {
+            $result[$role->id] = $role->name;
+        }
+        return $result;
+    }
+
     public function operations()
     {
         return [
