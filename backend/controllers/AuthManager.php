@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use backend\models\system\AuthMenu;
 use backend\models\system\AuthRole;
 use Yii;
 use yii\base\Component;
@@ -22,19 +23,26 @@ class AuthManager extends Component
                 '/site/login',
                 '/site/logout',
             ],
-            'user' => [1]
+            'user' => [1],
         ];
     }
 
     public function init()
     {
+        if (Yii::$app->request->url == Yii::$app->homeUrl) {
+            Yii::$app->request->url = '/system/index';
+        }
+
         $currentUrl = Yii::$app->request->url;
         $rules = $this->ignores();
+
         if (!in_array($currentUrl, $rules['route'])) {
             if (Yii::$app->user->isGuest) {
                 return Yii::$app->response->redirect('/site/login');
             }
-            if (!in_array(Yii::$app->user->id, $rules['user'])) {
+            if (in_array(Yii::$app->user->id, $rules['user'])) {
+                Yii::$app->params['menus'] = $this->getRootMenus();
+            } else {
                 Yii::$app->params['menus'] = $this->getMenusByRoleId();
                 if (!$this->hasPermission()) {
                     throw new BadRequestHttpException('The requested Permission denied.', 500);
@@ -105,5 +113,49 @@ class AuthManager extends Component
         }
 
         return false;
+    }
+
+    public function getRootMenus()
+    {
+        $result = [
+            'currentModule' => explode('/', Yii::$app->request->url)[1],
+        ];
+        $manageOperation = array_sum((new AuthRole())->permission());
+
+        $result['nav'] = AuthMenu::find()
+            ->where(['parent_id' => 0])
+            ->orderBy(['sort' => SORT_DESC])
+            ->asArray()
+            ->all();
+
+        foreach ($result['nav'] as $index => &$menu) {
+            $menu['operation'] = $manageOperation;
+
+            if (explode('/', $menu['route'])[1] == $result['currentModule']) {
+                $menu['menus'] = AuthMenu::find()
+                    ->where(['parent_id' => $menu['id']])
+                    ->orderBy(['sort' => SORT_DESC])
+                    ->asArray()
+                    ->all();
+
+                foreach ($menu['menus'] as &$child) {
+                    $child['operation'] = $manageOperation;
+                    $child['child'] = AuthMenu::find()
+                        ->where(['parent_id' => $child['id']])
+                        ->orderBy(['sort' => SORT_DESC])
+                        ->asArray()
+                        ->all();
+
+                    foreach ($child['child'] as &$value) {
+                        $value['operation'] = $manageOperation;
+                    }
+                }
+
+                $result['currentModule'] = $menu['route'];
+                $result['index'] = $index;
+            }
+        }
+
+        return $result;
     }
 }
