@@ -9,7 +9,7 @@ use pendalf89\filemanager\widgets\FileInput;
     <div class="col-sm-6">
         <?php echo FileInput::widget([
             'id' => 'item-' . mt_rand(1, 102400),
-            'name' => 'Goods[show_pictures][]',
+            'name' => 'Book[show_pictures][]',
             'buttonTag' => 'button',
             'buttonName' => '选择',
             'buttonOptions' => ['type' => 'button', 'class' => 'btn btn-default'],

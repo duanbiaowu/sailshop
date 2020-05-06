@@ -7,32 +7,64 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\goods\AuthorSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Authors';
+$this->title = '作者列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="author-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Author', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('创建作者', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
+        'tableOptions' => ['class' => 'table table-striped table-bordered text-center'],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
-            'url:url',
-            'logo',
-            'sort',
-            // 'available',
+            [
+                'attribute' => 'name',
+                'headerOptions' => ['class' => 'text-center'],
+            ],
+//            'url:url',
+            [
+                'attribute' => 'logo',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::img($data->logo, [
+                        'width' => 120,
+                        'title' => $data->name,
+                    ]);
+                },
+                'headerOptions' => ['class' => 'text-center'],
+            ],
+            [
+                'attribute' => 'sort',
+                'headerOptions' => ['class' => 'text-center', 'width' => '10%'],
+            ],
+            [
+                'attribute' => 'available',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::tag('span', \common\models\Available::getLabel($data->available), [
+                        'class' => \common\models\Available::getStyle($data->available),
+                    ]);
+                },
+                'filter' => Html::activeDropDownList($searchModel, 'available', \common\models\Available::labels(), [
+                    'class' => 'form-control',
+                    'prompt' => Yii::t('System', 'common_whole'),
+                ]),
+                'headerOptions' => ['class' => 'text-center'],
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}&nbsp;&nbsp;{delete}',
+            ],
         ],
     ]); ?>
 

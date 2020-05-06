@@ -64,7 +64,8 @@ class UserOperateLogSearch extends UserOperateLog
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'menu_name', $this->menu_name])
             ->andFilterWhere(['like', 'permission', $this->permission])
-            ->andFilterWhere(['like', 'query', $this->query]);
+            ->andFilterWhere(['like', 'query', $this->query])
+            ->orderBy(['id' => SORT_DESC]);
 
         return $dataProvider;
     }

@@ -2,9 +2,11 @@
 
 namespace backend\controllers\content;
 
+use common\models\content\ArticleCategory;
 use Yii;
 use common\models\content\ArticleContent;
 use common\models\content\ArticleContentSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -38,6 +40,7 @@ class ArticleContentController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'categories' => $categories = ArticleCategory::getAllCategories(),
         ]);
     }
 
@@ -63,10 +66,21 @@ class ArticleContentController extends Controller
         $model = new ArticleContent();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '创建文章成功');
+            return $this->redirect('index');
         } else {
+            $categories = ArticleCategory::getAllCategories();
+            $categories = ArrayHelper::toTreeStructure($categories);
+            $categories = ArrayHelper::toDepthIndexStructure($categories);
+
+            $formatCategories = [];
+            foreach ($categories as $category) {
+                $formatCategories[$category['id']] = str_repeat('──', $category['depth'] * 2) . $category['name'];
+            }
+
             return $this->render('create', [
                 'model' => $model,
+                'categories' => $formatCategories,
             ]);
         }
     }
@@ -82,10 +96,21 @@ class ArticleContentController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '更新文章成功');
+            return $this->redirect('index');
         } else {
+            $categories = ArticleCategory::getAllCategories();
+            $categories = ArrayHelper::toTreeStructure($categories);
+            $categories = ArrayHelper::toDepthIndexStructure($categories);
+
+            $formatCategories = [];
+            foreach ($categories as $category) {
+                $formatCategories[$category['id']] = str_repeat('──', $category['depth'] * 2) . $category['name'];
+            }
+
             return $this->render('update', [
                 'model' => $model,
+                'categories' => $formatCategories,
             ]);
         }
     }
@@ -99,6 +124,7 @@ class ArticleContentController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', '删除文章成功');
 
         return $this->redirect(['index']);
     }

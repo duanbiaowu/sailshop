@@ -73,7 +73,7 @@ return [
     'form_express_company_code' => '公司CODE',
     'form_express_company_url' => '公司主页',
     'form_express_company_sort' => '显示排序',
-    'form_express_company_available' => '使用状态',
+    'form_express_company_available' => '状态',
 
     'form_region_name' => '区域名称',
     'form_region_provinces' => '区域省份',
@@ -98,6 +98,7 @@ return [
     'Area Select' => '请选择地区',
 
     'Username' => '用户名',
+    'Nickname' => '昵称',
     'Password Hash' => '密码',
     'Email' => '邮箱',
     'Status' => '状态',
@@ -130,5 +131,14 @@ return [
     'Auth Menus' => '菜单列表',
     'Create Auth Menu' => '创建系统菜单',
 
+    'Payment Name' => '支付方式',
+    'Payment Description' => '支付描述',
+    'Payment Sort' => '显示排序',
+    'Payment Status' => '使用状态',
+    'Update Payment Type' => '更新支付方式',
+    'Payment Types' => '支付方式',
+    'Create Payment Type' => '创建支付方式',
 
+    'Roles' => '角色',
+    'Create Role' => '创建角色',
 ];

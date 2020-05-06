@@ -38,7 +38,15 @@ class Role extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => '名称',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMenuPermissions()
+    {
+        return $this->hasMany(RoleMenuPermission::className(), ['role_id' => 'id']);
     }
 }

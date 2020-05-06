@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\models\goods\Book;
 use Yii;
 
 /**
@@ -10,6 +11,7 @@ use Yii;
  * @property integer $member_id
  * @property string $isbn
  * @property integer $views
+ * @property string $last_time
  *
  * @property Member $member
  * @property Book $isbn0
@@ -30,9 +32,10 @@ class MemberBrowseRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['member_id', 'isbn', 'views'], 'required'],
+            [['member_id', 'isbn'], 'required'],
             [['member_id', 'views'], 'integer'],
-            [['isbn'], 'string', 'max' => 13]
+            [['isbn'], 'string', 'max' => 13],
+            ['views', 'default', 'value' => 1],
         ];
     }
 
@@ -59,8 +62,16 @@ class MemberBrowseRecord extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIsbn0()
+    public function getIsbn()
     {
         return $this->hasOne(Book::className(), ['isbn' => 'isbn']);
+    }
+
+    public function increaseViews()
+    {
+        MemberBrowseRecord::updateAllCounters(['views' => 1], [
+            'member_id' => $this->member_id,
+            'isbn' => $this->isbn,
+        ]);
     }
 }

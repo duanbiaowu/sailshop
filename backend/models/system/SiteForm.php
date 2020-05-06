@@ -16,7 +16,6 @@ use yii\base\Model;
 class SiteForm extends Model
 {
     public $siteName;
-    public $siteLogo;
     public $keyword;
     public $description;
     public $siteIcp;
@@ -39,7 +38,6 @@ class SiteForm extends Model
     {
         return [
             'siteName' => Yii::t('System', 'form_site_name'),
-            'siteLogo' => Yii::t('System', 'form_site_logo'),
             'keyword' => Yii::t('System', 'form_site_keyword'),
             'siteIcp' => Yii::t('System', 'form_site_icp'),
             'description' => Yii::t('System', 'form_site_description'),

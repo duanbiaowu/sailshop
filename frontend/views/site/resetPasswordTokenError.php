@@ -17,7 +17,7 @@ use yii\bootstrap\ActiveForm;
 
 <div id="widget_sub_navs"><ul class="crumbs clearfix mt15 step-4">
         <li>4、完成<em></em><i></i></li>
-        <li>3、设置新密码<em></em><i></i></li>
+        <li class="pass">3、设置新密码<em></em><i></i></li>
         <li class="pass">2、验证身份<em></em><i></i></li>
         <li class="pass">1、填写账户信息<em></em><i></i></li>
     </ul>
@@ -27,17 +27,12 @@ use yii\bootstrap\ActiveForm;
 <div class="container" style="margin-top: 50px; margin-left: 25%;">
     <div class="simple-box">
         <div class="message">
-            <div class="header ">				<i class="icon-success-48"></i><span>邮件发送成功！</span>			</div>
-            <div class="main">
-                <p>
-                    修改密码的链接已经发送到您的邮箱，请查收并设置新密码！
-                </p>
+            <div class="status-bar">
+                <i class="icon-error-48"></i><span>密码重置链接已过期。</span>
             </div>
-            <div class="footer blank"><a href="/site/index" class="btn btn-gray">返回首页</a></div>
-            <div class="footer blank"><a href="/site/reset-password?token=<?= $testToken ?>" class="btn btn-gray">测试邮件链接：重置密码</a></div>
+            <div class="line tc"><a href="/site/index" class="btn btn-main">返回首页</a></div>
         </div>
     </div>
-
 </div>
 
 

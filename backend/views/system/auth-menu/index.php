@@ -21,9 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th width="50%"><?= Yii::t('System', 'Menu Name'); ?></th>
-            <th width="30%"><?= Yii::t('System', 'Menu Route'); ?></th>
-            <th></th>
+            <th width="40%"><?= Yii::t('System', 'Menu Name'); ?></th>
+            <th width="25%"><?= Yii::t('System', 'Menu Route'); ?></th>
+            <th width="15%" class="text-center">菜单权限</th>
+            <th class="text-center">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -37,8 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </td>
 
             <td><?= Html::a($category['route'], Url::toRoute($category['route']), ['target' => '_blank']) ?></td>
-            <td>
-                <?= Html::a(Yii::t('System', 'View'), Url::toRoute(['/system/auth-menu/view', 'id' => $category['id']]), ['class' => 'btn btn-success btn-sm']) ?>
+            <td class="text-center"></td>
+            <td class="text-center">
                 <?= Html::a(Yii::t('System', 'Update'), Url::toRoute(['/system/auth-menu/update', 'id' => $category['id']]), ['class' => 'btn btn-primary btn-sm']) ?>
                 <?= Html::a(Yii::t('System', 'Delete'), Url::toRoute(['/system/auth-menu/delete', 'id' => $category['id']]), [
                     'class' => 'btn btn-danger btn-sm',
@@ -51,14 +52,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </tr>
 
             <?php foreach ($category['children'] as $child): ?>
-            <tr style="display: none;" class="js-category-index-<?= $index ?>">
+            <tr class="js-category-index-<?= $index ?>">
                 <td>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="glyphicon glyphicon-th-list"></span> <?= $child['name'] ?>
                 </td>
                 <td><?= Html::a($child['route'], Url::toRoute($child['route']), ['target' => '_blank']) ?></td>
-                <td>
-                    <?= Html::a(Yii::t('System', 'View'), Url::toRoute(['/system/auth-menu/view', 'id' => $child['id']]), ['class' => 'btn btn-success btn-sm']) ?>
+                <td class="text-center"></td>
+                <td class="text-center">
                     <?= Html::a(Yii::t('System', 'Update'), Url::toRoute(['/system/auth-menu/update', 'id' => $child['id']]), ['class' => 'btn btn-primary btn-sm']) ?>
                     <?= Html::a(Yii::t('System', 'Delete'), Url::toRoute(['/system/auth-menu/delete', 'id' => $child['id']]), [
                         'class' => 'btn btn-danger btn-sm',
@@ -72,15 +73,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                 <?php foreach ($child['children'] as $value): ?>
-                    <tr style="display: none;" class="js-category-index-<?= $index ?>">
+                    <tr class="js-category-index-<?= $index ?>">
                         <td>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <span class="glyphicon glyphicon-th-list"></span> <?= $value['name'] ?>
                         </td>
                         <td><?= Html::a($value['route'], Url::toRoute($value['route']), ['target' => '_blank']) ?></td>
-                        <td>
-                            <?= Html::a(Yii::t('System', 'View'), Url::toRoute(['/system/auth-menu/view', 'id' => $value['id']]), ['class' => 'btn btn-success btn-sm']) ?>
+                        <td class="text-center">
+                            <?= Html::a('权限设置', Url::toRoute(['/system/auth-menu/permission', 'id' => $value['id']]), ['class' => 'btn btn-warning btn-sm']) ?>
+                        </td>
+                        <td class="text-center">
                             <?= Html::a(Yii::t('System', 'Update'), Url::toRoute(['/system/auth-menu/update', 'id' => $value['id']]), ['class' => 'btn btn-primary btn-sm']) ?>
                             <?= Html::a(Yii::t('System', 'Delete'), Url::toRoute(['/system/auth-menu/delete', 'id' => $value['id']]), [
                                 'class' => 'btn btn-danger btn-sm',

@@ -36,13 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'currencyUnit')->hint('请输入系统通用货币单位'); ?>
 
-            <?= $form->field($model, 'taxRate')->hint('请输入系统交易税率'); ?>
-
             <?= $form->field($model, 'invoice', [
                 'template' => '{label} <div class="col-sm-4"><label class="checkbox-inline">{input}开启</label>{error}{hint}</div>',
             ])->hint('请选择系统是否开启发票功能')->checkbox([], false); ?>
 
-            <?= $form->field($model, 'orderDelay')->hint('请输入默认订单作废时长，从订单生成时间开始算起'); ?>
+            <?= $form->field($model, 'orderDelay')->hint('单位（秒）<br/>请输入默认订单作废时长，从订单生成时间开始算起'); ?>
 
         </div>
     </div>

@@ -5,17 +5,17 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\content\ArticleContent */
+/* @var array $categories */
 
-$this->title = 'Create Article Content';
-$this->params['breadcrumbs'][] = ['label' => 'Article Contents', 'url' => ['index']];
+$this->title = '创建文章';
+$this->params['breadcrumbs'][] = ['label' => '全部文章', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="article-content-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
         'model' => $model,
+        'categories' => $categories,
     ]) ?>
 
 </div>

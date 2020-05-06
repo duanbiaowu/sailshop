@@ -4,46 +4,67 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\goods\BookSearch */
+/* @var $searchModel common\models\goods\GoodsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var array $categories */
+/* @var array $brands */
 
-$this->title = 'Books';
+$this->title = Yii::t('Goods', 'Goods');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="book-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<div class="goods-index">
 
     <p>
-        <?= Html::a('Create Book', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('Goods', 'Create Goods'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
             'isbn',
             'name',
-            'category_id',
-            'brand_id',
-            'thumbnail',
-            // 'show_pictures',
-            // 'translator',
-            // 'pages',
-            // 'binding',
-            // 'weight',
-            // 'publish_date',
-            // 'introduce',
-            // 'price',
-            // 'stock',
-            // 'status',
-            // 'modified_time',
-            // 'create_time',
+            [
+                'attribute' => 'category_id',
+                'value' => function($model) use ($categories) {
+                    return $categories[$model->category_id]['name'];
+                }
+            ],
+            [
+                'attribute' => 'brand_id',
+                'value' => function($model) use ($brands) {
+                    return $brands[$model->brand_id]['name'];
+                }
+            ],
+             'price',
+             'stock',
+            [
+                'attribute' => 'thumbnail',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::img($data->thumbnail, [
+                        'width' => 100,
+                        'height' => 100,
+                        'title' => $data->name,
+                    ]);
+                },
+                'headerOptions' => ['class' => 'text-center'],
+            ],
+             [
+                 'attribute' => 'status',
+                 'value' => function($model) {
+                     return $model->status ? '上架' : '下架';
+                 },
+             ],
+//             'modified_time',
+             'create_time',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}&nbsp;&nbsp;{delete}',
+            ],
         ],
     ]); ?>
 

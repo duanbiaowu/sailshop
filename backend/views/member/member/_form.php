@@ -37,8 +37,6 @@ use yii\widgets\ActiveForm;
     </div>
     <?php endif; ?>
 
-    <?= $form->field($model, 'nickname')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'password_hash')->passwordInput(['value' => '', 'maxlength' => true]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>

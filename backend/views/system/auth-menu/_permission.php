@@ -6,7 +6,12 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\system\AuthMenu */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $categories */
+/* @var array $permissions */
+
+$this->title = $model->name . ' ' . Yii::t('System', '权限设置: ');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('System', 'Auth Menus'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = '权限设置';
 
 ?>
 
@@ -19,34 +24,31 @@ use yii\widgets\ActiveForm;
     ],
 ]); ?>
 
-<div class="panel panel-default">
+<div class="panel panel-default" id="js-menu-permission" v-cloak="">
     <div class="panel-heading">
-        <?= Yii::t('System', 'Set Menu Info') ?>
+        请设置菜单权限
     </div>
 
     <div class="panel-body">
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group field-authmenu-parent_id">
-        <label class="col-sm-2 control-label">上级菜单</label>
-        <div class="col-sm-8">
-            <select class="form-control" name="AuthMenu[parent_id]">
-                <option value="0" selected><?= Yii::t('System', 'Top Menu Name') ?></option>
-                <?php foreach ($categories as $category): ?>
-                    <option value="<?= $category['id'] ?>" <?php if ($model->parent_id == $category['id']): ?>selected<?php endif; ?>><?= $category['name'] ?></option>
-                    <?php foreach ($category['children'] as $child): ?>
-                        <option value="<?= $child['id'] ?>" <?php if ($model->parent_id == $child['id']): ?>selected<?php endif; ?>>&nbsp;&nbsp;&nbsp;&nbsp;<?= $child['name'] ?></option>
-                    <?php endforeach; ?>
-                <?php endforeach; ?>
-            </select>
+        <div class="form-group">
+            <div class="col-sm-8">
+                <button type="button" class="btn btn-default" v-on:click="add">添加权限</button>
+            </div>
         </div>
-    </div>
-
-    <?= $form->field($model, 'route')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'sort')->textInput(['maxlength' => true]) ?>
-
+        <div class="form-group" v-for="value in values">
+            <div class="col-sm-3">
+                <input type="input" name="name[]" v-model="value.name" class="form-control" placeholder="请输入权限名称" required>
+            </div>
+            <div class="col-sm-3">
+                <input type="input" name="method[]" v-model="value.method"  class="form-control" placeholder="请输入权限方法" required>
+            </div>
+            <div class="col-sm-3">
+                <input type="input" name="query[]" v-model="value.query"  class="form-control" placeholder="请输入权限参数">
+            </div>
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-danger btn-sm" v-on:click="remove($index)">删除</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -56,4 +58,13 @@ use yii\widgets\ActiveForm;
 
 <?php ActiveForm::end(); ?>
 
+<?php $this->registerJsFile('@web/js/permission.js', [
+    'depends' => backend\assets\AppAsset::className()
+]) ?>
 
+<?php $this->registerJs(
+    '
+    Permission.setMenuId(' . $model->id . ');
+    Permission.setValues(' . json_encode($permissions, true) . ');
+    '
+); ?>

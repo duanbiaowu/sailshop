@@ -1,56 +1,43 @@
 <?php
 
+use backend\models\system\Role;
+use backend\models\system\UserRole;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\system\User */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $roles */
+/* @var Role[] $roles */
+/* @var UserRole[] $userRoles */
+
+$this->title = Yii::t('System', 'Update') . ' ' . $model->username;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('System', 'Users'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = '更新角色';
+
 ?>
 
-
 <?php $form = ActiveForm::begin([
-    'id' => 'user-form',
-    'options' => ['class' => 'form-horizontal'],
-    'fieldConfig' => [
-        'labelOptions' => ['class' => 'col-sm-2 control-label'],
-        'template' => '{label} <div class="col-sm-8">{input}{error}{hint}</div>',
-    ],
+    'id' => 'user-role-form',
+    'options' => [
+        'class' => 'form-horizontal',
+    ]
 ]); ?>
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Yii::t('System', 'Set User Info') ?>
+        请设置操作用户角色
     </div>
 
     <div class="panel-body">
-
-    <?php if ($model->isNewRecord): ?>
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-    <?php else: ?>
-    <div class="form-group field-user-username required">
-        <label class="col-sm-2 control-label"><?= Yii::t('System', 'Username'); ?></label>
-        <div class="col-sm-8 form-control-static">
-            <strong class="text-primary"><?= $model->username ?></strong>
+        <?php foreach ($roles as $role): ?>
+        <div class="col-sm-2 help-block">
+            <label class="checkbox-inline">
+                <input type="checkbox" name="roleIds[]" value="<?= $role['id'] ?>" <?php if (isset($userRoles[$role['id']])): ?>checked<?php endif; ?>><?= $role['name'] ?>
+            </label>
         </div>
-    </div>
-    <?php endif; ?>
-
-    <?= $form->field($model, 'password_hash')->passwordInput(['value' => '', 'maxlength' => true]) ?>
-
-    <?= $form->field($model, 'role_id')->dropDownList($roles, [
-        'prompt' => Yii::t('System', 'Set User Role'),
-    ]) ?>
-
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->radioList($model->statusLabel(), [
-        'item' => function($index, $label, $name, $checked, $value) {
-            return Html::radio($name, $checked, ['value' => $value, 'label' => $label, 'labelOptions' => ['class' => 'radio-inline']]);
-        }
-    ]) ?>
-
+        <?php endforeach; ?>
     </div>
 </div>
 

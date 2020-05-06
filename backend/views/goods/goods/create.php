@@ -7,8 +7,8 @@ use yii\helpers\Html;
 /* @var $model common\models\goods\Goods */
 /* @var $categories */
 /* @var $brands */
-/* @var $attributeGroup */
-/* @var $specs */
+/* @var $authors */
+/* @var $goodsAuthors */
 
 $this->title = Yii::t('Goods', 'Create Goods');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('Goods', 'Goods'), 'url' => ['index']];
@@ -20,8 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'categories' => $categories,
         'brands' => $brands,
-        'attributeGroup' => $attributeGroup,
-        'specs' => $specs,
+        'authors' => $authors,
+        'goodsAuthors' => $goodsAuthors,
     ]) ?>
 
 </div>

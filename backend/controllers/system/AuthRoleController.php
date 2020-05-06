@@ -2,6 +2,7 @@
 
 namespace backend\controllers\system;
 
+use backend\models\system\MenuPermission;
 use Yii;
 use backend\models\system\AuthRole;
 use backend\models\system\AuthRoleSearch;
@@ -87,14 +88,14 @@ class AuthRoleController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'menus' => (new AuthMenu())->formatAllMenu(),
-                'manageOpt' => array_sum(array_keys($model->operations())),
-                'roleMenus' => $model->getRoleMenus(),
-            ]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+            'menus' => (new AuthMenu())->formatAllMenu(),
+            'manageOpt' => array_sum(array_keys($model->operations())),
+            'roleMenus' => $model->getRoleMenus(),
+        ]);
     }
 
     /**

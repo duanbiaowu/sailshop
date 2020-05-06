@@ -2,36 +2,53 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\content\ArticleCategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var array $categories */
 
-$this->title = 'Article Categories';
+$this->title = '文章分类';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="article-category-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a('Create Article Category', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('创建文章分类', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th width="50%">分类名称</th>
+            <th width="25%">排序值</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($categories as $index => $category): ?>
+        <tr>
+            <td class="js-category-top">
+                <?= str_repeat('──', $category['depth'] * 2) ?>
+                <?= $category['name'] ?>
+            </td>
 
-            'id',
-            'name',
-            'parent_id',
-            'sort',
+            <td><?= $category['sort'] ?></td>
+            <td class="text-center">
+                <?= Html::a(Yii::t('System', 'Update'), Url::toRoute(['/content/article-category/update', 'id' => $category['id']]), ['class' => 'btn btn-primary btn-sm']) ?>
+                <?= Html::a(Yii::t('System', 'Delete'), Url::toRoute(['/content/article-category/delete', 'id' => $category['id']]), [
+                    'class' => 'btn btn-danger btn-sm',
+                    'data' => [
+                        'confirm' => Yii::t('System', 'common_delete_confirm'),
+                        'method' => 'post',
+                    ],
+                ]) ?>
+            </td>
+        </tr>
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+        <?php endforeach; ?>
 
+        </tbody>
+    </table>
 </div>

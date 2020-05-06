@@ -75,7 +75,8 @@ class BookSearch extends Book
             ->andFilterWhere(['like', 'show_pictures', $this->show_pictures])
             ->andFilterWhere(['like', 'translator', $this->translator])
             ->andFilterWhere(['like', 'binding', $this->binding])
-            ->andFilterWhere(['like', 'introduce', $this->introduce]);
+            ->andFilterWhere(['like', 'introduce', $this->introduce])
+            ->orderBy(['create_time' => SORT_DESC]);
 
         return $dataProvider;
     }

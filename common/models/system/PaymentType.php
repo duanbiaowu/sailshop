@@ -14,9 +14,16 @@ use Yii;
  * @property string $description
  * @property integer $sort
  * @property integer $status
+ * @property string $logo
  */
 class PaymentType extends \yii\db\ActiveRecord
 {
+    const ENABLE_STATUS = 0x01;
+
+    const DISABLE_STATUS = 0x00;
+
+    const DEPOSIT_PAY_TYPE = 0x01;
+
     /**
      * @inheritdoc
      */
@@ -33,7 +40,7 @@ class PaymentType extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['sort', 'status'], 'integer'],
-            [['name', 'app_key'], 'string', 'max' => 128],
+            [['name', 'app_key', 'logo'], 'string', 'max' => 128],
             [['app_secret'], 'string', 'max' => 256],
             [['description'], 'string', 'max' => 1024]
         ];
@@ -46,12 +53,13 @@ class PaymentType extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => Yii::t('System', 'Payment Name'),
             'app_key' => 'App Key',
             'app_secret' => 'App Secret',
-            'description' => 'Description',
-            'sort' => 'Sort',
-            'status' => 'Status',
+            'description' => Yii::t('System', 'Payment Description'),
+            'sort' => Yii::t('System', 'Payment Sort'),
+            'status' => Yii::t('System', 'Payment Status'),
+            'logo' => 'Logo',
         ];
     }
 }

@@ -34,8 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'siteName'); ?>
 
-        <?= $form->field($model, 'siteLogo'); ?>
-
         <?= $form->field($model, 'keyword'); ?>
 
         <?= $form->field($model, 'description')->textarea(['rows' => 3]); ?>

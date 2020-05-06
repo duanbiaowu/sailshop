@@ -19,20 +19,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php foreach ($freightTemplates as $template): ?>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong class="text-danger"><?= $template['name'] ?></strong>
+            <strong><?= $template['name'] ?></strong>
             <div class="pull-right">
-                <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/system/freight-template/view', 'id' => $template['id']], [
-                    'class' => 'text-danger',
+                <?= Html::a('<span>查看</span>', ['/system/freight-template/view', 'id' => $template['id']], [
+
                 ]) ?>
                 &nbsp;&nbsp;&nbsp;&nbsp;
 
-                <?= Html::a('<span class="glyphicon glyphicon-edit"></span>', ['/system/freight-template/update', 'id' => $template['id']], [
-                    'class' => 'text-danger',
+                <?= Html::a('<span>编辑</span>', ['/system/freight-template/update', 'id' => $template['id']], [
+
                 ]) ?>
                 &nbsp;&nbsp;&nbsp;&nbsp;
 
-                <?= Html::a('<span class="glyphicon glyphicon-remove"></span>', ['/system/freight-template/delete', 'id' => $template['id']], [
-                    'class' => 'text-danger',
+                <?= Html::a('<span>删除</span>', ['/system/freight-template/delete', 'id' => $template['id']], [
                     'data' => [
                         'confirm' => Yii::t('System', 'common_delete_confirm'),
                         'method' => 'post',
@@ -54,31 +53,34 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tbody class="js-template-container">
                 <tr>
                     <td height="50">
-                        <div class="col-sm-9">
+                        <div class="col-sm-3">
                             <strong><?= Yii::t('System', 'Freight Template Default'); ?></strong>
                         </div>
                         <div class="col-sm-3">
-                            <?php if ($template['districts']): ?>
-                            <a href="javascript:;" class="js-district-view"><strong>查看指定城市运费</strong></a>
-                            <?php endif; ?>
+                            <strong>全国</strong>
                         </div>
                     </td>
                     <td class="text-primary text-center"><?= $template['weight'] ?></td>
-                    <td class="text-danger text-center"><?= $template['weight'] ?></td>
-                    <td class="text-primary text-center"><?= $template['weight'] ?></td>
-                    <td class="text-danger text-center"><?= $template['weight'] ?></td>
+                    <td class="text-danger text-center"><?= $template['cost'] ?></td>
+                    <td class="text-primary text-center"><?= $template['append_weight'] ?></td>
+                    <td class="text-danger text-center"><?= $template['append_cost'] ?></td>
                 </tr>
                 <?php foreach ($template['districts'] as $district): ?>
-                <tr class="js-template-district" style="display: none;">
+                <tr class="js-template-district">
                     <td>
+                        <div class="col-sm-3">
+                            <strong>其他地区</strong>
+                        </div>
+                        <div class="col-sm-9">
                         <?php foreach($district['name'] as $name): ?>
-                            <div class="col-sm-3"><strong><?= $name; ?></strong></div>
+                            <div class="col-sm-3"><?= $name; ?></div>
                         <?php endforeach; ?>
+                        </div>
                     </td>
                     <td class="text-primary text-center"><?= $district['weight'] ?></td>
-                    <td class="text-danger text-center"><?= $district['weight'] ?></td>
-                    <td class="text-primary text-center"><?= $district['weight'] ?></td>
-                    <td class="text-danger text-center"><?= $district['weight'] ?></td>
+                    <td class="text-danger text-center"><?= $district['cost'] ?></td>
+                    <td class="text-primary text-center"><?= $district['append_weight'] ?></td>
+                    <td class="text-danger text-center"><?= $district['append_cost'] ?></td>
                 </tr>
                 <?php endforeach; ?>
                 </tbody>

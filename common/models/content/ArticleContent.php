@@ -46,10 +46,10 @@ class ArticleContent extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'category_id' => 'Category ID',
-            'content' => 'Content',
-            'create_time' => 'Create Time',
+            'title' => '标题',
+            'category_id' => '分类',
+            'content' => '内容',
+            'create_time' => '发布时间',
         ];
     }
 

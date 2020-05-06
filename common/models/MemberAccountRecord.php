@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $member_id
+ * @property integer $type
  * @property string $value
  * @property string $remark
  * @property string $create_time
@@ -17,6 +18,10 @@ use Yii;
  */
 class MemberAccountRecord extends \yii\db\ActiveRecord
 {
+    const TYPE_DEPOSIT = 0x01;
+
+    const TYPE_EXPENSE = 0x02;
+
     /**
      * @inheritdoc
      */
@@ -59,5 +64,16 @@ class MemberAccountRecord extends \yii\db\ActiveRecord
     public function getMember()
     {
         return $this->hasOne(Member::className(), ['id' => 'member_id']);
+    }
+
+    /**
+     * @return array
+     */
+    public static function typeLabels()
+    {
+        return [
+            self::TYPE_DEPOSIT => '充值',
+            self::TYPE_EXPENSE => '消费',
+        ];
     }
 }

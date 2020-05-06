@@ -60,4 +60,25 @@ class RoleMenuPermission extends \yii\db\ActiveRecord
     {
         return $this->hasOne(MenuPermission::className(), ['id' => 'permission_id']);
     }
+
+    /**
+     * @param int $roleId
+     * @param array $permissionIds
+     * @throws \yii\db\Exception
+     */
+    public static function flushPermission($roleId, $permissionIds)
+    {
+        RoleMenuPermission::deleteAll(['role_id' => $roleId]);
+        $values = [];
+        foreach ($permissionIds as $permissionId) {
+            $values[] = [
+                'role_id' => (int)$roleId,
+                'permission_id' => (int)$permissionId,
+            ];
+        }
+        Yii::$app->db->createCommand()->batchInsert(RoleMenuPermission::tableName(),
+            ['role_id', 'permission_id'],
+            $values
+        )->execute();
+    }
 }

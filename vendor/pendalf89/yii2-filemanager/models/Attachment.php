@@ -125,7 +125,7 @@ class Attachment extends ActiveRecord
         $absolutePath = Yii::getAlias($routes['basePath']) . $relativePath;
 
         if (!is_dir($absolutePath)) {
-            mkdir($absolutePath, 0770, true);
+            mkdir($absolutePath, 0755, true);
         }
 
         $this->file = UploadedFile::getInstance($this, 'file');

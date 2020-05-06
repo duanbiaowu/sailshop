@@ -2,9 +2,15 @@
 
 namespace backend\controllers\goods;
 
+use common\models\goods\Author;
+use common\models\goods\AuthorGoods;
+use common\models\goods\BookAuthor;
+use common\models\goods\Brand;
+use common\models\goods\Category;
 use Yii;
 use common\models\goods\Book;
 use common\models\goods\BookSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -38,6 +44,8 @@ class BookController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'categories' => Category::find()->indexBy('id')->asArray()->all(),
+            'brands' => Brand::find()->indexBy('id')->asArray()->all(),
         ]);
     }
 
@@ -62,11 +70,26 @@ class BookController extends Controller
     {
         $model = new Book();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->isbn]);
+        $data = Yii::$app->request->post();
+        if ($model->load($data) && $model->save()) {
+            BookAuthor::deleteAll(['isbn' => $model->isbn]);
+            if (isset($data['Book']['author_id']) && is_array($data['Book']['author_id'])) {
+                foreach ($data['Book']['author_id'] as $authorId) {
+                    $bookAuthor = new BookAuthor();
+                    $bookAuthor->isbn = $model->isbn;
+                    $bookAuthor->author_id = $authorId;
+                    $bookAuthor->save();
+                }
+            }
+
+            Yii::$app->session->setFlash('success', '图书信息创建成功');
+            return $this->redirect('index');
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'categories' => $this->findAllCategories(),
+                'brands' => Brand::find()->asArray()->all(),
+                'authors' => Author::find()->asArray()->all(),
             ]);
         }
     }
@@ -81,11 +104,27 @@ class BookController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->isbn]);
+        $data = Yii::$app->request->post();
+        if ($model->load($data) && $model->save()) {
+            BookAuthor::deleteAll(['isbn' => $model->isbn]);
+            if (isset($data['Book']['author_id']) && is_array($data['Book']['author_id'])) {
+                foreach ($data['Book']['author_id'] as $authorId) {
+                    $bookAuthor = new BookAuthor();
+                    $bookAuthor->isbn = $model->isbn;
+                    $bookAuthor->author_id = $authorId;
+                    $bookAuthor->save();
+                }
+            }
+
+            Yii::$app->session->setFlash('success', '图书信息更新成功');
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'categories' => $this->findAllCategories(),
+                'brands' => Brand::find()->asArray()->all(),
+                'authors' => Author::find()->asArray()->all(),
+                'bookAuthors' => $model->getAuthors()->indexBy('author_id')->asArray()->all(),
             ]);
         }
     }
@@ -100,7 +139,13 @@ class BookController extends Controller
     {
         $this->findModel($id)->delete();
 
+        Yii::$app->session->setFlash('success', '图书信息删除成功');
         return $this->redirect(['index']);
+    }
+
+    public function actionSlideForm()
+    {
+        return $this->renderAjax('slide_form');
     }
 
     /**
@@ -117,5 +162,20 @@ class BookController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    protected function findAllCategories()
+    {
+        $categories = Category::find()
+            ->indexBy('id')
+            ->asArray()
+            ->all();
+
+        $categories = ArrayHelper::toDepthIndexStructure(ArrayHelper::toTreeStructure($categories));
+        $result = [];
+        foreach ($categories as $category) {
+            $result[$category['id']] = str_repeat('──', $category['depth']) . $category['name'];
+        }
+        return $result;
     }
 }

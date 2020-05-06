@@ -10,7 +10,10 @@
 
 $this->title = '系统信息';
 $this->params['breadcrumbs'][] = $this->title;
-?>
+
+use common\models\goods\Book;
+use common\models\Member;
+use common\models\order\Order; ?>
 
 <div class="row">
     <div class="col-lg-3 col-md-6">
@@ -21,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <i class="fa fa-user-plus fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">26</div>
+                        <div class="huge"><?= Member::find()->count() ?></div>
                         <div>会员总数</div>
                     </div>
                 </div>
@@ -43,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <i class="fa fa-tasks fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">12</div>
+                        <div class="huge"><?= Book::find()->count() ?></div>
                         <div>商品总数</div>
                     </div>
                 </div>
@@ -65,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <i class="fa fa-shopping-cart fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">124</div>
+                        <div class="huge"><?= Order::find()->count() ?></div>
                         <div>订单总数</div>
                     </div>
                 </div>
@@ -87,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <i class="fa fa-support fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">13</div>
+                        <div class="huge"><?= Order::find()->andWhere(['<>', 'status', Order::CONFIRMED_STATUS])->count() ?></div>
                         <div>待处理订单</div>
                     </div>
                 </div>
@@ -113,7 +116,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 系统名称
             </div>
             <div class="panel-body">
-                SailShop System
+                扬帆书店管理后台系统
             </div>
         </div>
     </div>
@@ -143,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 作者
             </div>
             <div class="panel-body">
-                <a href="https://github.com/duanbiaowu" target="_blank">游梦惊园</a>
+                <a href="https://github.com/duanbiaowu" target="_blank">段彪武</a>
             </div>
         </div>
     </div>

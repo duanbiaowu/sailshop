@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "{{%user_role}}".
  *
- * @property string $user_id
+ * @property integer $user_id
  * @property integer $role_id
  */
 class UserRole extends \yii\db\ActiveRecord
@@ -27,8 +27,7 @@ class UserRole extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'role_id'], 'required'],
-            [['role_id'], 'integer'],
-            [['user_id'], 'string', 'max' => 32]
+            [['user_id', 'role_id'], 'integer'],
         ];
     }
 

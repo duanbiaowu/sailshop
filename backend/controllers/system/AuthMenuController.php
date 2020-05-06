@@ -2,9 +2,12 @@
 
 namespace backend\controllers\system;
 
+use backend\models\system\MenuPermission;
 use Yii;
 use backend\models\system\AuthMenu;
 use backend\models\system\AuthMenuSearch;
+use yii\helpers\ArrayHelper;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,10 +35,10 @@ class AuthMenuController extends Controller
      */
     public function actionIndex()
     {
-        $model = new AuthMenu();
+        $menus = AuthMenu::getAllMenus();
 
         return $this->render('index', [
-            'categories' => $model->formatAllMenu(),
+            'categories' => ArrayHelper::toTreeStructure($menus),
         ]);
     }
 
@@ -61,7 +64,8 @@ class AuthMenuController extends Controller
         $model = new AuthMenu();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '菜单创建成功');
+            return $this->redirect('index');
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -81,7 +85,8 @@ class AuthMenuController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '菜单更新成功');
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -99,8 +104,71 @@ class AuthMenuController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', '菜单删除成功');
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * 修改角色权限
+     * @param int $id
+     * @return string|\yii\web\Response
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionPermission($id)
+    {
+        $model = $this->findModel($id);
+        $permissions = $model->getPermissions()
+            ->all();
+
+        if ($data = Yii::$app->request->post()) {
+            if (isset($data['name']) && is_array($data['name']) &&
+                isset($data['method']) && is_array($data['method'])) {
+
+                foreach (array_filter($data['name']) as $index => $name) {
+                    if (!isset($data['method'][$index]) || !$data['method'][$index]) {
+                        continue;
+                    }
+                    $query = isset($data['query'][$index]) ? $data['query'][$index] : null;
+
+                    if ($permissions[$index]) {
+                        $permission = $permissions[$index];
+                    } else {
+                        $permission = new MenuPermission();
+                    }
+                    $permission->setAttributes([
+                        'menu_id' => $model->id,
+                        'name' => $name,
+                        'method' => $data['method'][$index],
+                        'query' => $query
+                    ]);
+                    $permission->save();
+                }
+                $start = count($data['name']);
+            } else {
+                $start = 0;
+            }
+
+            for ($end = count($permissions); $start < $end; ++$start) {
+                $permission = $permissions[$start];
+                $permission->delete();
+            }
+
+            Yii::$app->session->setFlash('success', '菜单权限更新成功');
+            return $this->redirect('index');
+        }
+
+        $formatPermissions = [];
+        foreach ($permissions as $permission) {
+            $formatPermissions[] = $permission->getAttributes();
+        }
+
+        return $this->render('_permission', [
+            'model' => $model,
+            'permissions' => $formatPermissions,
+        ]);
     }
 
     /**

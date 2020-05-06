@@ -5,14 +5,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\system\PaymentType */
 
-$this->title = 'Update Payment Type: ' . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Payment Types', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = Yii::t('System', 'Update Payment Type') . ' ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('System', 'Payment Types'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = Yii::t('System', 'Update');
 ?>
 <div class="payment-type-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

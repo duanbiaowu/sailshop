@@ -5,6 +5,7 @@ namespace backend\models\system;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -12,18 +13,20 @@ use yii\web\IdentityInterface;
  * This is the model class for table "{{%user}}".
  *
  * @property integer $id
+ * @property string $nickname
  * @property string $username
  * @property string $auth_key
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
  * @property integer $status
- * @property integer $role_id
  * @property integer $created_at
  * @property integer $updated_at
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    const ROOT_ID = 1;
+
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
@@ -51,8 +54,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function scenarios()
     {
         return [
-            'default' => ['username', 'password_hash', 'email', 'role_id', 'password_reset_token', 'updated_at'],
-            'update' => ['username', 'email', 'role_id', 'password_reset_token', 'updated_at'],
+            'default' => ['username', 'nickname', 'password_hash', 'email', 'password_reset_token', 'updated_at'],
+            'update' => ['username', 'nickname', 'email', 'password_reset_token', 'updated_at'],
         ];
     }
 
@@ -62,14 +65,13 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password_hash', 'email'], 'required', 'on' => ['default', 'update']],
+            [['username', 'nickname', 'password_hash', 'email'], 'required', 'on' => ['default', 'update']],
             [['username', 'password_hash', 'email'], 'trim', 'on' => ['default', 'update']],
 //            [['password_hash'], 'required', 'on' => ['create']],
             [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255, 'on' => ['default', 'update']],
             ['password_hash', 'string', 'min' => 6, 'on' => ['default', 'update']],
             [['email'], 'email', 'on' => ['default', 'update']],
             [['email'], 'unique', 'on' => ['default', 'update']],
-            [['role_id'], 'default', 'value' => 0, 'on' => ['default', 'update']],
             [['username'], 'unique', 'on' => ['default', 'update']],
             [['password_reset_token'], 'unique', 'on' => ['default', 'update']],
             ['updated_at', 'default', 'value' => Yii::$app->formatter->asTimestamp('now'), 'on' => ['default', 'update']],
@@ -84,11 +86,11 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => Yii::t('System', 'ID'),
             'username' => Yii::t('System', 'Username'),
+            'nickname' => Yii::t('System', 'Nickname'),
             'auth_key' => Yii::t('System', 'Auth Key'),
             'password_hash' => Yii::t('System', 'Password Hash'),
             'password_reset_token' => Yii::t('System', 'Password Reset Token'),
             'email' => Yii::t('System', 'Email'),
-            'role_id' => Yii::t('System', 'User Role'),
             'status' => Yii::t('System', 'Status'),
             'created_at' => Yii::t('System', 'Created At'),
             'updated_at' => Yii::t('System', 'Updated At'),
@@ -269,5 +271,21 @@ class User extends ActiveRecord implements IdentityInterface
             self::STATUS_ACTIVE => 'success',
             self::STATUS_DELETED => 'danger',
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRoot()
+    {
+        return $this->id == self::ROOT_ID;
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getRoles()
+    {
+        return $this->hasMany(UserRole::className(), ['user_id' => 'id']);
     }
 }

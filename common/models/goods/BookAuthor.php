@@ -49,7 +49,7 @@ class BookAuthor extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIsbn0()
+    public function getIsbn()
     {
         return $this->hasOne(Book::className(), ['isbn' => 'isbn']);
     }

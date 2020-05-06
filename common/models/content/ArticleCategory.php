@@ -31,6 +31,7 @@ class ArticleCategory extends \yii\db\ActiveRecord
     {
         return [
             [['parent_id', 'sort'], 'integer'],
+            [['parent_id', 'sort'], 'default', 'value' => 0, 'on' => ['default']],
             [['name'], 'string', 'max' => 32]
         ];
     }
@@ -42,9 +43,9 @@ class ArticleCategory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'parent_id' => 'Parent ID',
-            'sort' => 'Sort',
+            'name' => '名称',
+            'parent_id' => '父级分类',
+            'sort' => '排序值',
         ];
     }
 
@@ -54,5 +55,17 @@ class ArticleCategory extends \yii\db\ActiveRecord
     public function getArticleContents()
     {
         return $this->hasMany(ArticleContent::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAllCategories()
+    {
+        return ArticleCategory::find()
+            ->orderBy(['sort' => SORT_DESC])
+            ->indexBy('id')
+            ->asArray()
+            ->all();
     }
 }

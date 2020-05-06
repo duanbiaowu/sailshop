@@ -17,7 +17,6 @@ class OtherForm extends Model
 {
     public $currencySymbol;
     public $currencyUnit;
-    public $taxRate;
     public $invoice;
     public $orderDelay;
 
@@ -25,7 +24,7 @@ class OtherForm extends Model
     {
         return [
             ['orderDelay', 'default', 'value' => 3600],
-            [['currencySymbol', 'currencyUnit', 'taxRate'], 'required'],
+            [['currencySymbol', 'currencyUnit',], 'required'],
             ['invoice', 'boolean', 'trueValue' => true, 'falseValue' => false, 'strict' => false],
         ];
     }
@@ -35,7 +34,6 @@ class OtherForm extends Model
         return [
             'currencySymbol' => Yii::t('System', 'form_other_currency_symbol'),
             'currencyUnit' => Yii::t('System', 'form_other_currency_unit'),
-            'taxRate' => Yii::t('System', 'form_other_tax_rate'),
             'invoice' => Yii::t('System', 'form_other_invoice'),
             'orderDelay' => Yii::t('System', 'form_other_order_delay'),
         ];

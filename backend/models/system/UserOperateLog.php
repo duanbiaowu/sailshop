@@ -31,7 +31,7 @@ class UserOperateLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'username', 'menu_name', 'permission', 'query'], 'required'],
+            [['user_id', 'username', 'menu_name', 'permission'], 'required'],
             [['user_id'], 'integer'],
             [['create_time'], 'safe'],
             [['username'], 'string', 'max' => 32],
@@ -46,12 +46,12 @@ class UserOperateLog extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'username' => 'Username',
-            'menu_name' => 'Menu Name',
-            'permission' => 'Permission',
-            'query' => 'Query',
-            'create_time' => 'Create Time',
+            'user_id' => '用户ID',
+            'username' => '昵称',
+            'menu_name' => '菜单名称',
+            'permission' => '操作',
+            'query' => '查询参数',
+            'create_time' => '时间',
         ];
     }
 }

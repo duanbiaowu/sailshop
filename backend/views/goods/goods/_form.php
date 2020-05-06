@@ -5,14 +5,19 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use pendalf89\filemanager\widgets\FileInput;
 
+
 /* @var $this yii\web\View */
 /* @var $model common\models\goods\Goods */
 /* @var $categories */
 /* @var $brands */
+/* @var $authors */
+/* @var $goodsAuthors */
 /* @var $attributeGroup */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $specs */
 /* @var $sku */
+
+
 ?>
 
 <?php $form = ActiveForm::begin([
@@ -40,7 +45,7 @@ use pendalf89\filemanager\widgets\FileInput;
     </li>
     <li role="presentation">
         <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">
-            <?= Yii::t('Goods', 'Goods Form Sku') ?>
+            作者信息
         </a>
     </li>
     <li role="presentation">
@@ -61,7 +66,7 @@ use pendalf89\filemanager\widgets\FileInput;
 
                 <?= $form->field($model, 'category_id')->dropDownList($categories) ?>
 
-                <?= $form->field($model, 'unit')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'unit')->textInput(['maxlength' => true])->hint('单位(g)') ?>
 
                 <?= $form->field($model, 'thumbnail')->widget(FileInput::className(), [
                     'buttonTag' => 'button',
@@ -94,8 +99,9 @@ use pendalf89\filemanager\widgets\FileInput;
                         <div class="form-group">
                             <label class="col-sm-2 control-label"></label>
                             <div class="col-sm-6">
+                                <?php $containerId = uniqid(); ?>
                                 <?php echo FileInput::widget([
-                                    'id' => 'item-' . mt_rand(1, 102400),
+                                    'id' => 'item-' . $containerId,
                                     'name' => 'Goods[show_pictures][]',
                                     'value' => $picture,
                                     'buttonTag' => 'button',
@@ -104,12 +110,21 @@ use pendalf89\filemanager\widgets\FileInput;
                                     'options' => ['class' => 'form-control', 'placeholder' => '请选择图片'],
                                     'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
                                     'thumb' => 'original',
-                                    'imageContainer' => '.img',
+                                    'imageContainer' => '#js-picture-container-' . $containerId,
                                     'pasteData' => FileInput::DATA_ID,
                                 ]) ?>
                             </div>
                             <div class="col-sm-2">
                                 <button type="button" class="btn btn-danger col-sm-10 js-slide-delete">删除</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: none;">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-10" id="#js-picture-container-<?= $containerId ?>">
+                                <?php if (!$model->isNewRecord): ?>
+                                    <?= Html::img($picture, ['title' => $model->name, 'width' => 150]) ?>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <?php endforeach; ?>
@@ -129,8 +144,8 @@ use pendalf89\filemanager\widgets\FileInput;
             <div role="tabpanel" class="tab-pane" id="profile">
                 <div class="form-group">
                 <?php foreach ($brands as $brand): ?>
-                    <div class="col-sm-2">
-                        <?= Html::img($brand['logo'], ['width' => '100%', 'height' => '100%']) ?>
+                    <div class="col-sm-3 text-center">
+                        <?= Html::img($brand['logo'], ['width' => '75%']) ?>
                         <div class="help-block text-center">
                             <?= Html::radio('Goods[brand_id]', $model->brand_id == $brand['id'], [
                                 'value' => $brand['id'],
@@ -140,97 +155,20 @@ use pendalf89\filemanager\widgets\FileInput;
                     </div>
                 <?php endforeach; ?>
                 </div>
-
-                <div class="form-group">
-                    <label class="col-sm-2 control-label"><?= Yii::t('Goods', 'Goods Attribute Group'); ?></label>
-                    <div class="col-sm-6">
-                        <?= Html::dropDownList('attribute_group', $model->attributes['index'], $attributeGroup, [
-                            'class' => 'form-control',
-                            'prompt' => Yii::t('Goods', 'attribute_form_title'),
-                            'v-model' => 'attribute',
-                            'v-on:change' => 'renderAttribute'
-                        ]) ?>
-                    </div>
-                </div>
-                <div class="form-group" v-for="form in attributeForms">
-                    <label class="col-sm-2 control-label">{{form.name}}</label>
-                    <div class="col-sm-6">
-                        {{{form.html}}}
-                    </div>
-                </div>
             </div>
 
             <div role="tabpanel" class="tab-pane" id="messages">
-                <?php
-                Modal::begin([
-                    'header' => '<h4 class="modal-title">' . Yii::t('Goods', 'Goods Form Sku Select') . '</h4>',
-                    'options' => [
-                        'id' => 'js-spec-form',
-                        'backdrop' => 'static',
-                        'keyboard' => 'false',
-                    ],
-                    'size' => 'modal-lg',
-                    'toggleButton' => [
-                        'tag' => 'button',
-                        'label' => Yii::t('Goods', 'Goods Form Sku Select'),
-                        'class' => 'btn btn-success',
-                    ],
-                    'footer' => '<button type="button" class="btn btn-default" v-on:click="renderSkuTable" data-dismiss="modal">生成规格表格</button><button class="btn btn-default" data-dismiss="modal">关闭</button>'
-                ]);
-
-                echo $this->render('sku_form', [
-                    'model' => $model,
-                    'specs' => $specs,
-                    'sku' => $model->isNewRecord ? [] : $sku,
-                ]);
-
-                Modal::end();
-                ?>
-
-                <button style="display: none;" type="button" class="btn btn-success col-sm-2 pull-right" v-on:click="skuBatchSetting">批量设置价格库存</button>
-
-                <div class="form-group"></div>
-
-                <table class="table" v-bind:style="{display: skuBatchInfo.status}">
-                    <tbody>
-                        <tr>
-                            <th width="40%">
-                                <span class="glyphicon glyphicon-info-sign"></span>
-                                请填写价格库存,属性值和表格相对应。
-                            </th>
-                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.cost_price"></th>
-                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.market_price"></th>
-                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.sale_price"></th>
-                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.stock"></th>
-                            <th width="12%"><input type="text" class="form-control" v-on:blur="skuBatchSetting" v-model="skuBatchInfo.items.weight"></th>
-                        </tr>
-                    </tbody>
-
-                </table>
-
-                <table class="table table-bordered text-center">
-                    <thead>
-                        <tr>
-                            <th class="text-center" width="40%">名称</th>
-                            <th class="text-center" width="12%">成本价格</th>
-                            <th class="text-center" width="12%">市场价格</th>
-                            <th class="text-center" width="12%">销售价格</th>
-                            <th class="text-center" width="12%">库存</th>
-                            <th class="text-center" width="12%">重量</th>
-                        </tr>
-                    </thead>
-                    <tbody id="js-sku-combination">
-                        <tr v-for="item in skuCombination">
-                            <td>{{item.name}}</td>
-                            <td><input type="text" name="cost_price[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].cost_price}}"></td>
-                            <td><input type="text" name="market_price[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].market_price}}"></td>
-                            <td><input type="text" name="sale_price[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].sale_price}}"></td>
-                            <td><input type="text" name="stock[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].stock}}"></td>
-                            <td><input type="text" name="weight[{{item.index}}]" class="form-control" v-on:blur="format($event)" value="{{skuCombinationValue[item.index].weight}}"></td>
-                        </tr>
-                    </tbody>
-                </table>
-
+                <?php foreach ($authors as $author): ?>
+                    <div class="col-sm-3 text-center">
+                        <?= Html::img($author['logo'], ['width' => '75%', 'height' => 150]) ?>
+                        <div class="help-block text-center">
+                            <?= Html::checkbox('Goods[author_id][]', isset($goodsAuthors[$author['id']]), [
+                                'value' => $author['id'],
+                                'label' => '&nbsp;&nbsp;' . $author['name']
+                            ]) ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
 
             <div role="tabpanel" class="tab-pane" id="settings">
@@ -256,10 +194,7 @@ use pendalf89\filemanager\widgets\FileInput;
 ]) ?>
 
 <?php $this->registerJs(
-    '   Goods.attributeValue = ' . ($model->attributes['items'] === null ? "{}" : $model->attributes['items']) . ';
-        Goods.skuCombinationValue=  ' . ($model->isNewRecord ?  "[]"  : json_encode($sku['items'])) . ';
-        Goods.renderAttribute();
-        Goods.renderSkuTable(); ' .
+
 
     <<<EOF
     $('#js-slide-append').on('click', function() {

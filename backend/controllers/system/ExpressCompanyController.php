@@ -71,6 +71,7 @@ class ExpressCompanyController extends Controller
         $model = new ExpressCompany();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', '物流公司创建成功');
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -90,7 +91,8 @@ class ExpressCompanyController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '物流公司更新成功');
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,

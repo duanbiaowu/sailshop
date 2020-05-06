@@ -3,10 +3,9 @@
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 
-/* @var $model \frontend\models\PasswordResetRequestForm */
+/* @var $model MemberShippingAddress */
 
-/* @var string $testToken */
-
+use common\models\MemberShippingAddress;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\web\View;
@@ -67,13 +66,12 @@ use yii\web\View;
 
             <li class="line caption">
                 <label class="caption">收货人姓名：</label>
-                <input type="text" pattern="required" name="MemberShippingAddress[name]" maxlen="10" class="field" value=""
-                       alt="不为空，且长度不得超过10个字">
+                <input type="text" pattern="required" name="MemberShippingAddress[name]" maxlen="10" class="field" value="<?= $model->name ?>" alt="不为空，且长度不得超过10个字">
                 <label></label>
             </li>
             <li class="line caption">
                 <label class="caption">手机号码：</label>
-                <input type="text" class="field" pattern="mobi" name="MemberShippingAddress[mobile]" value="" alt="手机号码格式错误">
+                <input type="text" class="field" pattern="mobi" name="MemberShippingAddress[mobile]" value="<?= $model->mobile ?>" alt="手机号码格式错误">
                 <label></label>
             </li>
             <li class="line other" id="areas">
@@ -92,20 +90,21 @@ use yii\web\View;
             </li>
             <li class="line caption">
                 <label class="caption">邮政编码：</label>
-                <input class="field" type="text" name="MemberShippingAddress[remark]" pattern="zip" value="" alt="邮政编码错误">
+                <input class="field" type="text" name="MemberShippingAddress[remark]" pattern="zip" value="<?= $model->remark ?>" alt="邮政编码错误">
             </li>
             <li class="line other">
                 <label for="" class="caption">设为默认：</label>
-                <input type="checkbox" id="is_default" class="magic-checkbox" name="MemberShippingAddress[is_default]" value="1"> <label
-                        for="is_default">设置为默认收货地址</label>
+                <input type="checkbox" id="is_default" class="magic-checkbox" name="MemberShippingAddress[is_default]" value="<?= $model->is_default ?>" <?php if ($model->is_default): ?>checked<?php endif; ?>>
+                <label for="is_default">设置为默认收货地址</label>
             </li>
             <li class="line textarea">
                 <label class="caption">街道地址：</label>
                 <textarea name="MemberShippingAddress[detail_address]" pattern="required" minlen="5" maxlen="120" alt="不需要重复填写省市区，必须大于5个字符，小于120个字符"
-                          style="width: 612px;"></textarea>
+                          style="width: 612px;"><?= $model->detail_address ?></textarea>
                 <label></label>
             </li>
             <li class="line">
+                <input type="hidden" name="default" value="" />
                 <input type="hidden" name="MemberShippingAddress[province_name]" value="" />
                 <input type="hidden" name="MemberShippingAddress[city_name]" value="" />
                 <input type="hidden" name="MemberShippingAddress[district_name]" value="" />
@@ -117,9 +116,8 @@ use yii\web\View;
 
 <script type="text/javascript">
     var form = new Form('address-form');
-    form.setValue('is_default', '');
     $("#areas").Linkage({
-        url: "/themes/default/js/area.js", selected: [0, 0, 0], callback: function (data) {
+        url: "/themes/default/js/area.js", selected: [<?= $model->province_id ?>,<?= $model->city_id ?>,<?= $model->district_id ?>], callback: function (data) {
             var text = [];
             var value = [];
             for (i in data[0]) {
@@ -134,6 +132,7 @@ use yii\web\View;
     });
 
     $('#address-form').on('submit', function() {
+        $('input[name="default"]').val( $('input[name="MemberShippingAddress[is_default]"]').prop('checked') ? 1 : 0 );
         $('input[name="MemberShippingAddress[province_name]"]').val( $('#province').find("option:selected").text() );
         $('input[name="MemberShippingAddress[city_name]"]').val( $('#city').find("option:selected").text() );
         $('input[name="MemberShippingAddress[district_name]"]').val( $('#county').find("option:selected").text() );

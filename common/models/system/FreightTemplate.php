@@ -156,4 +156,45 @@ class FreightTemplate extends \yii\db\ActiveRecord
         FreightTemplate::updateAll(['default' => 1], ['parent_id' => $this->id]);
     }
 
+    /**
+     * @param int $weight
+     * @param int $cId
+     * @param int $dId
+     * @return int
+     */
+    public function calcPrice($weight, $cId, $dId)
+    {
+        $districts = $this->districts();
+        $index = null;
+        foreach ($districts['name'] as $key => $district) {
+            foreach ($district['cities'] as $city) {
+                if ($city['id'] == $dId) {
+                    $index = $key;
+                    break 2;
+                } else if ($city['id'] == $cId) {
+                    $index = $key;
+                }
+            }
+        }
+
+        $price = 0;
+        if ($index === null) {
+            $price += $this->cost;
+            if ($weight <= $this->weight) {
+                return $price;
+            }
+            $weight -= $this->weight;
+            $price += (int)ceil($weight / $this->append_weight) * $this->append_cost;
+        } else {
+            $price += $districts['attributes'][$index]['cost'];
+            if ($weight <= $districts['attributes'][$index]['weight']) {
+                return $price;
+            }
+            $weight -= $districts['attributes'][$index]['weight'];
+            $price += (int)ceil($weight / $districts['attributes'][$index]['append_weight']) *
+                $districts['attributes'][$index]['append_cost'];
+        }
+
+        return $price;
+    }
 }

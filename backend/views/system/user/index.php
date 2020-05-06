@@ -1,12 +1,14 @@
 <?php
 
+use backend\models\system\User;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\system\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $roles */
+/* @var User $model */
+/* @var array $roles */
 
 $this->title = Yii::t('System', 'Users');
 $this->params['breadcrumbs'][] = $this->title;
@@ -18,27 +20,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'tableOptions' => ['class' => 'table table-striped table-bordered text-center'],
 
         'columns' => [
             [
-                'attribute' => 'username',
-                'headerOptions' => ['class' => 'text-center', 'width' => '20%'],
+                'attribute' => 'nickname',
+                'headerOptions' => ['class' => 'text-center', 'width' => '12%'],
             ],
             [
-                'attribute' => 'role_id',
                 'format' => 'raw',
-                'value' => function($model) {
-                    $roles = \backend\models\system\AuthRole::getAuthRoles();
-                    if (isset($roles[$model->role_id])) {
-                        return $roles[$model->role_id];
+                'value' => function($model) use ($roles) {
+                    $result = [];
+                    foreach ($model->getRoles()->asArray()->all() as $value) {
+                        $result[] = $roles[$value['role_id']]['name'];
                     }
+                    return implode('&nbsp;&nbsp;', $result);
                 },
-                'filter' => Html::activeDropDownList($searchModel, 'role_id', \backend\models\system\AuthRole::getAuthRoles(), [
-                    'class' => 'form-control',
-                    'prompt' => Yii::t('System', 'common_whole'),
-                ]),
                 'headerOptions' => ['class' => 'text-center', 'width' => '11%'],
             ],
             [
@@ -75,8 +73,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => '',
                 'headerOptions' => ['class' => 'text-center', 'width' => '12%'],
             ],
+            [
+                'format' => 'raw',
+                'value' => function($model) {
+                    return Html::a('角色设置', ['/system/user/role', 'id' => $model->id], [
+                        'class' => 'btn btn-warning btn-sm',
+                    ]);
+                }
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}&nbsp;&nbsp;{delete}',
+            ],
         ],
     ]); ?>
 

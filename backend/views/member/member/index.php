@@ -8,7 +8,6 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\system\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var User $model */
-/* @var array $roles */
 
 $this->title = Yii::t('System', 'Users');
 $this->params['breadcrumbs'][] = $this->title;
@@ -25,19 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
         'columns' => [
             [
-                'attribute' => 'nickname',
+                'attribute' => 'username',
                 'headerOptions' => ['class' => 'text-center', 'width' => '12%'],
-            ],
-            [
-                'format' => 'raw',
-                'value' => function($model) use ($roles) {
-                    $result = [];
-                    foreach ($model->getRoles()->asArray()->all() as $value) {
-                        $result[] = $roles[$value['role_id']]['name'];
-                    }
-                    return implode('&nbsp;&nbsp;', $result);
-                },
-                'headerOptions' => ['class' => 'text-center', 'width' => '11%'],
             ],
             [
                 'attribute' => 'email',
@@ -72,14 +60,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => '',
                 'headerOptions' => ['class' => 'text-center', 'width' => '12%'],
-            ],
-            [
-                'format' => 'raw',
-                'value' => function($model) {
-                    return Html::a('角色设置', ['/system/user/role', 'id' => $model->id], [
-                        'class' => 'btn btn-warning btn-sm',
-                    ]);
-                }
             ],
 
             [

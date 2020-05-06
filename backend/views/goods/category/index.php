@@ -23,10 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <span v-if="option.length" v-on:click="fold($index, option.length)" class="glyphicon glyphicon-{{option.css}}" aria-hidden="true"></span>
             {{option.name}}
 
-            <div class="pull-right col-sm-2">
-                <span class="glyphicon glyphicon-eye-open col-sm-4" v-on:click="operation(option.view)" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-edit col-sm-4" v-on:click="operation(option.update)" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-remove col-sm-2" v-on:click="operation(option.delete)" aria-hidden="true"></span>
+            <div class="pull-right col-sm-3">
+                <span class="col-sm-4" v-on:click="operation(option.view)" aria-hidden="true"></span>
+                <span class="col-sm-4" v-on:click="operation(option.update)" aria-hidden="true">编辑</span>
+                <span class="col-sm-4" v-on:click="operation(option.delete)" aria-hidden="true">删除</span>
             </div>
         </a>
     </div>

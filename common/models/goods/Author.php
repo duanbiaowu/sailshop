@@ -44,11 +44,11 @@ class Author extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => '名字',
             'url' => 'Url',
-            'logo' => 'Logo',
-            'sort' => 'Sort',
-            'available' => 'Available',
+            'logo' => '照片',
+            'sort' => '排序',
+            'available' => '状态',
         ];
     }
 }

@@ -63,7 +63,8 @@ class AuthorController extends Controller
         $model = new Author();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '作者创建成功');
+            return $this->redirect('index');
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -82,7 +83,8 @@ class AuthorController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '作者更新成功');
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -99,6 +101,7 @@ class AuthorController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', '作者删除成功');
 
         return $this->redirect(['index']);
     }

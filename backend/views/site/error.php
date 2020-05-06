@@ -13,7 +13,7 @@ $this->title = '页面找不到啦！';
 <div class="form-group">
 
     <div class="jumbotron text-left">
-        <h1 class="text-info"><?= $exception->getCode() | 404 ?></h1>
+        <h1 class="text-info"><?= $exception->getCode() | $exception->statusCode ?></h1>
 
         <h4><?= Yii::t('System', $message) ?></h4>
 

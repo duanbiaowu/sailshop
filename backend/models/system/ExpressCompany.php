@@ -55,12 +55,12 @@ class ExpressCompany extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => Yii::t('system', 'form_express_company_name'),
-            'identifier' => Yii::t('system', 'form_express_company_identifier'),
-            'code' => Yii::t('system', 'form_express_company_code'),
-            'url' => Yii::t('system', 'form_express_company_url'),
-            'sort' => Yii::t('system', 'form_express_company_sort'),
-            'available' => Yii::t('system', 'form_express_company_available'),
+            'name' => Yii::t('System', 'form_express_company_name'),
+            'identifier' => Yii::t('System', 'form_express_company_identifier'),
+            'code' => Yii::t('System', 'form_express_company_code'),
+            'url' => Yii::t('System', 'form_express_company_url'),
+            'sort' => Yii::t('System', 'form_express_company_sort'),
+            'available' => Yii::t('System', 'form_express_company_available'),
         ];
     }
 

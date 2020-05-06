@@ -2,6 +2,7 @@
 
 namespace common\models\order;
 
+use common\models\goods\Book;
 use Yii;
 
 /**
@@ -49,16 +50,16 @@ class OrderAppraise extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'order_id' => 'Order ID',
-            'isbn' => 'Isbn',
-            'content' => 'Content',
-            'score' => 'Score',
+            'order_id' => '订单ID',
+            'isbn' => '图书Isbn',
+            'content' => '内容',
+            'score' => '评分',
             'create_time' => 'Create Time',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * 获取评论订单信息
      */
     public function getOrder()
     {
@@ -66,7 +67,7 @@ class OrderAppraise extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * 获取评论图书信息
      */
     public function getIsbn0()
     {

@@ -6,14 +6,14 @@
  * @version 1.0
  */
 
-namespace frontend\controllers;
+namespace frontend\controllers\member;
 
 
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
-class UserController extends Controller
+class PasswordController extends Controller
 {
     /**
      * @inheritdoc
@@ -38,12 +38,12 @@ class UserController extends Controller
         ];
     }
 
-    public function actionSafety()
+    public function actionIndex()
     {
-        return $this->render('safety');
+        return $this->render('index');
     }
 
-    public function actionResetPassword()
+    public function actionReset()
     {
         if (\Yii::$app->getRequest()->isPost) {
             $password = \Yii::$app->getRequest()->getBodyParam('oldPassword');
@@ -58,6 +58,6 @@ class UserController extends Controller
             }
         }
 
-        return $this->render('resetPassword');
+        return $this->render('reset');
     }
 }

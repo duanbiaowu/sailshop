@@ -4,6 +4,8 @@ namespace backend\controllers\goods;
 
 use common\models\Available;
 use common\models\goods\Attribute;
+use common\models\goods\Author;
+use common\models\goods\AuthorGoods;
 use common\models\goods\Brand;
 use common\models\goods\GoodsSku;
 use common\models\goods\Specifications;
@@ -44,6 +46,8 @@ class GoodsController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'categories' => Category::find()->indexBy('id')->asArray()->all(),
+            'brands' => Brand::find()->indexBy('id')->asArray()->all(),
         ]);
     }
 
@@ -73,7 +77,18 @@ class GoodsController extends Controller
         $model = new Goods();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $data = Yii::$app->request->post('Goods');
+            if (isset($data['author_id']) && is_array($data['author_id'])) {
+                foreach ($data['author_id'] as $authorId) {
+                    $authorGoods = new AuthorGoods();
+                    $authorGoods->author_id = $authorId;
+                    $authorGoods->goods_id = $model->id;
+                    $authorGoods->save();
+                }
+            }
+
+            Yii::$app->session->setFlash('success', '图书信息创建成功');
+            return $this->redirect('index');
         } else {
             $category = new Category();
             $categories = [];
@@ -83,8 +98,8 @@ class GoodsController extends Controller
                 'model' => $model,
                 'categories' => $categories,
                 'brands' => Brand::find()->asArray()->all(),
-                'attributeGroup' => (new Attribute())->groups(false),
-                'specs' => Specifications::specFormat(),
+                'authors' => Author::find()->asArray()->all(),
+                'goodsAuthors' => $model->getGoodsAuthors()->indexBy('author_id')->all(),
             ]);
         }
     }
@@ -98,34 +113,32 @@ class GoodsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $sku = new GoodsSku();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $sku->skuUpdate($model);
-            return $this->redirect(['view', 'id' => $model->id]);
+            AuthorGoods::deleteAll(['goods_id' => $model->id]);
+            $data = Yii::$app->request->post('Goods');
+            if (isset($data['author_id']) && is_array($data['author_id'])) {
+                foreach ($data['author_id'] as $authorId) {
+                    $authorGoods = new AuthorGoods();
+                    $authorGoods->author_id = $authorId;
+                    $authorGoods->goods_id = $model->id;
+                    $authorGoods->save();
+                }
+            }
+
+            Yii::$app->session->setFlash('success', '图书信息更新成功');
+            return $this->redirect('index');
         } else {
             $category = new Category();
             $categories = [];
             $category->arrayToList( $category->arrayToTree( $category->category() ), $categories);
 
-            $skuItems = $sku->format($model);
-            $specs = Specifications::specFormat();
-
-            foreach ($specs as &$spec) {
-                foreach ($spec['children'] as $child) {
-                    if (in_array($child['id'], $skuItems['index'])) {
-                        ++$spec['total'];
-                    }
-                }
-            }
-
             return $this->render('update', [
                 'model' => $model,
                 'categories' => $categories,
                 'brands' => Brand::find()->asArray()->all(),
-                'attributeGroup' => (new Attribute())->groups(false),
-                'specs' => $specs,
-                'sku' => $skuItems,
+                'authors' => Author::find()->asArray()->all(),
+                'goodsAuthors' => $model->getGoodsAuthors()->indexBy('author_id')->all(),
             ]);
         }
     }
@@ -138,6 +151,7 @@ class GoodsController extends Controller
      */
     public function actionDelete($id)
     {
+        Yii::$app->session->setFlash('success', '图书信息删除成功');
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

@@ -65,7 +65,8 @@ class CategoryController extends Controller
         $model = new Category();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '图书分类信息创建成功');
+            return $this->redirect('index');
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -85,7 +86,8 @@ class CategoryController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '图书分类信息更新成功');
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -103,6 +105,7 @@ class CategoryController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', '图书分类信息删除成功');
 
         return $this->redirect(['index']);
     }

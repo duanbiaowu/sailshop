@@ -18,8 +18,8 @@ class GoodsSearch extends Goods
     public function rules()
     {
         return [
-            [['id', 'category_id', 'brand_id', 'account_count', 'status'], 'integer'],
-            [['name', 'unit', 'thumbnail', 'attributes', 'show_pictures', 'seo_title', 'seo_keyword', 'seo_description', 'modified_time', 'create_time', 'goods_sku'], 'safe'],
+            [['id', 'category_id', 'brand_id', 'status'], 'integer'],
+            [['name', 'unit', 'thumbnail', 'attributes', 'show_pictures', 'seo_title', 'seo_keyword', 'seo_description', 'modified_time', 'create_time'], 'safe'],
         ];
     }
 
@@ -59,7 +59,6 @@ class GoodsSearch extends Goods
             'id' => $this->id,
             'category_id' => $this->category_id,
             'brand_id' => $this->brand_id,
-            'account_count' => $this->account_count,
             'status' => $this->status,
             'modified_time' => $this->modified_time,
             'create_time' => $this->create_time,
@@ -67,13 +66,10 @@ class GoodsSearch extends Goods
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'unit', $this->unit])
-            ->andFilterWhere(['like', 'thumbnail', $this->thumbnail])
-            ->andFilterWhere(['like', 'attributes', $this->attributes])
-            ->andFilterWhere(['like', 'show_pictures', $this->show_pictures])
             ->andFilterWhere(['like', 'seo_title', $this->seo_title])
             ->andFilterWhere(['like', 'seo_keyword', $this->seo_keyword])
             ->andFilterWhere(['like', 'seo_description', $this->seo_description])
-            ->andFilterWhere(['like', 'goods_sku', $this->goods_sku]);
+            ->orderBy(['id' => SORT_DESC]);
 
         return $dataProvider;
     }

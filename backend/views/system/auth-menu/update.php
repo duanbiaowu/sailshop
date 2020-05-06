@@ -6,9 +6,7 @@ use yii\helpers\Html;
 /* @var $model backend\models\system\AuthMenu */
 /* @var $categories */
 
-$this->title = Yii::t('System', 'Update {modelClass}: ', [
-    'modelClass' => 'Auth Menu',
-]) . ' ' . $model->name;
+$this->title = Yii::t('System', 'Update') . ' ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('System', 'Auth Menus'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('System', 'Update');

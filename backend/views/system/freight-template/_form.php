@@ -30,19 +30,27 @@ use yii\bootstrap\Modal;
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label"><?= Yii::t('System', 'Freight Template Default') ?></label>
+            <label class="col-sm-1 control-label"></label>
             <div class="col-sm-10">
                 <div class="col-sm-6">
-                    <?= $form->field($model, 'weight')->textInput() ?>
+                    <?= $form->field($model, 'weight')->textInput([
+                        'placeholder' => '单位(g)'
+                    ]) ?>
                  </div>
                 <div class="col-sm-6">
-                    <?= $form->field($model, 'cost')->textInput() ?>
+                    <?= $form->field($model, 'cost')->textInput([
+                        'placeholder' => '单位(元)'
+                    ]) ?>
                 </div>
                 <div class="col-sm-6">
-                    <?= $form->field($model, 'append_weight')->textInput() ?>
+                    <?= $form->field($model, 'append_weight')->textInput([
+                        'placeholder' => '单位(g)'
+                    ]) ?>
                 </div>
                 <div class="col-sm-6">
-                    <?= $form->field($model, 'append_cost')->textInput() ?>
+                    <?= $form->field($model, 'append_cost')->textInput([
+                        'placeholder' => '单位(元)'
+                    ]) ?>
                 </div>
             </div>
         </div>

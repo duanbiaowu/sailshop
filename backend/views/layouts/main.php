@@ -32,7 +32,7 @@ AppAsset::register($this);
 <div class="wrap">
 <?php
     NavBar::begin([
-        'brandLabel' => 'SailShop',
+        'brandLabel' => '扬帆书店管理后台',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-static-top',
@@ -45,14 +45,12 @@ AppAsset::register($this);
 
     if (!Yii::$app->user->isGuest) {
         $navItems = [];
-        foreach (Yii::$app->params['menus']['nav'] as $nav) {
-            if ($nav['operation']) {
-                $navItems[] = [
-                    'label' => $nav['name'],
-                    'url' => $nav['route'],
-                    'options' => Yii::$app->params['menus']['currentModule'] == $nav['route'] ? ['class' => 'active'] : [],
-                ];
-            }
+        foreach (Yii::$app->params['menus']['values'] as $index => $nav) {
+            $navItems[] = [
+                'label' => $nav['name'],
+                'url' => $nav['route'],
+                'options' => Yii::$app->params['menus']['index'] == $index ? ['class' => 'active'] : [],
+            ];
         }
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-left'],
@@ -65,12 +63,12 @@ AppAsset::register($this);
     } else {
         $menuItems[] = '<li><a href="javascript:;"><span class="badge progress-bar-success">' . date('Y-m-d', time()) . '</span></a></li>';
         $menuItems[] = [
-            'label' => '管理员：' . Yii::$app->user->identity->username,
+            'label' => Yii::$app->user->identity->nickname,
             'items' => [
-                '<li><a href="/user/center" tabindex="-1"><span class="glyphicon glyphicon-user"></span> 个人中心</a></li>',
-                '<li class="divider"></li>',
-                '<li><a href="/user/site" tabindex="-1"><span class="glyphicon glyphicon-cog"></span> 帐号设置</a></li>',
-                '<li class="divider"></li>',
+//                '<li><a href="/user/center" tabindex="-1"><span class="glyphicon glyphicon-user"></span> 个人中心</a></li>',
+//                '<li class="divider"></li>',
+//                '<li><a href="/user/site" tabindex="-1"><span class="glyphicon glyphicon-cog"></span> 帐号设置</a></li>',
+//                '<li class="divider"></li>',
                 '<li><a href="/site/logout" data-method="post" tabindex="-1"><span class="glyphicon glyphicon-log-out"></span> 退出系统</a></li>',
             ]
         ];
@@ -88,21 +86,21 @@ AppAsset::register($this);
         <div class="row">
             <?php if (!Yii::$app->user->isGuest) { ?>
                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
-                    <?php foreach (Yii::$app->params['menus']['nav'][Yii::$app->params['menus']['index']]['menus'] as $menu):?>
-                        <?php if ($menu['operation']): ?>
+                    <?php foreach (Yii::$app->params['menus']['values'][Yii::$app->params['menus']['index']]['children'] as $menu):?>
+
                         <div class="list-group">
                             <a href="#" class="list-group-item disabled">
                                 <h4 class="panel-title"><?= $menu['name'] ?></h4>
                             </a>
-                            <?php foreach ($menu['child'] as $child): ?>
-                                <?php if ($child['operation']): ?>
+                            <?php foreach ($menu['children'] as $child): ?>
+
                                 <a href="<?= Url::toRoute($child['route']) ?>" class="list-group-item <?php if ('/' . Yii::$app->controller->id == $child['route']) echo 'active'; ?>">
                                     <?= $child['name'] ?>
                                 </a>
-                                <?php endif; ?>
+
                             <?php endforeach; ?>
                         </div>
-                        <?php endif; ?>
+
                     <?php endforeach; ?>
                 </div>
             <?php } ?>
@@ -120,8 +118,8 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container-fluid">
-        <p class="pull-left">&copy; 起航商城系统 2016 - 2099</p>
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-left">&copy; 扬帆书店管理后台 2019 - 2099</p>
+        <p class="pull-right">京ICP备0123456号-7</p>
     </div>
 </footer>
 

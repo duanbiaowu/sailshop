@@ -55,7 +55,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->redirect('/system/index');
+        return $this->goHome();
     }
 
     public function actionLogin()
@@ -66,7 +66,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect('/system/index');
+            return $this->goHome();
         } else {
             return $this->render('login', [
                 'model' => $model,

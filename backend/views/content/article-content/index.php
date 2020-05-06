@@ -6,32 +6,45 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\content\ArticleContentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var array $categories */
 
-$this->title = 'Article Contents';
+$this->title = '全部文章';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="article-content-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a('Create Article Content', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('创建文章', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'title',
-            'category_id',
+            [
+                'attribute' => 'title',
+                'headerOptions' => ['width' => '13%'],
+            ],
+            [
+                'attribute' => 'category_id',
+                'value' => function($model) use ($categories) {
+                    return $categories[$model->category_id]['name'];
+                },
+                'headerOptions' => ['width' => '10%'],
+            ],
             'content:ntext',
-            'create_time',
+            [
+                'attribute' => 'create_time',
+                'headerOptions' => ['width' => '15%'],
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}&nbsp;&nbsp;{delete}',
+            ],
         ],
     ]); ?>
 

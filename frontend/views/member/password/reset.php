@@ -15,7 +15,7 @@ use yii\bootstrap\ActiveForm;
 
 <div class="container list blank">
     <div class="row-5">
-        <?= $this->render('_menu') ?>
+        <?= $this->render('../_menu') ?>
 
         <div class="col-4">
             <h1 class="title"><span>修改登录密码</span></h1>

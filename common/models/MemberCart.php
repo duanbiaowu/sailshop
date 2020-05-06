@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\models\goods\Book;
 use Yii;
 
 /**
@@ -13,7 +14,6 @@ use Yii;
  * @property string $create_time
  *
  * @property Member $member
- * @property Book $isbn0
  */
 class MemberCart extends \yii\db\ActiveRecord
 {
@@ -62,7 +62,7 @@ class MemberCart extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIsbn0()
+    public function getBook()
     {
         return $this->hasOne(Book::className(), ['isbn' => 'isbn']);
     }

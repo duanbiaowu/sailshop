@@ -13,7 +13,7 @@ use Yii;
  * @property string $method
  * @property string $query
  *
- * @property Menu $menu
+ * @property AuthMenu $menu
  * @property RoleMenuPermission[] $roleMenuPermissions
  */
 class MenuPermission extends \yii\db\ActiveRecord
@@ -59,7 +59,7 @@ class MenuPermission extends \yii\db\ActiveRecord
      */
     public function getMenu()
     {
-        return $this->hasOne(Menu::className(), ['id' => 'menu_id']);
+        return $this->hasOne(AuthMenu::className(), ['id' => 'menu_id']);
     }
 
     /**

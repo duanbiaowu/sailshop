@@ -1,8 +1,9 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Member;
+use common\models\MemberLoginForm;
 use Yii;
-use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -12,6 +13,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -26,10 +28,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'register'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['register'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -43,7 +45,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+//                    'logout' => ['post'],
                 ],
             ],
         ];
@@ -86,10 +88,18 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        $model = new MemberLoginForm();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->login()) {
+                return $this->redirect('index');
+            }
+
+            Yii::$app->session->setFlash('danger', '帐号或密码错误');
+            return $this->render('login', [
+                'model' => $model,
+            ]);
         } else {
+            Yii::$app->session->removeFlash('danger');
             return $this->render('login', [
                 'model' => $model,
             ]);
@@ -146,14 +156,25 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionSignup()
+    public function actionRegister()
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
+            $code = Yii::$app->request->getBodyParam('verifyCode');
+            if (!$this->createAction('captcha')->validate($code, false)) {
+                Yii::$app->session->setFlash('danger', '验证码输入错误');
+                return $this->goBack(Yii::$app->getRequest()->getReferrer());
+            } else if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
+                    return $this->render('registerResult');
+                } else {
+                    Yii::$app->session->setFlash('success', '您已完成注册，请登录');
+                    return $this->render('login', [
+                        'model' => $model,
+                    ]);
                 }
+            } else {
+                Yii::$app->session->setFlash('danger', '网络出现延迟，请稍后重试');
             }
         }
 
@@ -162,8 +183,13 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionRegisterResult()
+    {
+        return $this->render('registerResult');
+    }
+
     /**
-     * Requests password reset.
+     * 重置密码 - 填写账户信息
      *
      * @return mixed
      */
@@ -171,17 +197,32 @@ class SiteController extends Controller
     {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-
-                return $this->goHome();
+            $code = Yii::$app->request->getBodyParam('verifyCode');
+            if (!$this->createAction('captcha')->validate($code, false)) {
+                Yii::$app->session->setFlash('danger', '验证码输入错误');
+                return $this->goBack(Yii::$app->getRequest()->getReferrer());
+            }
+            if ($testToken = $model->sendEmail()) {
+                return $this->redirect(['message-password-reset',
+                    'testToken' => $testToken,
+                ]);
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+                Yii::$app->session->setFlash('danger', '网络出现延迟，请稍后重试');
             }
         }
 
+        Yii::$app->layout = 'resetPassword';
         return $this->render('requestPasswordResetToken', [
             'model' => $model,
+        ]);
+    }
+
+    public function actionMessagePasswordReset()
+    {
+        Yii::$app->layout = 'resetPassword';
+
+        return $this->render('messagePasswordReset', [
+            'testToken' => Yii::$app->getRequest()->getQueryParam('testToken'),
         ]);
     }
 
@@ -194,20 +235,66 @@ class SiteController extends Controller
      */
     public function actionResetPassword($token)
     {
+        Yii::$app->layout = 'resetPassword';
+
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidParamException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+            return $this->render('resetPasswordTokenError');
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password was saved.');
-
-            return $this->goHome();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->resetPassword()) {
+                return $this->redirect('reset-password-success');
+            } else {
+                return $this->redirect('reset-password-failure');
+            }
         }
 
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    public function actionResetPasswordSuccess()
+    {
+        Yii::$app->layout = 'resetPassword';
+        return $this->render('resetPasswordSuccess');
+    }
+
+    public function actionResetPasswordFailure()
+    {
+        Yii::$app->layout = 'resetPassword';
+        return $this->render('resetPasswordFailure');
+    }
+
+    public function actionTestCart()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return [];
+    }
+
+    public function actionValidateUsername($username)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+            'status' => !(boolean)Member::findByUsername($username),
+        ];
+    }
+
+    public function actionValidateEmail($email)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+            'status' => !(boolean)Member::findOne(['email' => $email]),
+        ];
+    }
+
+    public function actionValidateCode($code)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+            'status' => (boolean)$this->createAction('captcha')->validate($code, false),
+        ];
     }
 }
