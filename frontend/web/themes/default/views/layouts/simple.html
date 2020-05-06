@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{if:isset($seo_title) && isset($site_title) && ($seo_title == $site_title)}{$seo_title}{else:}{$seo_title}-{$site_title}{/if}</title>
+    <link rel="shortcut icon" href="{url:@favicon.ico}"/>
+    <link rel="bookmark" href="{url:@favicon.ico}" />
+    <link rel="stylesheet" href="{url:#css/common.css}">
+    <link rel="stylesheet" href="{url:#css/simple.css}">
+    <link rel="stylesheet" href="{url:#vendors/awesome/css/font-awesome.min.css}">
+    <script type="text/javascript" src="{url:#vendors/jquery.min.js}"></script>
+    <script type="text/javascript" src="{url:#js/common.min.js}"></script>
+    <script type="text/javascript" src="{url:#vendors/layer/layer.js}"></script>
+</head>
+
+<body>
+    <!-- S 页头部分 -->
+    <div id="header" style="border-bottom:1px solid #ccc">
+        <div class="container">
+            <div class="header-main">
+                <div class="sub-1 logo" style="background-image: url({url:@$site_logo});"><a style="display:block;width:100%;height:100%;" href="{url:/index/index}"></a></div>
+                <div class="sub-3">
+
+                </div>
+                <div class="sub-2">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- E 页头部分 -->
+    <!-- S 主体部分 -->
+    <div id="main">
+        {__viewcontents}
+    </div>
+    <!-- E 主体部分 -->
+    <!-- S 页脚部分 -->
+    <div id="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                Powered by TinyShop © 2013-{!=date('Y')} tinyrise.com . 保留所有权利 。
+            </div>
+        </div>
+    </div>
+    <!-- E 页脚部分 -->
+
+    <script type="text/javascript">
+    $(".swiper").TinySwiper();
+
+    $(".category li").mouseenter(function() {
+        $(this).addClass("hover");
+    }).mouseleave(function() {
+        $(this).removeClass("hover");
+    });
+
+    $(".category-box").mouseenter(function() {
+        $(this).addClass("on");
+    }).mouseleave(function() {
+        $(this).removeClass("on");
+    });
+
+    $("#tags-list a").each(function() {
+        $(this).on("click", function() {
+            $("#search-keyword").val($(this).text());
+            $("#search-form").submit();
+        })
+    });
+
+    var barLink = new Array(),
+        current = -1;
+    $(".tiny-bar .link").each(function(i) {
+        barLink[i] = false;
+
+        $(this).on('click', function() {
+            $(".tiny-bar .link").removeClass("on");
+            if(!Tiny.user.online){
+                layer.alert("你还没有登录");
+                return false;
+            }
+
+            if (current != i) {
+                $(".quick-box").show();
+                current = i;
+                $(this).addClass("on");
+            } else {
+                $(".quick-box").hide();
+                current = -1;
+            }
+
+        });
+    })
+
+      $(function(){
+            $(document).not($(".tiny-bar")).click(function(){
+                    $(".quick-box").hide();
+                });
+            /*防止事件冒泡*/
+            $(".tiny-bar").click(function(event){
+                event.stopPropagation();
+            })
+        });
+
+    </script>
+</body>
+
+</html>

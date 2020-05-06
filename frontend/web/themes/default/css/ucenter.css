@@ -1,0 +1,128 @@
+@charset "UTF-8";
+/* ellipsis，省略号，当超过宽度时，显示省略号 */
+/* 兼容 inline-block */
+/*清除浮动*/
+/* 兼容最小高度 */
+/*
+可实现实虚三角
+ */
+/*栅格数量*/
+.alert {
+  padding: 8px 10px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 0; }
+  .alert h4 {
+    margin-top: 0;
+    color: inherit; }
+  .alert .alert-link {
+    font-weight: bold; }
+  .alert > p,
+  .alert > ul {
+    margin-bottom: 0; }
+  .alert > p + p {
+    margin-top: 5px; }
+
+.alert-min {
+  padding: 0 5px;
+  margin-top: 5px;
+  margin-bottom: 5px; }
+
+.alert-dismissable,
+.alert-dismissible {
+  padding-right: 8px 10px20; }
+  .alert-dismissable .close,
+  .alert-dismissible .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit; }
+
+.alert-success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d; }
+  .alert-success hr {
+    border-top-color: #c9e2b3; }
+  .alert-success .alert-link {
+    color: #2b542c; }
+
+.alert-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f; }
+  .alert-info hr {
+    border-top-color: #a6e1ec; }
+  .alert-info .alert-link {
+    color: #245269; }
+
+.alert-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #8a6d3b; }
+  .alert-warning hr {
+    border-top-color: #f7e1b5; }
+  .alert-warning .alert-link {
+    color: #66512c; }
+
+.alert-danger, .alert-fail {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442; }
+  .alert-danger hr, .alert-fail hr {
+    border-top-color: #e4b9c0; }
+  .alert-danger .alert-link, .alert-fail .alert-link {
+    color: #843534; }
+
+@keyframes hover-color {
+  from {
+    border-color: #c0c0c0; }
+  to {
+    border-color: #3e97eb; } }
+
+.side-menu .header {
+  padding: 8px 0;
+  font-size: 18px;
+  border-bottom: 1px solid #dedede; }
+
+.side-menu .sub-menu .header {
+  font-size: 14px; }
+
+.side-menu .sub-menu .menu-item {
+  padding: 8px 0 8px 16px; }
+  .side-menu .sub-menu .menu-item a {
+    display: block; }
+  .side-menu .sub-menu .menu-item:hover, .side-menu .sub-menu .menu-item.current {
+    background-color: #f2f2f2; }
+
+h1.title {
+  font-size: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px; }
+
+a.down {
+  text-decoration: none; }
+
+.card {
+  margin: 10px; }
+  .card .content {
+    background-color: #5bc0de;
+    height: 120px;
+    padding: 10px 30px;
+    border-bottom: 5px dotted #FFF;
+    color: #FFFFFF;
+    font-size: 16px; }
+    .card .content h2 {
+      text-align: center;
+      margin: 10px 0; }
+    .card .content .item {
+      padding: 5px 0; }
+  .card .footer {
+    height: 30px;
+    border: #f0f0f0 solid 1px;
+    border-top: none;
+    padding: 10px; }
+
+.table.big td {
+  padding: 20px 8px; }

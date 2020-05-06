@@ -1,0 +1,33 @@
+<link type="text/css" rel="stylesheet" href="{url:#css/ucenter.css}" />
+<!-- S 面包屑导航 -->
+<div class="bg-base">
+    <ol class="bread-crumb container">
+      <li><a  href="{url:/index/index}">首页</a></li>
+      <li><a  href="{url:/index/help_index}">帮助中心 </a></li>
+  </ol>
+</div>
+<!-- E 面包屑导航 -->
+<div class="container list">
+    <div class="row-5">
+        <div class="col-1 side-menu">
+            <h2 class="header">帮助中心</h2>
+            <div>
+                {set:$help_category=array()} {query:name=help} {set:$help_category[$item['category_id']][]=$item} {/query} {query:name=help_category}
+                <div class="sub-menu">
+                    <h2 class="header">{$item['name']}</h2>
+                    <ul>
+                        {if:isset($help_category[$item['id']])} {list:items=$help_category[$item['id']]}
+                        <li class="menu-item"><a {if:$id==$item[ 'id']}class="current" {/if} href="{url:/index/help/id/$item[id]}">{$item['title']}</a></li>
+                        {/list} {/if}
+                    </ul>
+                </div>
+                {/query}
+            </div>
+        </div>
+       <div class="col-4">
+           <div class="help-content">
+               <h1 class="title"><span class="f16">帮助中心 - 帮助导航</span></h1>
+           </div>
+       </div>
+   </div>
+</div>

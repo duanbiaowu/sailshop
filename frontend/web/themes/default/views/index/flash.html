@@ -1,0 +1,29 @@
+<div class="bread-crumb">
+    <ol class="container">
+        <li><a href="{url:/index/index}">首页 </a></li>
+        <li><a href="#">限时▪抢购 </a></li>
+        <li><a href="#">特卖▪专场</a></li>
+    </ol>
+</div>
+
+<div class="container list">
+    <!--S 产品展示-->
+    <ul class="row-4 flash-index">
+        {query:name=flash_sale as gb fields=*,gb.id as id join=left join goods as go on gb.goods_id eq go.id order=is_end,goods_num desc limit=12 page=1 id=$flashbuy}
+        <li class="col-2">
+            <div class="item">
+                <div class=" header img">
+                    <a href="{url:/index/flashbuy/id/$item[id]}"><img src="{echo:Common::thumb($item['img'],600,360)}"></a>
+                </div>
+                <ul class="main">
+                    <li class="title"><a href="{url:/index/flashbuy/id/$item[id]}">{echo:TString::msubstr($item['title'],0,15)}</a></li>
+                    <li class="price"><i>{$currency_symbol}</i>{$item['price']}</li>
+                    <li class="status tc">{if:$item['is_end']==0}<a class="btn btn-main" href="{url:/index/flashbuy/id/$item[id]}">立即抢购</a>{else:}<span class="btn disabled btn-gray">抢购结束</span>{/if}</li>
+                </ul>
+            </div>
+        </li>
+        {/list}
+    </ul>
+    <div class=" mt10 page-nav">{echo:$flashbuy->pageBar();}</div>
+    <!--E 产品展示-->
+</div>

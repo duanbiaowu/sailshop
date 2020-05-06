@@ -1,0 +1,53 @@
+<link type="text/css" rel="stylesheet" href="{url:#css/ucenter.css}" />
+<div class="container list blank">
+    <div class="row-5">
+        <div class="col-1">
+            {widget:name=sub_navs action=ucsidebar sidebar=$sidebar act=$actionId}
+        </div>
+        <div class="col-4">
+            <h1 class="title"><span>我的关注：</span></h1>
+            <form action="{url:/ucenter/attention_del}" method="post">
+                <table class="table table-list">
+                    <tr>
+                        <th width="30"></th>
+                        <th width="100"></th>
+                        <th>商品</th>
+                        <th width="100">价格</th>
+                        <th width="60">库存</th>
+                        <th width="220">操作</th>
+                    </tr>
+                    {list:items=$attention['data']}
+                    <tr class="{if:$key%2==1}odd{else:}even{/if}">
+                        <td>
+                            <input type="checkbox" id="magic-checkbox-{$key}" class="magic-checkbox" name="id[]" value="{$item['id']}"><label for="magic-checkbox-{$key}"></label>
+                        </td>
+                        <td>
+                            <a href="{url:/index/product/id/$item[gid]}" target="_blank"><img src="{echo:Common::thumb($item['img'],100,100)}" width="60" height="60"></a>
+                        </td>
+                        <td><a href="{url:/index/product/id/$item[gid]}" target="_blank">{echo:TString::msubstr($item['name'],0,20)}</a>
+                            <p class="pt5">关注时间：{$item['time']}</p>
+                        </td>
+                        <td class="red" style="font-size:14px;"><b>{$currency_symbol}{$item['sell_price']}</b></td>
+                        <td>{if:$item['store_nums']>0}有货{else:}缺货{/if}</td>
+                        <td><a href="{url:/index/product/id/$item[gid]}" class=" btn btn-main" target="_blank">去购买</a>
+                            &nbsp;&nbsp;<a class="btn btn-default" href="{url:/ucenter/attention_del/id/$item[id]}">取消关注</a>
+                        </td>
+                    </tr>
+                    {/list}
+                    <tr>
+                        <td> <input id="select-all" type="checkbox" class="magic-checkbox">
+                        <label for="select-all"></label></td>
+                        <td><button type="submit" href="javascript:;" id="cancel-attention" class=" btn btn-main btn-mini" title="全选" data="true">取消关注</button></td>
+                        <td colspan="4"><div class="page-nav">{$attention['html']}</div></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$("#select-all").on("click",function(){
+        $('input[name="id[]"]').prop('checked',!!$(this).prop('checked'));
+    })
+</script>

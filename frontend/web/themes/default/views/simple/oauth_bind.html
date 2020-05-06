@@ -1,0 +1,81 @@
+{echo:JS::import('form')}
+<div class="mt20 login clearfix">
+	<div class="line-D">
+		<div class="clearfix oauth-info">
+			<div class="u-img"><img src="{$head_img}"></div>
+			<div class="model-text f16">
+				<p>来自<b>{$type_name}</b>的<b class="green">{$open_name}</b>，你好。</p><p>立即设置一个密码，以后就可以直接登录！</p>
+			</div>
+		</div>
+	</div>
+<div class=" login-form " style="border:none; margin:auto;margin-top:40px;width:700px;">
+	<form action="{url:/simple/oauth_bind_act}" method="post" class="tiny-form" callback="checkReadme">
+		<ul class="form">
+		<li class="line icon"><span class="caption perfix fa">&#xf007;</span><input name="account" id="account"  class="field" pattern="required" placeholder="邮箱/用户名/已验证手机"><label></label></li>
+		<li class="line icon"><span class="caption perfix fa">&#xf084;</span><input class="field" name="password" id="password" type="password" placeholder="密码" minlen=6 maxlen=20  pattern="required" alt="6-20任意字符组合"></li>
+		{if:$user['name']==null}
+		<li class="line icon" id="repassword-line"> <span class="caption perfix fa">&#xf084;</span><input class="field" id="repassword" name="repassword" type="password" bind="password" placeholder="确认密码" minlen=6 maxlen=20  pattern="required" alt="6-20任意字符组合"></li>
+		{/if}
+
+		<dl class="line">
+			<dt>&nbsp;</dt><dd><input id="readme" type="checkbox" checked="cheched"><label></label><label>我已阅读并同意《TinyShop商城用户注册协议》</label></dd>
+		</dl>
+		<dl class="line">
+			<dt></dt><dd style="padding-left:200px;"><input type="submit" class="btn btn-main" value="同意协议，立即注册"></dd>
+		</dl>
+		</ul>
+	</form>
+</div>
+</div>
+<script type="text/javascript">
+
+	$("input[pattern]").on("blur",function(event){
+        $(".invalid-msg , .valid-msg").hide();
+        var current_input = $(this);
+        var result = autoValidate.validate(event);
+        if(result){
+            current_input.parent().removeClass('invalid').addClass('valid');
+        }else{
+            current_input.parent().removeClass('valid').addClass('invalid');
+        }
+        if(result){
+            if(current_input.attr('id')=='account'){
+				if(autoValidate.validate(event)){
+					$.post("{url:/ajax/account/account/}"+$(this).val(),function(data){
+						if(data['status']){
+							$("#repassword-line").show();
+							$("#repassword").show();
+							autoValidate.showMsg({id:document.getElementById('account'),error:false,msg:'账户不存在，注册绑定!'});
+							$("#password-msg").text('6-20任意字符组合');
+
+						}else{
+							$("#repassword-line").hide();
+							$("#repassword").hide();
+							autoValidate.showMsg({id:document.getElementById('account'),error:false,msg:'已存在的账户，填写密码进行绑定!'});
+						}
+				},'json');
+				}
+			}
+		}
+	});
+	$("#readme").on("change",function(){
+		if($("#readme:checked").length>0)autoValidate.showMsg({id:document.getElementById('readme'),error:false,msg:''});
+		else autoValidate.showMsg({id:document.getElementById('readme'),error:true});
+	});
+	function checkReadme(e){
+		if(e) return false;
+		else{
+			if($("#readme:checked").length>0)return true;
+			{
+				autoValidate.showMsg({id:document.getElementById('readme'),error:true});
+				return false;
+			}
+		}
+	}
+	{if:isset($invalid)}
+		var form = new Form();
+		form.setValue('account', '{$account}');
+		autoValidate.showMsg({id:$("input[name='{$invalid['field']}']").get(0),error:true,msg:"{$invalid['msg']}"});
+	{/if}
+	FireEvent(document.getElementById('account'),"change");
+</script>

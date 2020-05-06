@@ -1,0 +1,74 @@
+<!--S 产品展示-->
+{echo:JS::import('form')}
+<link href="{url:#css/product.css}" rel="stylesheet" type="text/css" />
+<script src="{url:#vendors/raphael-min.js}" type="text/javascript"></script>
+<script src="{url:#vendors/jquery.ratemate.js}" type="text/javascript"></script>
+<div class="container blank category-index">
+    <div class="list">
+        <div class="row-5">
+            <div class="col-2">
+                <div class="item">
+                    <div class="header">
+                        <img class="big-pic" src="{url:@$review[img]}" width="420px">
+                        </img>
+                    </div>
+                    <div class="main">
+                        <div class="title">
+                            <a href="{url:/index/product/id/$review[gid]}">
+                                {$review['name']}
+                            </a>
+                        </div>
+                        <p class="price">
+                            销售价：
+                            <b class="red">
+                                {$currency_symbol}{$review['sell_price']}
+                            </b>
+                        </p>
+                        <p class="tc">
+                            <a class="btn btn-main" href="{url:/index/product/id/$review[gid]}" target="_blank">
+                                前去购买
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="spec-info mt10 clearfix">
+                    <h2 class="title">
+                        我要评价：
+                    </h2>
+                    <form action="{url:/}" class="tiny-form hidden-msg" method="post " formMsg="field-info">
+                        <input name="con" type="hidden" value="index">
+                        <input name="act" type="hidden" value="review_act">
+                        <li class="line blank" style="width:600px;">
+                            <div id="field-info" class="alert alert-fail" style="display:none;position:relative;"></div>
+                        </li>
+                        <li class="line">
+                            <input type="hidden" name="id" value="{$review['id']}">
+                            <input id="testi" name="point" max="5" min="0" step="1" style="display:none" type="number" value="0">
+                            </input>
+                        </li>
+                        <li class="line textarea">
+                            <label class="caption">
+                                评价内容：
+                            </label>
+                            <textarea name="content" minlen="5" pattern="required" alt="内容不能少于5个字"></textarea>
+                        </li>
+                        <input class="btn btn-main" type="submit" value="提交评价">
+                        </input>
+                        </input>
+                        </input>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+    $('#testi').ratemate({
+        width: 250,
+        height: 50
+    });
+});
+</script>

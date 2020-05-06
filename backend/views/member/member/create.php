@@ -1,12 +1,21 @@
 <?php
-/**
- * @name: SailShop System
- * @author: 游梦惊园
- * @link: https://github.com/duanbiaowu/sailshop
- * @blog: http://www.cnblogs.com/duanbiaowu
- * @copyright: Copyright (c) 2016 SailShop System
- * @date: 2015-11-10
- */
 
-$this->title = '创建会员';
+use yii\helpers\Html;
+
+
+/* @var $this yii\web\View */
+/* @var $model backend\models\system\User */
+/* @var $roles */
+
+$this->title = Yii::t('System', 'Create User');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('System', 'Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="user-create">
+
+    <?= $this->render('_form', [
+        'model' => $model,
+        'roles' => $roles,
+    ]) ?>
+
+</div>

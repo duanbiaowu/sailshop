@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{if:isset($seo_title) && isset($site_title) && ($seo_title == $site_title)}{$seo_title}{else:}{$seo_title}-{$site_title}{/if}</title>
+    <link rel="stylesheet" href="{url:#css/common.css}">
+    <link rel="stylesheet" href="{url:#vendors/awesome/css/font-awesome.min.css}">
+    <script type="text/javascript" src="{url:#vendors/jquery.min.js}"></script>
+    <script type="text/javascript" src="{url:#js/common.min.js}"></script>
+    <script type="text/javascript" src="{url:#vendors/layer/layer.js}"></script>
+    <script type="text/javascript">
+        var server_url = '{url:@}__con__/__act__';
+        var Tiny = {user:{name:'{$user['name']|''}',id:'{$user['id']|0}',online:{$user['id']|'true'|'false'}}};
+    </script>
+</head>
+
+<body>
+{echo:JS::import('form');}
+<div style="margin:30px; ">
+    <div class="simple-box " >
+        <form action="{url:/login/login}" class="tiny-form hidden-msg" method="post" callback="checkReadme">
+            <ul>
+                <li class="line">
+                <div><span>会员登录</span><a class="fr" href="{url:/simple/reg}" target="_blank">立即注册</a></div>
+                    <div id="field-info" class="alert alert-danger" style="display:none" role="alert">
+                    </div>
+                </li>
+                <li class="line icon"><label class="caption perfix fa">&#xf007;</label><input name="account" id="account"  value="{$account|''}" class="field" pattern="required" placeholder="邮箱/用户名/已验证手机"><label></label></li>
+                <li class="line icon"> <span class="caption perfix fa">&#xf084;</span><input class="field" name="password" type="password" placeholder="密码" pattern="required" alt="密码不能为空"></li>
+                <li class="line"><input name="autologin" id="readme" type="checkbox" value="1"> <label>自动登录</label> <label class="fr">[<a href="{url:/simple/forget_password}" target="_blank">忘记密码?</a>]</label></li>
+                <li class="line"><button class="btn btn-main " style="width:100%">登录</button></li>
+                {if:isset($oauth_login)}
+                <li class="line oauth-list">
+                    <fieldset class="line-title">
+                        <legend align="center" class="txt">其他方式登录</legend>
+                    </fieldset>
+                    {list:items=$oauth_login}
+                    <a href="{url:/simple/login_oauth/id/$item[id]}"><img src="{url:@protected/classes/oauth/logo/$item[icon]}" ></a>
+                    {/list}
+                </li>
+                {/if}
+            </ul>
+            {token:}
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    {if:isset($invalid)}
+    var form = new Form();
+    form.setValue('account', '{$account}');
+    autoValidate.showMsg({id:$("input[name='{$invalid['field']}']").get(0),error:true,msg:"{$invalid['msg']}"});
+    $("#field-info").text("{$invalid['msg']}").show();
+    {/if}
+    $(".invalid-msg").hide();
+    $(".valid-msg").hide();
+    $("input[pattern]").on("blur",function(event){
+
+        $("#field-info").hide();
+        var current_input = $(this);
+        var result = autoValidate.validate(event);
+        if(result){
+            if(current_input.attr('id')=='account'){
+                $.post("{url:/ajax/account/account/}"+$(this).val(),function(data){
+                    var msg = '合法用户';
+                    if(data['status']){
+                        msg = '用户不存在';
+                        //current_input.next().show();
+                        current_input.parent().removeClass('valid').addClass('invalid');
+                        $("#field-info").text(msg).show();
+                    }
+
+                    autoValidate.showMsg({id:document.getElementById('account'),error:data['status'],msg:''});
+
+                },'json');
+            }
+            //$(".invalid-msg").show();
+        }else{
+            //current_input.next().show();
+        }
+    });
+</script>
+</body>
+
+</html>

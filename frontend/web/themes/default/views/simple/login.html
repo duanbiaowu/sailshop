@@ -1,0 +1,71 @@
+{echo:JS::import('form');}
+<div class="login-bg">
+    <div class="container list">
+        <div class="row-5 ">
+            <div class="col-3">&nbsp;</div>
+            <div class="col-2">
+                <div class="login-box">
+                    <form action="{url:/simple/login_act}" class="tiny-form hidden-msg" method="post" callback="checkReadme" formMsg="field-info">
+                        <ul>
+                            <li class="line ">
+                                <div class="clearfix"><span class="fl">会员登录</span><a class="fr" href="{url:/simple/reg}">立即注册</a></div>
+                                <div id="field-info" class="alert alert-danger" style="display:none" role="alert">
+                                </div>
+                            </li>
+                            <li class="line icon">
+                                <label class="caption perfix fa">&#xf007;</label>
+                                <input name="account" id="account" value="{$account|''}" class="field" pattern="required" placeholder="邮箱/用户名/已验证手机" alt="账号不能为空！">
+                                <label></label>
+                            </li>
+                            <li class="line icon"> <span class="caption perfix fa">&#xf084;</span>
+                                <input class="field" name="password" type="password" placeholder="密码" pattern="required" alt="密码不能为空">
+                            </li>
+                            <li class="line">
+                                <input name="autologin" id="readme" type="checkbox" value="1">
+                                <label for="readme">自动登录</label>
+                                <label class="fr">[<a href="{url:/simple/forget_password}" target="_blank">忘记密码?</a>]</label>
+                            </li>
+                            <li class="line">
+                                <button class="btn btn-main " style="width:100%">登录</button>
+                            </li>
+                            {if:isset($oauth_login) && count($oauth_login)>0}
+                            <li class="line oauth-list">
+                                <fieldset class="line-title">
+                                    <legend align="center" class="txt">其他方式登录</legend>
+                                </fieldset>
+                                {list:items=$oauth_login}
+                                <a href="{url:/simple/login_oauth/id/$item[id]}" style="width:{!=96/count($oauth_login)}%;"><img src="{url:@protected/classes/oauth/logo/$item[icon]}" ></a>
+                                {/list}
+                            </li>
+                            {/if}
+                        </ul>
+                        {token:key=login}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+{if: isset($invalid)}
+var form = new Form();
+form.setValue('account', '{$account}');
+autoValidate.showMsg({id: $("input[name='{$invalid['field']}']").get(0),formMsg:$("#field-info").get(0),error: true,msg: "{$invalid['msg']}"});
+{/if}
+    $("input[name='account']").on("blur", function(event) {
+        var current_input = $(this);
+        var result = autoValidate.validate(event);
+        if (result) {
+            if (current_input.attr('id') == 'account') {
+                $.post("{url:/ajax/account/account/}" + $(this).val(), function(data) {
+                    var msg = '合法用户';
+                    if (data['status']) {
+                        msg = '用户不存在';
+                    }
+                    autoValidate.showMsg({id: document.getElementById('account'),error: data['status'], msg: msg});
+
+                }, 'json');
+            }
+        }
+    });
+</script>

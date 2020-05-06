@@ -1,0 +1,90 @@
+{echo:JS::import('form')}
+<link type="text/css" rel="stylesheet" href="{url:#css/ucenter.css}" />
+
+<div class="container list">
+    <div class="row-5 blank">
+    <div class="col-1">
+    {widget:name=sub_navs action=ucsidebar sidebar=$sidebar act=$actionId}
+    </div>
+    <div class="col-4">
+        <h1 class="title"><span>申请退款：</span></h1> {if:isset($msg)}
+        <div class="alert alert-fail">{$msg[1]}</div>
+        {elseif:isset($validator)}
+        <div class="alert alert-fail">{$validator['msg']}</div>
+        {/if}
+        <div>
+            <form class="box" action="{url:/ucenter/refund_act}" method="post">
+                <ul class="tiny-form">
+                  <li class="line caption">
+                  {!$r_no = Req::args('order_no')}
+                    <label class="caption">订单编号：</label><input name="order_no" pattern="required" type="text" class="field" {if:$r_no!=null} value="{$r_no}" readonly="readonly" {/if}alt="请填写正确的订单编号">
+                  </li>
+                  <li class="line other" id="refund_type">
+                    <label class="caption">退款方式：</label><input class="radio magic-radio" type="radio" name="refund_type" id='1' value="0" checked="checked"><label for="1">退款至账户余额（<span class="red">推荐</span>）</label> <input class="radio magic-radio" type="radio" id=2 name="refund_type" value="1">
+                    <label for="2">退款至银行卡（跨行退款需支付银行手续费）</label><input class="radio magic-radio"  id="3" type="radio" name="refund_type" value="2"><label for="3">其它方式:（如支付宝、财付通等等）</label>
+                  </li>
+                  <li class="line caption refund_0 ">
+                    <label class="caption">开户行/支付方式：</label> <input name="account_bank" type="text" class="field" pattern="required" alt="不能为空！">
+                  </li>
+                  <li class="line caption refund_1 ">
+                    <label class="caption">开户名：</label> <input name="account_name" class="field" type="text" pattern="required" alt="开户名不能为空！">
+                  </li>
+                  <li class="line caption refund_2  ">
+                    <label class="caption">账号：</label><input name="refund_account" type="text" pattern="required" class="field" alt="账号不能为空！">
+                  </li>
+                  <li class="line textarea">
+                    <label class="caption">申请退款原因：</label>
+                    <textarea name="content" minlen=5 pattern="required" alt="内容至少包含5字!"></textarea>
+                  </li>
+                  <li class="line">
+                    <input type="submit" class="btn btn-main" value="申请退款">
+                  </li>
+                </ul>
+                {token:}
+            </form>
+        </div>
+        <div  class="mt10">
+            <table class="table table-list">
+                <tr>
+                    <th>订单编号</th>
+                    <th width="120">退款方式</th>
+                    <th width="140">申请时间</th>
+                    <th width="140">处理状态</th>
+                    <th width="160">操作</th>
+                </tr>
+                <tbody class="page-content">
+                    {query:name=doc_refund where= user_id eq $user[id] id=$refund order= id desc page=1}
+                    <tr class="{odd-even}">
+                        <td><a href="{url:/ucenter/order_detail/id/$item[order_id]}">{$item['order_no']}</a></td>
+                        <td>{if:$item['refund_type']==0}至账户余额{elseif:$item['refund_type']==1}至银行卡{else:}其它方式{/if}</td>
+                        <td>{$item['create_time']}</td>
+                        <td>{if:$item['pay_status']==0}等待处理{elseif:$item['pay_status']==1}不予退款{else:}退款成功{/if}</td>
+                        <td>{if:$item['pay_status']==0}<a class="btn btn-gray btn-mini" href="{url:/ucenter/refund_del/order_no/$item[order_no]}">取消</a>{/if} <a class="btn btn-main btn-mini" href="{url:/ucenter/refund_detail/id/$item[id]}">详情</a></td>
+                    </tr>
+                    {/query}
+                </tbody>
+            </table>
+            <div class="page-nav">{echo:$refund->pageBar()}</div>
+        </div>
+    </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".radio").on("click",function(){
+      var val = $(this).val();
+      switch(val){
+        case '0':
+         $(".refund_0,.refund_1,.refund_2").hide().find("input").hide();
+         break;
+         case '2':
+         $(".refund_0,.refund_2").show().find("input").show();
+         $(".refund_1").hide().find("input").hide();
+         break;
+         case '1':
+         $(".refund_0,.refund_1,.refund_2").show().find("input").show();
+         break;
+     }
+
+ })
+  $(".refund_0,.refund_1,.refund_2").hide().find("input").hide();
+</script>
