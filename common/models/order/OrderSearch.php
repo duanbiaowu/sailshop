@@ -81,6 +81,8 @@ class OrderSearch extends Order
             ->andFilterWhere(['like', 'zip_code', $this->zip_code])
             ->andFilterWhere(['like', 'detail_address', $this->detail_address]);
 
+        $query->addOrderBy(['id' => SORT_DESC]);
+
         return $dataProvider;
     }
 }

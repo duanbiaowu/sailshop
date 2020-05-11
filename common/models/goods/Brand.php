@@ -17,6 +17,10 @@ use yii\db\ActiveRecord;
  */
 class Brand extends ActiveRecord
 {
+    const AVAILABLE = 0x01;
+
+    const UNAVAILABLE = 0x00;
+
     /**
      * @inheritdoc
      */

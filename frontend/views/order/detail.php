@@ -10,6 +10,9 @@
 /* @var double $freightPrice */
 /* @var array $status */
 
+/* @var ExpressCompany $expressCompany */
+
+use backend\models\system\ExpressCompany;
 use common\models\MemberAccountRecord;
 use common\models\order\Order;
 use common\models\order\OrderDetail;
@@ -31,6 +34,13 @@ use frontend\widgets\LinkPager;
 
         <div class="col-4">
             <h1 class="title"><span>我的订单：</span></h1>
+
+            <?php if (Yii::$app->session->hasFlash('success')): ?>
+                <div id="field-info" class="alert alert-success" role="alert">
+                    <?= Yii::$app->session->getFlash('success') ?>
+                </div>
+            <?php endif; ?>
+
             <table class="table table-list">
                 <tbody>
                 <tr class="title">
@@ -42,12 +52,24 @@ use frontend\widgets\LinkPager;
                     <td><b>订单创建：</b> <?= $order->create_time ?></td>
                 </tr>
                 <?php if ($order->status >= Order::PAY_STATUS): ?>
-                <tr>
-                    <td><b>订单支付：</b> <?= $order->create_time ?></td>
-                </tr>
+                    <tr>
+                        <td><b>订单支付：</b> <?= $order->create_time ?></td>
+                    </tr>
                 <?php endif; ?>
                 <tr>
-                    <td><b>状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：</b> <span class="text-gray"> <?= $status[$order->status] ?></span></td>
+                    <td>
+                        <b>状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：</b>
+                        <span class="text-gray"> <?= $status[$order->status] ?></span>
+
+                        <?php if ($order->status == Order::DELIVERED_STATUS): ?>
+                            <a class="btn btn-main btn-mini" id="js-order-finish-btn" href="javascript:;">
+                                确认收货
+                            </a>
+                            <a class="btn btn-main btn-mini" id="js-order-reject-btn" href="javascript:;">
+                                拒绝收货
+                            </a>
+                        <?php endif; ?>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -86,6 +108,23 @@ use frontend\widgets\LinkPager;
                         <td class="label">运&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费：</td>
                         <td><?= $freightPrice ?></td>
                     </tr>
+                    <?php if ($expressCompany !== null): ?>
+                        <tr>
+                            <td class="label">物流公司：</td>
+                            <td><?= $expressCompany->name ?></td>
+                        </tr>
+                        <tr>
+                            <td class="label">快递单号：</td>
+                            <td>
+                                <?= $order->express_code ?>
+                                <a class="btn btn-main btn-mini"
+                                   href="https://www.kuaidi100.com/all/hhair56.shtml?mscomnu=<?= $order->express_code ?>"
+                                   target="_blank">
+                                    查看物流
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -101,24 +140,24 @@ use frontend\widgets\LinkPager;
                         <th width="40">数量</th>
                         <th width="80">小计</th>
                     </tr>
-                    
+
                     <?php foreach ($details as $detail): ?>
-                    <tr>
-                        <td>
-                            <a href="/book/detail?isbn=<?= $detail->isbn ?>" target="_blank">
-                                <img src="/<?= $detail->getIsbn0()->one()->thumbnail ?> " width="60">
-                            </a>
-                        </td>
-                        <td>
-                            <a href="/book/detail?isbn=<?= $detail->isbn ?>" target="_blank">
-                                <?= $detail->getIsbn0()->one()->name ?>
-                            </a>
-                        </td>
-                        <td><?= $detail->isbn ?></td>
-                        <td>￥<?= $detail->price ?></td>
-                        <td>￥<?= $detail->number ?></td>
-                        <td>￥<?= sprintf('%.2f', $detail->price * $detail->number)  ?></td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <a href="/book/detail?isbn=<?= $detail->isbn ?>" target="_blank">
+                                    <img src="/<?= $detail->getIsbn0()->one()->thumbnail ?> " width="60">
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/book/detail?isbn=<?= $detail->isbn ?>" target="_blank">
+                                    <?= $detail->getIsbn0()->one()->name ?>
+                                </a>
+                            </td>
+                            <td><?= $detail->isbn ?></td>
+                            <td>￥<?= $detail->price ?></td>
+                            <td><?= $detail->number ?></td>
+                            <td>￥<?= sprintf('%.2f', $detail->price * $detail->number) ?></td>
+                        </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -139,3 +178,39 @@ use frontend\widgets\LinkPager;
         </div>
     </div>
 </div>
+
+<script>
+    $("#js-order-finish-btn").on("click", function () {
+        layer.confirm('是否确认收货?', function (index) {
+            var params = {
+                _csrf: '<?= Yii::$app->request->csrfToken ?>',
+                id: '<?= $order->id ?>'
+            };
+
+            $.post('finish', params, function (response) {
+                layer.msg(response.msg, function() {
+                    location.reload();
+                });
+            });
+
+            layer.close(index);
+        });
+    });
+
+    $("#js-order-reject-btn").on("click", function () {
+        layer.confirm('是否拒绝签收?', function (index) {
+            var params = {
+                _csrf: '<?= Yii::$app->request->csrfToken ?>',
+                id: '<?= $order->id ?>'
+            };
+
+            $.post('reject', params, function (response) {
+                layer.msg(response.msg, function() {
+                    location.reload();
+                });
+            });
+
+            layer.close(index);
+        });
+    });
+</script>

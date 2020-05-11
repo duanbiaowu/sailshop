@@ -25,6 +25,7 @@ use Yii;
  * @property string $price
  * @property integer $stock
  * @property integer $status
+ * @property integer $recommend
  * @property string $modified_time
  * @property string $create_time
  */
@@ -43,6 +44,17 @@ class Book extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return array
+     */
+    public static function statusFormat()
+    {
+        return [
+            self::ENABLE_STATUS => '上架',
+            self::DISABLE_STATUS => '下架',
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -54,6 +66,7 @@ class Book extends \yii\db\ActiveRecord
             [['price'], 'number'],
             [['isbn'], 'string', 'max' => 13],
             [['status'], 'default', 'value' => 1],
+            [['recommend'], 'default', 'value' => 0],
             [['name', 'thumbnail', 'translator'], 'string', 'max' => 128],
             [['show_pictures', 'introduce'], 'string', 'max' => 2048],
             [['binding'], 'string', 'max' => 32],
@@ -82,6 +95,7 @@ class Book extends \yii\db\ActiveRecord
             'price' => '价格',
             'stock' => '库存',
             'status' => '状态',
+            'recommend' => '首页推荐',
             'modified_time' => 'Modified Time',
             'create_time' => '上架时间',
         ];
@@ -131,5 +145,13 @@ class Book extends \yii\db\ActiveRecord
     public function getAppraisals()
     {
         return $this->hasMany(OrderAppraise::className(), ['isbn' => 'isbn']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getEnableBookQuery()
+    {
+        return Book::find()->where(['status' => self::ENABLE_STATUS]);
     }
 }

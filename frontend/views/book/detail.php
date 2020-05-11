@@ -7,12 +7,20 @@
 /* @var $cateAncestors Category[] */
 /* @var $sameCategoryBooks Book[] */
 /* @var $bookAuthors BookAuthor[] */
+/* @var OrderAppraise[] $appraises */
+/* @var Pagination $pagination */
+/* @var integer $appraiseCount */
+/* @var double $appraiseScoreSum */
+/* @var integer $appraiseGreatScoreCount */
+/* @var integer $appraiseMiddleScoreCount */
+/* @var integer $appraiseGeneralScoreCount */
 
 use common\models\goods\Book;
 use common\models\goods\BookAuthor;
 use common\models\goods\Category;
 use common\models\goods\Brand;
 use common\models\MemberAccountRecord;
+use common\models\order\OrderAppraise;
 use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -25,6 +33,9 @@ use frontend\widgets\LinkPager;
 <link rel="stylesheet" type="text/css" href="/themes/default/systemjs/form/style.css">
 <script type="text/javascript" charset="UTF-8" src="/themes/default/systemjs/form/form.js"></script>
 <link type="text/css" rel="stylesheet" href="/themes/default/css/product.css">
+<script src="/themes/default/vendors/raphael-min.js" type="text/javascript"></script>
+<script src="/themes/default/vendors/jquery.ratemate.js" type="text/javascript"></script>
+
 <!-- S 面包屑 -->
 <div class="bread-crumb">
     <ol class="container">
@@ -47,17 +58,19 @@ use frontend\widgets\LinkPager;
                     <img src="/<?= $model->thumbnail ?>" source="/<?= $model->thumbnail ?>" width="60">
                 </a>
 
+                <?php if ($model->show_pictures && is_array($model->show_pictures)): ?>
                 <?php foreach ($model->show_pictures as $picture): ?>
                     <a class="small-img" href="javascript:;">
                         <img src="/<?= $picture ?>" source="/<?= $picture ?>" width="60">
                     </a>
                 <?php endforeach; ?>
+                <?php endif ?>
             </div>
         </div>
         <div class="sub-2">
             <div id="preview">
                 <div id="imgmini" style="width: 420px;height:420px;">
-                    <img class="big-pic" width="420" src="/<?= $model->thumbnail ?>"
+                    <img class="big-pic" width="360" height="420px;" src="/<?= $model->thumbnail ?>"
                          source="/<?= $model->thumbnail ?>"/>
                 </div>
             </div>
@@ -193,88 +206,89 @@ use frontend\widgets\LinkPager;
                                 <div class="comment-top ">
                                     <ul>
                                         <li>
-                                            <div class="comment-score"><em class="circle ">0<i style="font-size: 18px;">%</i></em>-
-                                                好评度 -
+                                            <div class="comment-score">
+                                                <em class="circle ">
+                                                    <?php if ($appraiseCount): ?>
+                                                    <?= $appraiseScoreSum / $appraiseCount * 20 ?>
+                                                    <?php else: ?>
+                                                    0
+                                                    <?php endif; ?>
+                                                    <i style="font-size: 18px;">%</i>
+                                                </em>- 好评度 -
                                             </div>
                                             <div class="mt10 score ie6png"><i style="width:0%"></i></div>
                                         </li>
                                         <li class="comment-grade">
                                             <div>
-                                                <h1>共有(0)人参考评价</h1>
+                                                <h1>共有(<?= $appraiseCount ?>)人参考评价</h1>
                                                 <dl class="comment-percent">
                                                     <dt>很好</dt>
+                                                    <?php if ($appraiseCount): ?>
+                                                    <dd class="bar"><i style="width:<?= sprintf('%.2f', $appraiseGreatScoreCount / $appraiseCount) * 100 ?>%"></i></dd>
+                                                    <dd class="percent"><?= sprintf('%.2f', $appraiseGreatScoreCount / $appraiseCount) * 100 ?>%</dd>
+                                                    <?php else: ?>
                                                     <dd class="bar"><i style="width:0%"></i></dd>
                                                     <dd class="percent">0%</dd>
+                                                    <?php endif; ?>
+
                                                     <dt>较好</dt>
+                                                    <?php if ($appraiseCount): ?>
+                                                    <dd class="bar"><i style="width:<?= sprintf('%.2f', $appraiseMiddleScoreCount / $appraiseCount) * 100 ?>%"></i></dd>
+                                                    <dd class="percent"><?= sprintf('%.2f', $appraiseMiddleScoreCount / $appraiseCount) * 100 ?>%</dd>
+                                                    <?php else: ?>
                                                     <dd class="bar"><i style="width:0%"></i></dd>
                                                     <dd class="percent">0%</dd>
+                                                    <?php endif; ?>
+
                                                     <dt>一般</dt>
-
-
+                                                    <?php if ($appraiseCount): ?>
+                                                    <dd class="bar"><i style="width:<?= sprintf('%.2f', $appraiseGeneralScoreCount / $appraiseCount) * 100 ?>%"></i></dd>
+                                                    <dd class="percent"><?= sprintf('%.2f', $appraiseGeneralScoreCount / $appraiseCount) * 100 ?>%</dd>
+                                                    <?php else: ?>
                                                     <dd class="bar"><i style="width:0%"></i></dd>
                                                     <dd class="percent">0%</dd>
+                                                    <?php endif; ?>
                                                 </dl>
-                                            </div>
-                                        </li>
-                                        <li class="comment-action">
-                                            <div>
-                                                <a href="javascript:;" class="btn btn-gray  disabled">我要评论</a>
-                                                <p class="mt10">仅对购买过该商品的用户开放！</p>
                                             </div>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="comment tab" id="comment" index="0">
                                     <ul class="tab-head">
-                                        <li class="current">全部(0)<i></i></li>
-                                        <li>很好(0)<i></i></li>
-                                        <li>较好(0)<i></i></li>
-                                        <li>一般(0)<i></i></li>
+                                        <li class="current">全部(<?= $appraiseCount ?>)<i></i></li>
                                     </ul>
                                     <div class="tab-body">
-                                        <div id="comment-all" class="js-template" style="display: block;">
-                                            <div class="page-content"></div>
-                                            <div class="page-nav"><span
-                                                        href="/index.php?con=index&amp;act=get_review&amp;p=1"
-                                                        class="disabled">上一页</span> <span
-                                                        href="/index.php?con=index&amp;act=get_review&amp;p=2"
-                                                        class="disabled">下一页</span> &nbsp;&nbsp;&nbsp;&nbsp;共0 页&nbsp;&nbsp;&nbsp;&nbsp;跳到第
-                                                <input style="width:24px;text-align:center" value="1"
-                                                       onchange="$(this).next().attr(&quot;page-index&quot;,this.value)">
-                                                页 <a href="javascript:;" page-index="1">确定</a></div>
-                                        </div>
-                                        <div id="comment-a" class="js-template" style="display: none;">
-                                            <div class="page-content"></div>
-                                            <div class="page-nav"><span
-                                                        href="/index.php?con=index&amp;act=get_review&amp;p=1"
-                                                        class="disabled">上一页</span> <span
-                                                        href="/index.php?con=index&amp;act=get_review&amp;p=2"
-                                                        class="disabled">下一页</span> &nbsp;&nbsp;&nbsp;&nbsp;共0 页&nbsp;&nbsp;&nbsp;&nbsp;跳到第
-                                                <input style="width:24px;text-align:center" value="1"
-                                                       onchange="$(this).next().attr(&quot;page-index&quot;,this.value)">
-                                                页 <a href="javascript:;" page-index="1">确定</a></div>
-                                        </div>
-                                        <div id="comment-b" class="js-template" style="display: none;">
-                                            <div class="page-content"></div>
-                                            <div class="page-nav"><span
-                                                        href="/index.php?con=index&amp;act=get_review&amp;p=1"
-                                                        class="disabled">上一页</span> <span
-                                                        href="/index.php?con=index&amp;act=get_review&amp;p=2"
-                                                        class="disabled">下一页</span> &nbsp;&nbsp;&nbsp;&nbsp;共0 页&nbsp;&nbsp;&nbsp;&nbsp;跳到第
-                                                <input style="width:24px;text-align:center" value="1"
-                                                       onchange="$(this).next().attr(&quot;page-index&quot;,this.value)">
-                                                页 <a href="javascript:;" page-index="1">确定</a></div>
-                                        </div>
-                                        <div id="comment-c" class="js-template" style="display: none;">
-                                            <div class="page-content"></div>
-                                            <div class="page-nav"><span
-                                                        href="/index.php?con=index&amp;act=get_review&amp;p=1"
-                                                        class="disabled">上一页</span> <span
-                                                        href="/index.php?con=index&amp;act=get_review&amp;p=2"
-                                                        class="disabled">下一页</span> &nbsp;&nbsp;&nbsp;&nbsp;共0 页&nbsp;&nbsp;&nbsp;&nbsp;跳到第
-                                                <input style="width:24px;text-align:center" value="1"
-                                                       onchange="$(this).next().attr(&quot;page-index&quot;,this.value)">
-                                                页 <a href="javascript:;" page-index="1">确定</a></div>
+                                        <div id="comment-all" class="" style="display: block;">
+                                            <div class="page-content">
+                                                <div class="comment-item">
+
+                                                    <?php foreach ($appraises as $appraise): ?>
+                                                    <div class="consult-q">
+                                                        <div class="comment-content" style="margin-left: 0px;">
+                                                            <p class="top">
+                                                                <span class="score">
+                                                                    <i style="width:80%"></i>
+                                                                </span>
+                                                                <span class="fr"><?= $appraise->create_time ?></span>
+                                                            </p>
+                                                            <p>
+                                                                <input id="js-rate-input-<?= $appraise->id ?>" max="5" min="0" step="1" style="display:none" type="number" value="<?= $appraise->score ?>">
+                                                            </p>
+                                                            <p><?= $appraise->content ?></p>
+                                                        </div>
+                                                    </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+
+
+                                            <?php echo LinkPager::widget([
+                                                'pagination' => $pagination,
+                                                'nextPageLabel' => '下一页',
+                                                'prevPageLabel' => '上一页',
+                                                'options' => ['class' => 'page-nav'],
+                                            ]); ?>
+
                                         </div>
                                     </div>
                                 </div>
@@ -364,6 +378,15 @@ use frontend\widgets\LinkPager;
             $(this).removeAttr("src-data");
         });
     }
+
+    $(function () {
+        <?php foreach ($appraises as $appraise): ?>
+        $('#js-rate-input-<?= $appraise->id ?>').ratemate({
+            width: 150,
+            height: 30
+        });
+        <?php endforeach; ?>
+    });
 
     // $("#goods-consult").Paging({
     //     url: '/index.php?con=index&act=get_ask',

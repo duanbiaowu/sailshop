@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 
+use backend\models\system\ExpressCompany;
 use common\models\goods\Book;
 use common\models\Member;
 use common\models\MemberAccountRecord;
@@ -26,6 +27,7 @@ use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class OrderController extends Controller
 {
@@ -51,6 +53,7 @@ class OrderController extends Controller
                     'create' => ['post'],
                     'confirm' => ['post'],
                     'pay' => ['post'],
+                    'finish' => ['post'],
                 ],
             ],
         ];
@@ -95,6 +98,12 @@ class OrderController extends Controller
             $bookTotalPrice += $detail->price * $detail->number;
         }
 
+        if ($order->status >= Order::DELIVERED_STATUS) {
+            $expressCompany = ExpressCompany::findOne($order->express_type);
+        } else {
+            $expressCompany = null;
+        }
+
         return $this->render('detail', [
             'order' => $order,
             'details' => $details,
@@ -102,6 +111,7 @@ class OrderController extends Controller
             'freightPrice' => sprintf('%.2f', $order->price_count - $bookTotalPrice),
             'paymentType' => PaymentType::findOne($order->pay_type),
             'status' => Order::formatStatus(),
+            'expressCompany' => $expressCompany,
         ]);
     }
 
@@ -354,21 +364,25 @@ class OrderController extends Controller
                     $accountRecord->type = MemberAccountRecord::TYPE_EXPENSE;
                     $accountRecord->value = $model->price_count;
                     $accountRecord->remark = '订单编号：' . $model->formatId();
+                } else {
+                    $accountRecord = null;
+                }
 
-                    $transaction = Order::getDb()->beginTransaction(Transaction::SERIALIZABLE);
-                    try {
-                        $model->save();
-                        Member::updateAllCounters(['account' => 0 - $model->price_count], [
-                            'id' => $model->member_id,
-                        ]);
+                $transaction = Order::getDb()->beginTransaction(Transaction::SERIALIZABLE);
+                try {
+                    $model->save();
+                    Member::updateAllCounters(['account' => 0 - $model->price_count], [
+                        'id' => $model->member_id,
+                    ]);
+                    if ($accountRecord !== null) {
                         $accountRecord->save();
-                        $transaction->commit();
-                    } catch (Exception $e) {
-                        $transaction->rollBack();
-                        return $this->redirect('status', [
-                            'id' => $model->id,
-                        ]);
                     }
+                    $transaction->commit();
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    return $this->redirect('status', [
+                        'id' => $model->id,
+                    ]);
                 }
             }
 
@@ -377,6 +391,66 @@ class OrderController extends Controller
                 'model' => $model,
                 'paymentType' => PaymentType::findOne($model->pay_type),
             ]);
+        }
+
+        throw new NotFoundHttpException('请求参数不合法');
+    }
+
+    /**
+     * @return array
+     * @throws BadRequestHttpException
+     */
+    public function actionFinish()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $conditions = [
+            'id' => (int)\Yii::$app->getRequest()->getBodyParam('id'),
+            'member_id' => \Yii::$app->user->getId(),
+        ];
+        if ($model = Order::findOne($conditions)) {
+            $model->status = Order::CONFIRMED_STATUS;
+            if ($model->save()) {
+                return [
+                    'code' => 200,
+                    'msg' => '确认收货成功',
+                ];
+            } else {
+                return [
+                    'code' => '-1',
+                    'msg' => '网络延迟，请稍后重试',
+                ];
+            }
+        }
+
+        throw new NotFoundHttpException('请求参数不合法');
+    }
+
+    /**
+     * @return array
+     * @throws BadRequestHttpException
+     */
+    public function actionReject()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $conditions = [
+            'id' => (int)\Yii::$app->getRequest()->getBodyParam('id'),
+            'member_id' => \Yii::$app->user->getId(),
+        ];
+        if ($model = Order::findOne($conditions)) {
+            $model->status = Order::REJECTED_STATUS;
+            if ($model->save()) {
+                return [
+                    'code' => 200,
+                    'msg' => '您已拒绝签收',
+                ];
+            } else {
+                return [
+                    'code' => '-1',
+                    'msg' => '网络延迟，请稍后重试',
+                ];
+            }
         }
 
         throw new NotFoundHttpException('请求参数不合法');

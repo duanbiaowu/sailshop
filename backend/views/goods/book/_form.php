@@ -1,5 +1,6 @@
 <?php
 
+use common\models\goods\Book;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -62,7 +63,7 @@ use pendalf89\filemanager\widgets\FileInput;
 
                 <?= $form->field($model, 'category_id')->dropDownList($categories) ?>
 
-                <?= $form->field($model, 'introduce')->textarea(['maxlength' => true, 'rows' => 5]) ?>
+                <?= $form->field($model, 'introduce')->textarea(['maxlength' => true, 'rows' => 15]) ?>
 
                 <?= $form->field($model, 'pages')->textInput(['maxlength' => true]) ?>
 
@@ -104,7 +105,7 @@ use pendalf89\filemanager\widgets\FileInput;
                         </div>
                     </div>
 
-                    <?php if ($model->show_pictures): ?>
+                    <?php if ($model->show_pictures && is_array($model->show_pictures)): ?>
                         <?php foreach ($model->show_pictures as $picture): ?>
                         <div class="form-group">
                             <label class="col-sm-2 control-label"></label>
@@ -142,11 +143,23 @@ use pendalf89\filemanager\widgets\FileInput;
                 </div>
 
                 <?= $form->field($model, 'status')->radioList(
-                    \common\models\Available::labels(),
+                    Book::statusFormat(),
                     [
                         'item' => function($index, $label, $name, $checked, $value) {
                             return Html::radio($name, $checked, ['value' => $value, 'label' => $label, 'labelOptions' => ['class' => 'radio-inline']]);
                          }
+                    ]
+                ) ?>
+
+                <?= $form->field($model, 'recommend')->radioList(
+                    [
+                        '1' => '是',
+                        '0' => '否',
+                    ],
+                    [
+                        'item' => function($index, $label, $name, $checked, $value) {
+                            return Html::radio($name, $checked, ['value' => $value, 'label' => $label, 'labelOptions' => ['class' => 'radio-inline']]);
+                        }
                     ]
                 ) ?>
             </div>

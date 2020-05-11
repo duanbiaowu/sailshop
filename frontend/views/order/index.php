@@ -49,6 +49,11 @@ use yii\data\Pagination;
                     <?php if ($order->status != Order::NOT_PAYING_STATUS): ?>
                     <td>
                         <span class="text-gray"><?= $status[$order->status] ?></span>
+                        <?php if ($order->status == Order::DELIVERED_STATUS): ?>
+                        <a class="btn btn-main btn-mini pull-right" href="https://www.kuaidi100.com/all/hhair56.shtml?mscomnu=<?= $order->express_code ?>" target="_blank">
+                            查看物流
+                        </a>
+                        <?php endif; ?>
                     </td>
                     <?php else: ?>
                     <td>

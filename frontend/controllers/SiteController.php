@@ -1,14 +1,19 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\goods\Book;
+use common\models\goods\Brand;
 use common\models\Member;
+use common\models\MemberBrowseRecord;
 use common\models\MemberLoginForm;
+use common\models\order\OrderDetail;
 use Yii;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
+use yii\data\Sort;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -74,7 +79,50 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $newBooks = Book::getEnableBookQuery()
+            ->orderBy(['create_time' => SORT_DESC])
+            ->limit(10)
+            ->all();
+
+        $bookOrders = OrderDetail::find()
+            ->select(['isbn', 'SUM(number) AS count'])
+            ->groupBy('isbn')
+            ->orderBy(['count' => SORT_DESC])
+            ->asArray()
+            ->indexBy('isbn')
+            ->limit(10)
+            ->all();
+        $bestSellingBooks = Book::getEnableBookQuery()
+            ->andWhere(['isbn' => array_keys($bookOrders)])
+            ->all();
+
+        $bookBrowses = MemberBrowseRecord::find()
+            ->select(['isbn', 'SUM(views) AS count'])
+            ->groupBy('isbn')
+            ->orderBy(['count' => SORT_DESC])
+            ->asArray()
+            ->indexBy('isbn')
+            ->limit(10)
+            ->all();
+        $hotBooks = Book::getEnableBookQuery()
+            ->andWhere(['isbn' => array_keys($bookBrowses)])
+            ->all();
+
+        $recommendBooks = Book::getEnableBookQuery()
+            ->andWhere(['recommend' => Book::ENABLE_STATUS])
+            ->all();
+
+        return $this->render('index', [
+            'newBooks' => $newBooks,
+            'bestSellingBooks' => $bestSellingBooks,
+            'hotBooks' => $hotBooks,
+            'recommendBooks' => $recommendBooks,
+            'brands' => Brand::find()
+                ->where(['available' => Brand::AVAILABLE])
+                ->orderBy(['sort' => SORT_DESC])
+                ->asArray()
+                ->all(),
+        ]);
     }
 
     /**

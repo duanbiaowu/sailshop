@@ -6,10 +6,15 @@
  * @version 1.0
  */
 
+use common\models\goods\Book;
 use common\models\goods\Brand;
 use yii\helpers\Html;
 
-$brands = Brand::find()->orderBy(['sort' => SORT_DESC])->asArray()->all();
+/* @var Book[] $newBooks */
+/* @var Book[] $bestSellingBooks */
+/* @var Book[] $hotBooks */
+/* @var Book[] $recommendBooks */
+/* @var Brand[] $brands */
 
 ?>
 
@@ -29,25 +34,133 @@ $brands = Brand::find()->orderBy(['sort' => SORT_DESC])->asArray()->all();
             <ul class="row-5 category-index">
                 <li class="col title">
                     <fieldset class="line-title">
-                        <legend align="center">新书排行</legend>
+                        <legend align="center">新书上架</legend>
                     </fieldset>
                 </li>
 
                 <li class="col title">
                     <ul class="row">
-                        <?php for ($i = 0; $i < 10; ++$i): ?>
+                        <?php foreach($newBooks as $book): ?>
                         <li class="col-1">
                             <div class="item">
                                 <div class="header">
-                                    <a href="/index.php?con=index&act=product&id=16"><img src="http://tinyshop.e20.net/data/uploads/2014/04/30/62527b26f1afbe204f247b72d1f20c2d.jpg__220_220.jpg" width=$w></a>
+                                    <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
+                                        <img src="/<?= $book->thumbnail ?>" width="220">
+                                    </a>
                                 </div>
                                 <ul class="main">
-                                    <li class="title"><a href="/index.php?con=index&act=product&id=16">BRIOSO格子衬衫 女 长袖2014春装新款女装修身韩版大码百搭衬衣潮</a></li>
-                                    <li class="price">49.00元</li>
+                                    <li class="title">
+                                        <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
+                                            <?= $book->name ?>
+                                        </a>
+                                    </li>
+                                    <li class="price"><?= $book->price ?>元</li>
                                 </ul>
                             </div>
                         </li>
-                        <?php endfor; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="list">
+            <ul class="row-5 category-index">
+                <li class="col title">
+                    <fieldset class="line-title">
+                        <legend align="center">畅销排行</legend>
+                    </fieldset>
+                </li>
+
+                <li class="col title">
+                    <ul class="row">
+                        <?php foreach($bestSellingBooks as $book): ?>
+                            <li class="col-1">
+                                <div class="item">
+                                    <div class="header">
+                                        <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
+                                            <img src="/<?= $book->thumbnail ?>" width="220">
+                                        </a>
+                                    </div>
+                                    <ul class="main">
+                                        <li class="title">
+                                            <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
+                                                <?= $book->name ?>
+                                            </a>
+                                        </li>
+                                        <li class="price"><?= $book->price ?>元</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="list">
+            <ul class="row-5 category-index">
+                <li class="col title">
+                    <fieldset class="line-title">
+                        <legend align="center">热门浏览</legend>
+                    </fieldset>
+                </li>
+
+                <li class="col title">
+                    <ul class="row">
+                        <?php foreach($hotBooks as $book): ?>
+                            <li class="col-1">
+                                <div class="item">
+                                    <div class="header">
+                                        <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
+                                            <img src="/<?= $book->thumbnail ?>" width="220">
+                                        </a>
+                                    </div>
+                                    <ul class="main">
+                                        <li class="title">
+                                            <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
+                                                <?= $book->name ?>
+                                            </a>
+                                        </li>
+                                        <li class="price"><?= $book->price ?>元</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="list">
+            <ul class="row-5 category-index">
+                <li class="col title">
+                    <fieldset class="line-title">
+                        <legend align="center">书店推荐</legend>
+                    </fieldset>
+                </li>
+
+                <li class="col title">
+                    <ul class="row">
+                        <?php foreach($recommendBooks as $book): ?>
+                            <li class="col-1">
+                                <div class="item">
+                                    <div class="header">
+                                        <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
+                                            <img src="/<?= $book->thumbnail ?>" width="220">
+                                        </a>
+                                    </div>
+                                    <ul class="main">
+                                        <li class="title">
+                                            <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
+                                                <?= $book->name ?>
+                                            </a>
+                                        </li>
+                                        <li class="price"><?= $book->price ?>元</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
                 </li>
             </ul>

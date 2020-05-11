@@ -99,8 +99,8 @@ class Order extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'member_id' => '会员ID',
-            'price_count' => '总价格',
-            'status' => '状态',
+            'price_count' => '总价',
+            'status' => '订单状态',
             'finish_time' => '完成时间',
             'pay_type' => '支付类型',
             'pay_time' => '支付时间',
@@ -108,11 +108,15 @@ class Order extends \yii\db\ActiveRecord
             'express_code' => '快递单号',
             'remark' => '备注信息',
             'name' => '收货人姓名',
-            'mobile' => '收货人联系方式',
+            'mobile' => '联系方式',
             'province_id' => '收货人省份ID',
+            'province_name' => '省',
             'city_id' => '收货人城市ID',
+            'city_name' => '市',
             'district_id' => '收货人区ID',
-            'detail_address' => '收货人详细地址',
+            'district_name' => '县/区',
+            'zip_code' => '邮政编码',
+            'detail_address' => '详细地址',
             'create_time' => '创建时间',
         ];
     }

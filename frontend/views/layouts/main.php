@@ -8,8 +8,8 @@
 
 /* @var $this \yii\web\View */
 
-/* @var $content string */
-
+/* @var string $content */
+/* @var string $keyword */
 
 use common\models\content\ArticleCategory;
 use common\models\content\ArticleContentSearch;
@@ -118,14 +118,10 @@ foreach ($articles as $article) {
                         </div>
                     </div>
                     <div class="sub-2">
-                        <form id="search-form" class="search-form" action="/index.php?con=" method="get">
-                            <input type="hidden" name="con" value="index">
-                            <input type="hidden" name="act" value="search"> <input type='hidden' name='tiny_token_'
-                                                                                   value='lqd2nvhc0ywy163g20ubwjrewkdgkxbt'/>
-                            <input class="search-keyword" id="search-keyword" class="txt-keyword" name="keyword"
-                                   value="" type="text">
+                        <form id="search-form" class="search-form" action="/book/search" method="get">
+                            <input class="search-keyword" id="search-keyword" class="txt-keyword" name="keyword" type="text" value="<?= \Yii::$app->getRequest()->getQueryParam('keyword') ?>" />
                             <button class="btn-search ">搜索</button>
-                            <p id="tags-list"><a href="#">算法导论</a></p>
+                            <p id="tags-list"><a href="/book/search?keyword=算法导论">算法导论</a></p>
                         </form>
                     </div>
                 </div>
@@ -141,7 +137,7 @@ foreach ($articles as $article) {
                 <ul class="category">
                     <?php foreach ($bookCategories as $bookCategory): ?>
                         <li>
-                            <a href="/index.php?con=index&act=category&cid=5">
+                            <a href="/category/index?id=<?= $bookCategory['id'] ?>">
                                 <?= $bookCategory['name'] ?><i class="fa">&#xf105;</i>
                             </a>
                             <div class="category-sub">
@@ -149,13 +145,13 @@ foreach ($articles as $article) {
                                     <?php foreach ($bookCategory['children'] as $value): ?>
                                         <li>
                                             <h5>
-                                                <a href="/index.php?con=index&act=category&cid=6">
+                                                <a href="/category/index?id=<?= $value['id'] ?>">
                                                     <?= $value['name'] ?>
                                                 </a>
                                             </h5>
                                             <p>
                                                 <?php foreach ($value['children'] as $item): ?>
-                                                    <a href="/index.php?con=index&act=category&cid=7">
+                                                    <a href="/category/index?id=<?= $item['id'] ?>">
                                                         <?= $item['name'] ?>
                                                     </a>
                                                 <?php endforeach; ?>

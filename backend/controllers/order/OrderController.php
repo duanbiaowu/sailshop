@@ -2,9 +2,12 @@
 
 namespace backend\controllers\order;
 
+use backend\models\system\ExpressCompany;
+use common\models\system\PaymentType;
 use Yii;
 use common\models\order\Order;
 use common\models\order\OrderSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -38,26 +41,32 @@ class OrderController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'status' => Order::formatStatus(),
+            'paymentTypes' => ArrayHelper::map(PaymentType::find()->asArray()->all(), 'id', 'name'),
         ]);
     }
 
-    /**
-     * Displays a single Order model.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $details = $model->getOrderDetails()
+            ->all();
+        $bookTotalPrice = 0;
+        foreach ($details as $detail) {
+            $bookTotalPrice += $detail->price * $detail->number;
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'details' => $details,
+            'bookTotalPrice' => sprintf('%.2f', $bookTotalPrice),
+            'freightPrice' => sprintf('%.2f', $model->price_count - $bookTotalPrice),
+            'paymentType' => PaymentType::findOne($model->pay_type),
+            'expressCompany' => ExpressCompany::findOne($model->express_type),
+            'status' => Order::formatStatus(),
         ]);
     }
 
-    /**
-     * Creates a new Order model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Order();
@@ -71,18 +80,13 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Updates an existing Order model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', '订单信息更新成功');
+            return $this->redirect('index');
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -90,26 +94,34 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Deletes an existing Order model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', '订单信息删除成功');
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Order model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Order the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    public function actionDelivery($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->status = Order::DELIVERED_STATUS;
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', '订单信息更新成功');
+            } else {
+                Yii::$app->session->setFlash('danger', '网络延迟，请稍后重试');
+            }
+            return $this->redirect(urldecode(Yii::$app->getRequest()->getBodyParam('redirect')));
+        } else {
+            return $this->renderPartial('_delivery', [
+                'model' => $model,
+                'redirect' => Yii::$app->getRequest()->getQueryParam('redirect')
+            ]);
+        }
+    }
+
     protected function findModel($id)
     {
         if (($model = Order::findOne($id)) !== null) {
