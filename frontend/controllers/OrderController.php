@@ -410,6 +410,7 @@ class OrderController extends Controller
         ];
         if ($model = Order::findOne($conditions)) {
             $model->status = Order::CONFIRMED_STATUS;
+            $model->finish_time = date('Y-m-d H:i:s');
             if ($model->save()) {
                 return [
                     'code' => 200,

@@ -50,11 +50,12 @@ class MemberAccountRecord extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'member_id' => Yii::t('app', 'Member ID'),
-            'value' => Yii::t('app', 'Value'),
-            'remark' => Yii::t('app', 'Remark'),
-            'create_time' => Yii::t('app', 'Create Time'),
+            'id' => 'ID',
+            'member_id' => 'Member ID',
+            'value' => '金额',
+            'type' => '类型',
+            'remark' => '说明信息',
+            'create_time' => '时间',
         ];
     }
 

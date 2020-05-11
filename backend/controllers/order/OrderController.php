@@ -122,6 +122,49 @@ class OrderController extends Controller
         }
     }
 
+    public function actionConsulted($id)
+    {
+        $model = $this->findModel($id);
+
+        if (Yii::$app->getRequest()->isPost) {
+            if (Yii::$app->getRequest()->getBodyParam('status')) {
+                $model->status = Order::CONSULTED_STATUS;
+            } else {
+                $model->status = Order::REJECTED_STATUS;
+            }
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', '订单信息更新成功');
+            } else {
+                Yii::$app->session->setFlash('danger', '网络延迟，请稍后重试');
+            }
+            return $this->redirect(urldecode(Yii::$app->getRequest()->getBodyParam('redirect')));
+        } else {
+            return $this->renderPartial('_consulted', [
+                'model' => $model,
+                'redirect' => Yii::$app->getRequest()->getQueryParam('redirect')
+            ]);
+        }
+    }
+
+    public function actionPrint($id)
+    {
+        $model = $this->findModel($id);
+
+        $details = $model->getOrderDetails()
+            ->all();
+        $bookTotalPrice = 0;
+        foreach ($details as $detail) {
+            $bookTotalPrice += $detail->price * $detail->number;
+        }
+
+        return $this->renderPartial('print', [
+            'model' => $model,
+            'details' => $details,
+            'bookTotalPrice' => sprintf('%.2f', $bookTotalPrice),
+            'freightPrice' => sprintf('%.2f', $model->price_count - $bookTotalPrice),
+        ]);
+    }
+
     protected function findModel($id)
     {
         if (($model = Order::findOne($id)) !== null) {

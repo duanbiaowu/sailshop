@@ -105,20 +105,37 @@ Modal::end();
                     'attribute' => '操作',
                     'format' => 'raw',
                     'value' => function($data) {
-                        return Html::button('发货', [
-                            'data-link' => Url::to(['delivery',
-                                'id' => $data->id,
-                                'redirect' => urlencode(Url::current())
-                            ]),
-                            'class' => 'btn btn-primary btn-sm js-order-delivery-btn',
-                        ]);
+                        if (in_array($data->status, [Order::REJECTED_STATUS, Order::CONSULTED_STATUS])) {
+                            $html = Html::button('设置协商结果', [
+                                'data-link' => Url::to(['consulted',
+                                    'id' => $data->id,
+                                    'redirect' => urlencode(Url::current())
+                                ]),
+                                'class' => 'btn btn-primary btn-sm js-order-delivery-btn',
+                            ]);
+                        } else if ($data->status > Order::DELIVERED_STATUS) {
+                            $html =  '';
+                        } else {
+                            $html = Html::button('发货', [
+                                'data-link' => Url::to(['delivery',
+                                    'id' => $data->id,
+                                    'redirect' => urlencode(Url::current())
+                                ]),
+                                'class' => 'btn btn-primary btn-sm js-order-delivery-btn',
+                            ]);
+                        }
+
+                        return $html . '<p></p>' . Html::a('打印订单清单', ['print', 'id' => $data->id], [
+                                'class' => 'btn btn-primary btn-sm',
+                                'target' => '_blank',
+                            ]);
                     },
                 ],
 
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'headerOptions' => ['style' => 'width: 180px;'],
-                    'template' => '{view} {delete}',
+                    'template' => '{view} {delete}'
                 ],
             ],
         ]); ?>
