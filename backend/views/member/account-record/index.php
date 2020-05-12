@@ -30,7 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'member_id',
                 'label' => '用户名',
-                'filterInputOptions' => ['style' => 'display: none;'],
+                'value' => function ($data) {
+                    return $data->getMember()->one()->username;
+                },
             ],
             [
                 'attribute' => 'type',

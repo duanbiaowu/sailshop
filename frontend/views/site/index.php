@@ -11,7 +11,9 @@ use common\models\goods\Brand;
 use yii\helpers\Html;
 
 /* @var Book[] $newBooks */
+/* @var array $bookOrders */
 /* @var Book[] $bestSellingBooks */
+/* @var array $bookBrowses */
 /* @var Book[] $hotBooks */
 /* @var Book[] $recommendBooks */
 /* @var Brand[] $brands */
@@ -20,10 +22,10 @@ use yii\helpers\Html;
 
 <div class="banner swiper" style="height: 396px;" config-data="{'direction': 'left'}">
     <ul class="cycle-slideshow">
-        <li style="background-image:url(http://tinyshop.e20.net/data/uploads/2014/05/13/b5cf5e20eda87a3ff77e4a2d33828947.jpg) ">
+        <li style="background-image:url(/images/0759c1bb53abee7.jpg); background-repeat: no-repeat; background-size: 100% 100%;">
             <a href="/" target="_blank"></a>
         </li>
-        <li style="background-image:url(http://tinyshop.e20.net/data/uploads/2014/05/13/9670df531a008c75e7bed5b8967efd66.gif) ">
+        <li style="background-image:url(/images/0759c1bb53abee8.jpeg); background-repeat: no-repeat; background-size: 100% 100%;">
             <a href="/" target="_blank"></a>
         </li>
     </ul>
@@ -74,21 +76,21 @@ use yii\helpers\Html;
 
                 <li class="col title">
                     <ul class="row">
-                        <?php foreach($bestSellingBooks as $book): ?>
+                        <?php foreach($bookOrders as $isbn => $book): ?>
                             <li class="col-1">
                                 <div class="item">
                                     <div class="header">
-                                        <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
-                                            <img src="/<?= $book->thumbnail ?>" width="220">
+                                        <a href="/book/detail?isbn=<?= $bestSellingBooks[$isbn]->isbn ?>" target="_blank">
+                                            <img src="/<?= $bestSellingBooks[$isbn]->thumbnail ?>" width="220">
                                         </a>
                                     </div>
                                     <ul class="main">
                                         <li class="title">
-                                            <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
-                                                <?= $book->name ?>
+                                            <a href="/book/detail?isbn=<?= $bestSellingBooks[$isbn]->isbn ?>" target="_blank">
+                                                <?= $bestSellingBooks[$isbn]->name ?>
                                             </a>
                                         </li>
-                                        <li class="price"><?= $book->price ?>元</li>
+                                        <li class="price"><?= $bestSellingBooks[$isbn]->price ?>元</li>
                                     </ul>
                                 </div>
                             </li>
@@ -108,21 +110,21 @@ use yii\helpers\Html;
 
                 <li class="col title">
                     <ul class="row">
-                        <?php foreach($hotBooks as $book): ?>
+                        <?php foreach($bookBrowses as $isbn => $book): ?>
                             <li class="col-1">
                                 <div class="item">
                                     <div class="header">
-                                        <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
-                                            <img src="/<?= $book->thumbnail ?>" width="220">
+                                        <a href="/book/detail?isbn=<?= $hotBooks[$isbn]->isbn ?>" target="_blank">
+                                            <img src="/<?= $hotBooks[$isbn]->thumbnail ?>" width="220">
                                         </a>
                                     </div>
                                     <ul class="main">
                                         <li class="title">
-                                            <a href="/book/detail?isbn=<?= $book->isbn ?>" target="_blank">
-                                                <?= $book->name ?>
+                                            <a href="/book/detail?isbn=<?= $hotBooks[$isbn]->isbn ?>" target="_blank">
+                                                <?= $hotBooks[$isbn]->name ?>
                                             </a>
                                         </li>
-                                        <li class="price"><?= $book->price ?>元</li>
+                                        <li class="price"><?= $hotBooks[$isbn]->price ?>元</li>
                                     </ul>
                                 </div>
                             </li>

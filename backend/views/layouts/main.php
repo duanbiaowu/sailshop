@@ -94,9 +94,9 @@ AppAsset::register($this);
                             </a>
                             <?php foreach ($menu['children'] as $child): ?>
 
-                                <a href="<?= Url::toRoute($child['route']) ?>" class="list-group-item <?php if ('/' . Yii::$app->controller->id == $child['route']) echo 'active'; ?>">
-                                    <?= $child['name'] ?>
-                                </a>
+                            <a href="<?= Url::toRoute($child['route']) ?>" class="list-group-item <?php if (('/' . Yii::$app->controller->id == $child['route']) || ('/' . Yii::$app->request->pathInfo == $child['route'])) echo 'active'; ?>">
+                                <?= $child['name'] ?>
+                            </a>
 
                             <?php endforeach; ?>
                         </div>

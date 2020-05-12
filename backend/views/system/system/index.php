@@ -25,11 +25,11 @@ use common\models\order\Order; ?>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= Member::find()->count() ?></div>
-                        <div>会员总数</div>
+                        <div>用户总数</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="/member/member/index">
                 <div class="panel-footer">
                     <span class="pull-left">查看详情</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -47,11 +47,11 @@ use common\models\order\Order; ?>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= Book::find()->count() ?></div>
-                        <div>商品总数</div>
+                        <div>图书总数</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="/goods/book">
                 <div class="panel-footer">
                     <span class="pull-left">查看详情</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -73,7 +73,7 @@ use common\models\order\Order; ?>
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="/order/order">
                 <div class="panel-footer">
                     <span class="pull-left">查看详情</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -90,12 +90,12 @@ use common\models\order\Order; ?>
                         <i class="fa fa-support fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><?= Order::find()->andWhere(['<>', 'status', Order::CONFIRMED_STATUS])->count() ?></div>
-                        <div>待处理订单</div>
+                        <div class="huge"><?= Order::find()->andWhere(['<>', 'status', Order::PAY_STATUS])->count() ?></div>
+                        <div>待发货订单</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="/order/order/index?OrderSearch[status]=<?= Order::PAY_STATUS ?>">
                 <div class="panel-footer">
                     <span class="pull-left">查看详情</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

@@ -10,7 +10,7 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log', 'auth'],
+    'bootstrap' => ['auth'],
     'modules' => [
         'filemanager' => [
             'class' => 'pendalf89\filemanager\Module',

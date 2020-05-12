@@ -1,16 +1,17 @@
 <?php
 
-namespace common\models;
+namespace common\models\order;
 
+use common\models\goods\Book;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\MemberAccountRecord;
+use common\models\order\OrderAppraise;
 
 /**
- * AccountRecordSearch represents the model behind the search form about `common\models\MemberAccountRecord`.
+ * OrderAppraiseSearch represents the model behind the search form about `common\models\order\OrderAppraise`.
  */
-class AccountRecordSearch extends MemberAccountRecord
+class OrderAppraiseSearch extends OrderAppraise
 {
     /**
      * @inheritdoc
@@ -18,10 +19,9 @@ class AccountRecordSearch extends MemberAccountRecord
     public function rules()
     {
         return [
-            [['id', 'type'], 'integer'],
-            [['member_id'], 'string'],
-            [['value'], 'number'],
-            [['remark', 'create_time'], 'safe'],
+            [['id', 'order_id'], 'integer'],
+            [['isbn', 'content', 'create_time'], 'safe'],
+            [['score'], 'number'],
         ];
     }
 
@@ -43,12 +43,11 @@ class AccountRecordSearch extends MemberAccountRecord
      */
     public function search($params)
     {
-        $a = MemberAccountRecord::tableName();
-        $b = Member::tableName();
+        $a = OrderAppraise::tableName();
+        $b = Book::tableName();
 
-        $query = MemberAccountRecord::find()
-            ->innerJoin($b, $b .'.id = ' . $a . '.member_id')
-            ->select([$a . '.*', $b . '.username']);
+        $query = OrderAppraise::find()
+            ->innerJoin($b, $a . '.isbn = ' . $b . '.isbn');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -63,14 +62,14 @@ class AccountRecordSearch extends MemberAccountRecord
         }
 
         $query->andFilterWhere([
-            'type' => $this->type,
-            'value' => $this->value,
-//            'create_time' => $this->create_time,
+            'id' => $this->id,
+            'score' => $this->score,
+            'create_time' => $this->create_time,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->member_id])
-            ->andFilterWhere(['like', 'remark', $this->remark]);
-        $query->orderBy(['id' => SORT_DESC]);
+        $query->andFilterWhere(['like', 'name', $this->isbn])
+            ->andFilterWhere(['like', 'content', $this->content])
+            ->orderBy(['id' => SORT_DESC]);
 
         return $dataProvider;
     }

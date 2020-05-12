@@ -94,6 +94,7 @@ class SiteController extends Controller
             ->all();
         $bestSellingBooks = Book::getEnableBookQuery()
             ->andWhere(['isbn' => array_keys($bookOrders)])
+            ->indexBy('isbn')
             ->all();
 
         $bookBrowses = MemberBrowseRecord::find()
@@ -106,6 +107,7 @@ class SiteController extends Controller
             ->all();
         $hotBooks = Book::getEnableBookQuery()
             ->andWhere(['isbn' => array_keys($bookBrowses)])
+            ->indexBy('isbn')
             ->all();
 
         $recommendBooks = Book::getEnableBookQuery()
@@ -114,7 +116,9 @@ class SiteController extends Controller
 
         return $this->render('index', [
             'newBooks' => $newBooks,
+            'bookOrders' => $bookOrders,
             'bestSellingBooks' => $bestSellingBooks,
+            'bookBrowses' => $bookBrowses,
             'hotBooks' => $hotBooks,
             'recommendBooks' => $recommendBooks,
             'brands' => Brand::find()

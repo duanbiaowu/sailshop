@@ -54,7 +54,7 @@ class OrderAppraise extends \yii\db\ActiveRecord
             'isbn' => '图书Isbn',
             'content' => '内容',
             'score' => '评分',
-            'create_time' => 'Create Time',
+            'create_time' => '发布时间',
         ];
     }
 
