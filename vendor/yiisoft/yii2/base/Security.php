@@ -622,7 +622,7 @@ class Security extends Component
      * @return string the random salt value.
      * @throws InvalidParamException if the cost parameter is out of the range of 4 to 31.
      */
-    protected function generateSalt($cost = 13)
+    protected function generateSalt($cost = 6)
     {
         $cost = (int) $cost;
         if ($cost < 4 || $cost > 31) {

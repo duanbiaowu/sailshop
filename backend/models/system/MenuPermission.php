@@ -32,7 +32,7 @@ class MenuPermission extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['menu_id', 'name', 'method'], 'required'],
+            [['menu_id', 'name'], 'required'],
             [['menu_id'], 'integer'],
             [['name'], 'string', 'max' => 32],
             [['method'], 'string', 'max' => 8],

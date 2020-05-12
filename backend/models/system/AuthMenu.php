@@ -3,6 +3,7 @@
 namespace backend\models\system;
 
 use Yii;
+use yii\helpers\BaseVarDumper;
 use yii\rbac\Permission;
 
 /**
@@ -127,6 +128,23 @@ class AuthMenu extends \yii\db\ActiveRecord
      */
     public static function findPermissionByRoute($route)
     {
+        if ($route == Yii::$app->homeUrl) {
+            return null;
+        }
+
+        // 兼容多页面权限方法为空
+        if (strpos(Yii::$app->request->pathInfo, 'statistic/') !== false) {
+            $menu = AuthMenu::find()
+                ->andWhere(['route' => '/' . Yii::$app->request->pathInfo])
+                ->orderBy(['id' => SORT_DESC])
+                ->one();
+            if ($menu) {
+                return $menu->getPermissions()
+                    ->andWhere(['method' => ''])
+                    ->one();
+            }
+        }
+
         $params = explode('/', Yii::$app->request->url);
         if (!$params = array_filter($params)) {
             return null;

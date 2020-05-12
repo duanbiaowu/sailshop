@@ -25,8 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
         'columns' => [
             [
+                'attribute' => 'username',
+                'headerOptions' => ['class' => 'text-center', 'width' => '6%'],
+            ],
+            [
                 'attribute' => 'nickname',
-                'headerOptions' => ['class' => 'text-center', 'width' => '12%'],
+                'headerOptions' => ['class' => 'text-center', 'width' => '6%'],
             ],
             [
                 'format' => 'raw',

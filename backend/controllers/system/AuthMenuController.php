@@ -124,16 +124,16 @@ class AuthMenuController extends Controller
             ->all();
 
         if ($data = Yii::$app->request->post()) {
-            if (isset($data['name']) && is_array($data['name']) &&
-                isset($data['method']) && is_array($data['method'])) {
+            if (isset($data['name']) && is_array($data['name'])) {
 
                 foreach (array_filter($data['name']) as $index => $name) {
-                    if (!isset($data['method'][$index]) || !$data['method'][$index]) {
-                        continue;
-                    }
+//                    if (!isset($data['method'][$index]) || !$data['method'][$index]) {
+//                        continue;
+//                    }
                     $query = isset($data['query'][$index]) ? $data['query'][$index] : null;
+                    $method = isset($data['method'][$index]) ? $data['method'][$index] : null;
 
-                    if ($permissions[$index]) {
+                    if (isset($permissions[$index]) && $permissions[$index]) {
                         $permission = $permissions[$index];
                     } else {
                         $permission = new MenuPermission();

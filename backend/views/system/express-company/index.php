@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'tableOptions' => ['class' => 'table table-striped table-bordered text-center'],
 
         'columns' => [
@@ -51,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($data) {
                     return $data->available ? '启用' : '禁用';
                 },
+                'filterInputOptions' => ['style' => 'display: none;'],
             ],
 
             [

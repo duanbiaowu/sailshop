@@ -79,6 +79,9 @@ class EmailForm extends Model
 
         Yii::$app->setComponents($mailer);
 
+        // 测试发送邮件代码
+        return true;
+
         try {
             return Yii::$app->mailer->compose()
                 ->setTo($this->testAddress)

@@ -40,10 +40,7 @@ $this->params['breadcrumbs'][] = '权限设置';
                 <input type="input" name="name[]" v-model="value.name" class="form-control" placeholder="请输入权限名称" required>
             </div>
             <div class="col-sm-3">
-                <input type="input" name="method[]" v-model="value.method"  class="form-control" placeholder="请输入权限方法" required>
-            </div>
-            <div class="col-sm-3">
-                <input type="input" name="query[]" v-model="value.query"  class="form-control" placeholder="请输入权限参数">
+                <input type="input" name="method[]" v-model="value.method"  class="form-control" placeholder="请输入权限方法">
             </div>
             <div class="col-sm-2">
                 <button type="button" class="btn btn-danger btn-sm" v-on:click="remove($index)">删除</button>

@@ -3,6 +3,7 @@
 namespace common\models\goods;
 
 use common\models\goods\Book;
+use common\models\order\OrderAppraise;
 use common\models\order\OrderDetail;
 use Yii;
 use yii\base\Model;
@@ -130,19 +131,22 @@ class BookSearch extends Book
                 $query->addOrderBy(['create_time' => SORT_DESC]);
                 break;
             case 'comment':
-//                $query->leftJoin(OrderAppraise::tableName(),
-//                        Book::tableName() . '.isbn = ' . OrderAppraise::tableName() . '.isbn')
-//                    ->select([Book::tableName() . '.*',
-//                        'COUNT(' . OrderAppraise::tableName() . '.isbn' . ') AS comment'])
-//                    ->addGroupBy('isbn')
-//                    ->addOrderBy(['comment' => SORT_DESC]);
+                $a = Book::tableName();
+                $b = OrderAppraise::tableName();
+
+                $query->leftJoin($b, $a . '.isbn = ' . $b . '.isbn')
+                    ->select([$a . '.*', 'COUNT(' . $b . '.isbn' . ') AS comment'])
+                    ->addGroupBy($a . '.isbn')
+                    ->addOrderBy(['comment' => SORT_DESC])
+                    ->addOrderBy(['create_time' => SORT_DESC]);
                 break;
             case 'sales':
                 $query->leftJoin(OrderDetail::tableName(),
                     Book::tableName() . '.isbn = ' . OrderDetail::tableName() . '.isbn')
                     ->select([Book::tableName() . '.*', 'SUM(number) AS sales'])
                     ->addGroupBy(Book::tableName() . '.isbn')
-                    ->addOrderBy(['sales' => SORT_DESC]);
+                    ->addOrderBy(['sales' => SORT_DESC])
+                    ->addOrderBy(['create_time' => SORT_DESC]);
                 break;
             default:
         }

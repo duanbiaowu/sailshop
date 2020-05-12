@@ -72,7 +72,7 @@ foreach ($articles as $article) {
                         <div class="dropdown-content user-box">
                             <ul class="user-center">
                                 <li class="link"><a href="/order/index">我的订单</a></li>
-                                <li class="link"><a href="/index.php?con=ucenter&act=review">商品评价</a></li>
+                                <li class="link"><a href="/appraise/index">图书评价</a></li>
                                 <li class="link"><a href="/member/address/index">收货地址</a></li>
                                 <li class="link"><a href="/member/password/index">账户安全</a></li>
                             </ul>
@@ -109,7 +109,7 @@ foreach ($articles as $article) {
                                 </ul>
                                 <div class="cart-count clearfix">
                                     <div class="fl">
-                                        共 <em id="cart-goods-num"></em> 件商品
+                                        共 <em id="cart-goods-num"></em> 件图书
                                         <span class="cart-total"></span>
                                     </div>
                                     <a href="/cart/settlement" class="btn btn-main fr">去购物车结算</a>
@@ -200,7 +200,7 @@ foreach ($articles as $article) {
                 <dt class="icon-3"></dt>
                 <dd>
                     <p class="title">极速更新</p>
-                    <p>所有商品信息及时更新</p>
+                    <p>所有图书信息及时更新</p>
                 </dd>
             </dl>
             <dl>

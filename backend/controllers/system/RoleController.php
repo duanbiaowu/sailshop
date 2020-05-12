@@ -68,11 +68,21 @@ class RoleController extends Controller
         $model = new Role();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            RoleMenuPermission::flushPermission($model->id, Yii::$app->request->post('permissionIds'));
+
             Yii::$app->session->setFlash('success', '角色创建成功');
             return $this->redirect('index');
         } else {
+            $menus = $this->combine($this->findMenus(), $this->findMenuPermissions());
+            $permissions = $model->getMenuPermissions()
+                ->indexBy('permission_id')
+                ->asArray()
+                ->all();
+
             return $this->render('create', [
                 'model' => $model,
+                'menus' => ArrayHelper::toTreeStructure($menus),
+                'permissions' => $permissions,
             ]);
         }
     }
